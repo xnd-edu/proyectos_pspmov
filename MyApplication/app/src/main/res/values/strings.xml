@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="buttonHola">Hola</string>
+    <string name="apellidos">Apellidos</string>
+    <string name="telefono">Teléfono</string>
+    <string name="tvCheck">¿TV?</string>
+    <string name="nombre">Nombre</string>
+    <string name="email">Email</string>
+    <string name="fechaNac">Fecha Nac.</string>
+    <string name="otro">Otro</string>
+    <string name="femenino">F</string>
+    <string name="masculino">M</string>
+    <string name="comentarios">Comentarios</string>
+    <string name="genero">Género:</string>
+    <string name="anyadirAutomovil">Añadir Nuevo Usuario</string>
+    <string name="anyadirCoche">Añadir coche</string>
+    <string name="matricula">Matrícula</string>
+    <string name="marca">Marca</string>
+    <string name="modelo">Modelo</string>
+    <string name="fechaMatricula">Fecha matr.</string>
+    <string name="color">Color</string>
+    <string name="electrico">¿Eléctrico?</string>
+    <string name="tipoCoche">Tipo de coche:</string>
+    <string name="sedan">Sedán</string>
+    <string name="suv">SUV</string>
+    <string name="contador">0/0</string>
+</resources>
