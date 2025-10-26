@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/src/main/java/problema4/Parking.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/src/main/java/problema4/Parking.java" />
+              <option name="originalContent" value="package problema4;&#10;&#10;import java.util.List;&#10;&#10;public class Parking {&#10;    private List&lt;Plaza&gt; plazas;&#10;&#10;    public Parking(int numPlazas, int numPlazasVip) {&#10;        plazas = new java.util.ArrayList&lt;&gt;(numPlazas);&#10;        for (int i = 0; i &lt; numPlazas; i++) {&#10;            boolean esVip = i &lt; numPlazasVip;&#10;            plazas.add(new Plaza(i + 1, esVip));&#10;        }&#10;    }&#10;&#10;}&#10;" />
+              <option name="updatedContent" value="package problema4;&#10;&#10;import java.util.LinkedList;&#10;import java.util.List;&#10;import java.util.Queue;&#10;&#10;public class Parking {&#10;    private final int plazasNormales;&#10;    private final int plazasVip;&#10;    private final int capacidadCola;&#10;&#10;    private int ocupadasNormales = 0;&#10;    private int ocupadasVip = 0;&#10;&#10;    private final Queue&lt;Coche&gt; colaEspera;&#10;&#10;    public Parking(int numPlazas, int numPlazasVip, int capacidadCola) {&#10;        this.plazasNormales = numPlazas;&#10;        this.plazasVip = numPlazasVip;&#10;        this.capacidadCola = capacidadCola;&#10;        this.colaEspera = new LinkedList&lt;&gt;();&#10;    }&#10;&#10;    public synchronized boolean intentarAparcar(Coche coche) {&#10;        if (coche.isVip()) {&#10;            if (ocupadasNormales + ocupadasVip &lt; plazasNormales + plazasVip) {&#10;                if (ocupadasNormales &lt; plazasNormales) {&#10;                    ocupadasNormales++;&#10;                } else {&#10;                    ocupadasVip++;&#10;                }&#10;                return true;&#10;            }&#10;        } else {&#10;            if (ocupadasNormales &lt; plazasNormales) {&#10;                ocupadasNormales++;&#10;                return true;&#10;            }&#10;        }&#10;&#10;        if (colaEspera.size() &lt; capacidadCola) {&#10;            colaEspera.add(coche);&#10;            return false;&#10;        }&#10;&#10;        return false; // El coche se va porque no hay espacio en la cola&#10;    }&#10;&#10;    public synchronized void salir(Coche coche) {&#10;        if (coche.isVip() &amp;&amp; ocupadasVip &gt; 0) {&#10;            ocupadasVip--;&#10;        } else if (ocupadasNormales &gt; 0) {&#10;            ocupadasNormales--;&#10;        }&#10;&#10;        if (!colaEspera.isEmpty()) {&#10;            Coche siguiente = colaEspera.poll();&#10;            intentarAparcar(siguiente);&#10;        }&#10;    }&#10;&#10;    public int getOcupadasNormales() {&#10;        return ocupadasNormales;&#10;    }&#10;&#10;    public int getOcupadasVip() {&#10;        return ocupadasVip;&#10;    }&#10;&#10;    public int getColaEsperaSize() {&#10;        return colaEspera.size();&#10;    }&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
