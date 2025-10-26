@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/myapplication/ui/pantalladetalle/DetalleState.kt">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/app/src/main/java/com/example/myapplication/ui/pantalladetalle/DetalleState.kt" />
+              <option name="originalContent" value="package com.example.myapplication.ui.pantalladetalle&#10;&#10;import com.example.myapplication.domain.modelo.Coche&#10;import com.example.viewmodel.ui.common.UiEvent&#10;&#10;data class DetalleState(&#10;    val coche: Coche = Coche(),&#10;    val event: UiEvent? = null&#10;)" />
+              <option name="updatedContent" value="package com.example.myapplication.ui.pantalladetalle&#10;&#10;import com.example.myapplication.domain.modelo.Coche&#10;import com.example.viewmodel.ui.common.UiEvent&#10;&#10;data class DetalleState(&#10;    val coche: Coche = Coche(),&#10;    val event: UiEvent? = null&#10;)" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
