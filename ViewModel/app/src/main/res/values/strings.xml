@@ -16,4 +16,9 @@
     <string name="hecho">Hecho</string>
     <string name="eliminar">Eliminar</string>
     <string name="coche">coche\n</string>
+    <string name="error_get_coche">Ha ocurrido un error al obtener el coche</string>
+    <string name="coche_guardado_exito">El coche ha sido guardado con exito</string>
+    <string name="error_guardar">Ha ocurrido un error al guardar</string>
+    <string name="coche_eliminado_exito">El coche ha sido eliminado con exito</string>
+    <string name="error_eliminar">Ha ocurrido un error al eliminar</string>
 </resources>

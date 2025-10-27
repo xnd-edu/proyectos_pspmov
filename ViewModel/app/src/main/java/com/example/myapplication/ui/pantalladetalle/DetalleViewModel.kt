@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.myapplication.R
 import com.example.myapplication.domain.modelo.Coche
 import com.example.myapplication.domain.usecases.coches.*
-import com.example.myapplication.ui.Constantes
 import com.example.myapplication.ui.common.StringProvider
 import com.example.myapplication.ui.common.UiEvent
 
@@ -30,32 +30,33 @@ class DetalleViewModel(
 
         if (success) {
             _state.value = _state.value?.copy(
-                event = UiEvent.ShowSnackbar(Constantes.COCHE_GUARDADO_EXITO)
+                event = UiEvent.ShowSnackbar(stringProvider.getString(R.string.coche_guardado_exito))
             )
             _state.value = _state.value?.copy(
                 event = UiEvent.PopBackStack
             )
         } else {
             _state.value = _state.value?.copy(
-                event = UiEvent.ShowSnackbar(Constantes.ERROR_GUARDAR)
+                event = UiEvent.ShowSnackbar(stringProvider.getString(R.string.error_guardar))
             )
         }
     }
 
     fun deleteCoche(coche: Coche) {
-        if (!deleteCocheUseCase(coche)) {
+        if (deleteCocheUseCase(coche)) {
             _state.value = _state.value?.copy(
-                event = UiEvent.ShowSnackbar(Constantes.COCHE_ELIMINADO_EXITO)
+                event = UiEvent.ShowSnackbar(stringProvider.getString(R.string.coche_eliminado_exito))
             )
             _state.value = _state.value?.copy(
                 event = UiEvent.PopBackStack
             )
         } else {
             _state.value = _state.value?.copy(
-                event = UiEvent.ShowSnackbar(Constantes.ERROR_ELIMINAR)
+                event = UiEvent.ShowSnackbar(stringProvider.getString(R.string.error_eliminar))
             )
         }
     }
+
 
     fun getCoches(matricula: String) {
         val coches = getCoches()
@@ -64,7 +65,7 @@ class DetalleViewModel(
 
         if (coche == null) {
             _state.value = _state.value?.copy(
-                event = UiEvent.ShowSnackbar(Constantes.ERROR_GET_COCHE)
+                event = UiEvent.ShowSnackbar(stringProvider.getString(R.string.error_get_coche))
             )
         } else {
             originalMatricula = coche.matricula

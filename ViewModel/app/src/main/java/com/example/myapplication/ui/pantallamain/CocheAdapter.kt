@@ -8,8 +8,7 @@ import com.example.myapplication.domain.modelo.Coche
 import com.example.myapplication.R
 
 class CocheAdapter(
-    val itemClick: (Coche) -> Unit,
-    val actions : CochesActions,
+    val actions : CochesActions
 ) : ListAdapter<Coche, CocheItemViewholder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CocheItemViewholder {

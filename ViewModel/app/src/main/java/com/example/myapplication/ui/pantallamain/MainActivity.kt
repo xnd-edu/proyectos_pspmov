@@ -48,18 +48,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observarState() {
-        viewModel.uiState.observe(this@MainActivity) { state ->
+        viewModel.state.observe(this@MainActivity) { state ->
             adapter.submitList(state.coches)
         }
     }
 
     private fun configureRecyclerView() {
 
-        adapter = CocheAdapter(itemClick = { coche ->
-            navigateToDetail(coche.matricula ?: "")
-
-        },
-            actions = object : CocheAdapter.CochesActions {
+        adapter = CocheAdapter(actions = object : CocheAdapter.CochesActions {
                 override fun onItemClick(coche: Coche) {
                     navigateToDetail(coche.matricula ?: "")
                 }
@@ -82,8 +78,6 @@ class MainActivity : AppCompatActivity() {
     private fun navigateToDetail(matricula: String) {
         val intent = Intent(this, DetalleActivity::class.java)
         intent.putExtra("matricula", matricula)
-
-        intent.putExtra(getString(R.string.coche), Coche("matricula", "marca", "modelo", false, "fechaMatriculacion", "color", "tipo", "comentarios"))
 
         startActivity(intent)
     }

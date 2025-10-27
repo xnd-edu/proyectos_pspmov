@@ -1,9 +1,5 @@
 package com.example.myapplication.domain.modelo
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
 data class Coche(
     val matricula: String? = null,
     val marca: String? = null,
@@ -13,4 +9,4 @@ data class Coche(
     val color: String? = null,
     val tipo: String? = null,
     val comentarios: String? = null
-) : Parcelable
+)
