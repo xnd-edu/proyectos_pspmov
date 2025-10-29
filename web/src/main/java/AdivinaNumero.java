@@ -1,8 +1,9 @@
 import config.Constants;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class AdivinaNumero {
+public class AdivinaNumero implements Serializable {
     private static final int intentosMax = Constants.MAX_INTENTOS;
     private static final int numeroMin = Constants.MIN_NUMERO;
     private static final int numeroMax = Constants.MAX_NUMERO;
@@ -12,13 +13,14 @@ public class AdivinaNumero {
     private boolean ganado;
     private String mensaje;
 
+    private final Random random = new Random();
+
     public AdivinaNumero() {
-        Random random = new Random();
         this.numeroSecreto = random.nextInt(numeroMax - numeroMin + 1) + numeroMin;
         this.intentosRestantes = intentosMax;
         this.juegoTerminado = false;
         this.ganado = false;
-        this.mensaje = "¡Adivina el número entre " + numeroMin + " y " + numeroMax + "! Tienes " + intentosMax + " intentos.";
+        this.mensaje = String.format(Constants.MSG_INICIO, numeroMin, numeroMax, intentosMax);
     }
 
     public String intentar(int numero) {
@@ -27,7 +29,7 @@ public class AdivinaNumero {
         }
 
         if (numero < numeroMin || numero > numeroMax) {
-            return "El número debe estar entre " + numeroMin + " y " + numeroMax;
+            return String.format(Constants.MSG_FUERA_RANGO, numeroMin, numeroMax);
         }
 
         intentosRestantes--;
@@ -35,32 +37,22 @@ public class AdivinaNumero {
         if (numero == numeroSecreto) {
             juegoTerminado = true;
             ganado = true;
-            mensaje = "¡Felicidades! Has adivinado el número " + numeroSecreto + " en " + (intentosMax - intentosRestantes) + " intentos.";
+            mensaje = String.format(Constants.MSG_GANADO, numeroSecreto, intentosMax - intentosRestantes);
         } else if (intentosRestantes == 0) {
             juegoTerminado = true;
             ganado = false;
-            mensaje = "¡Game Over! Te has quedado sin intentos. El número era " + numeroSecreto;
+            mensaje = String.format(Constants.MSG_PERDIDO, numeroSecreto);
         } else {
             if (numero < numeroSecreto) {
-                mensaje = "El número secreto es MAYOR. Te quedan " + intentosRestantes + " intentos.";
+                mensaje = String.format(Constants.MSG_MAYOR, intentosRestantes);
             } else {
-                mensaje = "El número secreto es MENOR. Te quedan " + intentosRestantes + " intentos.";
+                mensaje = String.format(Constants.MSG_MENOR, intentosRestantes);
             }
         }
 
         return mensaje;
     }
 
-    public void reiniciar() {
-        Random random = new Random();
-        this.numeroSecreto = random.nextInt(numeroMax - numeroMin + 1) + numeroMin;
-        this.intentosRestantes = intentosMax;
-        this.juegoTerminado = false;
-        this.ganado = false;
-        this.mensaje = "¡Adivina el número entre " + numeroMin + " y " + numeroMax + "! Tienes " + intentosMax + " intentos.";
-    }
-
-    // Getters
     public int getIntentosRestantes() {
         return intentosRestantes;
     }
@@ -81,15 +73,15 @@ public class AdivinaNumero {
         return numeroSecreto;
     }
 
-    public static int getMaxIntentos() {
+    public int getMaxIntentos() {
         return intentosMax;
     }
 
-    public static int getMinNumero() {
+    public int getMinNumero() {
         return numeroMin;
     }
 
-    public static int getMaxNumero() {
+    public int getMaxNumero() {
         return numeroMax;
     }
 }

@@ -11,8 +11,6 @@ import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 @WebListener
 public class ThymeleafInitializer implements ServletContextListener {
 
-
-
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext servletContext = sce.getServletContext();

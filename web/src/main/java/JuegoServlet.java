@@ -11,14 +11,13 @@ import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
 
-@WebServlet("/juego")
+@WebServlet(Constants.URL_JUEGO)
 public class JuegoServlet extends HttpServlet  {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
-        // Capturar el nombre de usuario si viene en el parámetro
         String usuario = req.getParameter("usuario");
         if (usuario != null && !usuario.isBlank()) {
             session.setAttribute("usuario", usuario);
@@ -38,18 +37,28 @@ public class JuegoServlet extends HttpServlet  {
         if (usuario != null && !usuario.isBlank()) {
             session.setAttribute("usuario", usuario);
         }
+
         String mensaje;
 
         if ("reiniciar".equals(accion)) {
-            juego.reiniciar();
+            juego = new AdivinaNumero();
+            session.setAttribute("juego", juego);
             mensaje = juego.getMensaje();
         } else {
             String intentoStr = req.getParameter("intento");
             try {
                 int intento = Integer.parseInt(intentoStr);
+                boolean estabaTerminado = juego.isJuegoTerminado();
                 mensaje = juego.intentar(intento);
+
+                if (!estabaTerminado && juego.isJuegoTerminado()) {
+                    Estadisticas estadisticas = (Estadisticas) session.getAttribute("estadisticas");
+                    if (estadisticas != null) {
+                        estadisticas.agregarPartida(juego);
+                    }
+                }
             } catch (NumberFormatException e) {
-                mensaje = "Por favor, introduce un número válido.";
+                mensaje = Constants.MSG_NUMERO_INVALIDO;
             }
         }
 
@@ -58,10 +67,18 @@ public class JuegoServlet extends HttpServlet  {
 
     private AdivinaNumero obtenerOCrearJuego(HttpSession session) {
         AdivinaNumero juego = (AdivinaNumero) session.getAttribute("juego");
+        Estadisticas estadisticas = (Estadisticas) session.getAttribute("estadisticas");
+
+        if (estadisticas == null) {
+            estadisticas = new Estadisticas((String) session.getAttribute("usuario"));
+            session.setAttribute("estadisticas", estadisticas);
+        }
+
         if (juego == null) {
             juego = new AdivinaNumero();
             session.setAttribute("juego", juego);
         }
+
         return juego;
     }
 
@@ -74,12 +91,18 @@ public class JuegoServlet extends HttpServlet  {
         HttpSession session = req.getSession();
         String usuario = (String) session.getAttribute("usuario");
 
+        String instrucciones = "Tienes " + juego.getMaxIntentos() + " intentos para adivinar el número secreto.";
+
         ctx.setVariable("juego", juego);
         ctx.setVariable("mensaje", mensaje);
         ctx.setVariable("usuario", usuario);
+        ctx.setVariable("instrucciones", instrucciones);
 
         resp.setContentType(Constants.CONTENT_TYPE);
+
+        String template = juego.isJuegoTerminado() ? Constants.TEMPLATE_END : Constants.TEMPLATE_JUEGO;
+
         ((TemplateEngine)getServletContext().getAttribute(Constants.TEMPLATE_ENGINE_ATTR))
-                .process(Constants.TEMPLATE_JUEGO, ctx, resp.getWriter());
+                .process(template, ctx, resp.getWriter());
     }
 }

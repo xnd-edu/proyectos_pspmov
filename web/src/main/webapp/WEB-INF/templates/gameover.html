@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fin del Juego - Adivina el Número</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .resultado {
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+
+        .resultado.ganado {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 3px solid #2e7d32;
+        }
+
+        .resultado.perdido {
+            background: #ffebee;
+            color: #c62828;
+            border: 3px solid #c62828;
+        }
+
+        .emoji {
+            font-size: 4em;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .stats {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .stats h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .numero-secreto {
+            font-size: 3em;
+            color: #667eea;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button, .btn-link {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .emoji {
+                font-size: 3em;
+            }
+
+            .numero-secreto {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Fin del Juego</h1>
+        <p class="subtitle" th:if="${usuario}">
+            <span th:text="${usuario}">Jugador</span>, aquí están tus resultados
+        </p>
+
+        <div th:class="${'resultado ' + (juego.ganado ? 'ganado' : 'perdido')}">
+            <span class="emoji" th:text="${juego.ganado ? '🎉' : '😔'}">🎉</span>
+            <p th:text="${mensaje}">Mensaje del resultado</p>
+        </div>
+
+        <div class="stats">
+            <h2>📊 Estadísticas</h2>
+            <div class="stat-item">
+                <span class="stat-label">El número secreto era:</span>
+                <span class="stat-value numero-secreto" th:text="${juego.numeroSecreto}">42</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Intentos utilizados:</span>
+                <span class="stat-value" th:text="${5 - juego.intentosRestantes}">5</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Resultado:</span>
+                <span class="stat-value" th:text="${juego.ganado ? '¡Victoria! 🏆' : 'Derrota 💔'}">Victoria</span>
+            </div>
+        </div>
+
+        <form method="post" action="juego">
+            <input type="hidden" name="accion" value="reiniciar">
+            <div class="button-group">
+                <button type="submit" class="btn-primary">🔄 Jugar de Nuevo</button>
+                <a href="/web_war_exploded" class="btn-secondary btn-link">🏠 Inicio</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

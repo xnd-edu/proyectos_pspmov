@@ -64,36 +64,15 @@
         }
 
         .mensaje {
+            background: #fff3e0;
+            color: #ef6c00;
+            border-left: 4px solid #ef6c00;
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 25px;
             text-align: center;
             font-size: 1.1em;
             font-weight: 500;
-        }
-
-        .mensaje.info {
-            background: #e3f2fd;
-            color: #1976d2;
-            border-left: 4px solid #1976d2;
-        }
-
-        .mensaje.success {
-            background: #e8f5e9;
-            color: #2e7d32;
-            border-left: 4px solid #2e7d32;
-        }
-
-        .mensaje.error {
-            background: #ffebee;
-            color: #c62828;
-            border-left: 4px solid #c62828;
-        }
-
-        .mensaje.warning {
-            background: #fff3e0;
-            color: #ef6c00;
-            border-left: 4px solid #ef6c00;
         }
 
         .form-group {
@@ -167,7 +146,7 @@
             cursor: not-allowed;
         }
 
-        .stats {
+        .instrucciones {
             margin-top: 20px;
             padding: 15px;
             background: #f8f9fa;
@@ -175,7 +154,7 @@
             text-align: center;
         }
 
-        .stats p {
+        .instrucciones p {
             color: #666;
             margin: 5px 0;
         }
@@ -214,12 +193,12 @@
         </div>
 
         <div th:if="${mensaje}"
-             th:class="${'mensaje ' + (juego.juegoTerminado ? (juego.ganado ? 'success' : 'error') : 'warning')}"
+             th:class="${'mensaje warning'}"
              th:text="${mensaje}">
             Mensaje del juego
         </div>
 
-        <form method="post" th:if="${!juego.juegoTerminado}">
+        <form method="post">
             <div class="form-group">
                 <label for="intento">Introduce tu número:</label>
                 <input type="number"
@@ -237,23 +216,9 @@
             </div>
         </form>
 
-        <div th:if="${juego.juegoTerminado}">
-            <div class="stats">
-                <p>El número secreto era:</p>
-                <p class="numero-secreto" th:text="${juego.numeroSecreto}">42</p>
-            </div>
-
-            <form method="post">
-                <input type="hidden" name="accion" value="reiniciar">
-                <div class="button-group">
-                    <button type="submit" class="btn-secondary">🔄 Jugar de Nuevo</button>
-                </div>
-            </form>
-        </div>
-
-        <div class="stats" th:if="${!juego.juegoTerminado}">
+        <div class="instrucciones">
             <p><strong>Instrucciones:</strong></p>
-            <p>Tienes 10 intentos para adivinar el número secreto.</p>
+            <p th:text="${instrucciones}">Tienes X intentos para adivinar el número secreto.</p>
             <p>Te diré si el número es mayor o menor después de cada intento.</p>
         </div>
     </div>
