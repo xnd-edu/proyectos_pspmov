@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">ViewModelCoches</string>
+    <string name="comentarios">Comentarios</string>
+    <string name="anyadirCoche">Añadir coche</string>
+    <string name="editarCoche">Editar coche</string>
+    <string name="matricula">Matrícula</string>
+    <string name="marca">Marca</string>
+    <string name="modelo">Modelo</string>
+    <string name="fechaMatricula">Fecha matr.</string>
+    <string name="color">Color</string>
+    <string name="electrico">¿Eléctrico?</string>
+    <string name="tipoCoche">Tipo de coche:</string>
+    <string name="sedan">Sedán</string>
+    <string name="suv">SUV</string>
+    <string name="otro">Otro</string>
+    <string name="hecho">Hecho</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="coche">coche\n</string>
+    <string name="error_get_coche">Ha ocurrido un error al obtener el coche</string>
+    <string name="coche_guardado_exito">El coche ha sido guardado con exito</string>
+    <string name="error_guardar">Ha ocurrido un error al guardar</string>
+    <string name="coche_eliminado_exito">El coche ha sido eliminado con exito</string>
+    <string name="error_eliminar">Ha ocurrido un error al eliminar</string>
+    <string name="page_1">Coches</string>
+    <string name="page_2">Conductores</string>
+</resources>

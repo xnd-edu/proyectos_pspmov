@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="4faf2718-9f52-4c71-ae04-f6ce11653308" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Navegacion/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/.idea/AndroidProjectSystem.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/.idea/copilot.data.migration.agent.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/.idea/copilot.data.migration.ask.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/.idea/copilot.data.migration.ask2agent.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/.idea/copilot.data.migration.edit.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/.idea/deploymentTargetSelector.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/.idea/deviceManager.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/.idea/migrations.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/.idea/runConfigurations.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/proguard-rules.pro" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/androidTest/java/com/example/myapplication/ExampleInstrumentedTest.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/java/com/example/myapplication/data/CocheRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/java/com/example/myapplication/domain/modelo/Coche.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/java/com/example/myapplication/domain/usecases/coches/AddCocheUseCase.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/java/com/example/myapplication/domain/usecases/coches/DeleteCocheUseCase.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/java/com/example/myapplication/domain/usecases/coches/GetCoches.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/java/com/example/myapplication/domain/usecases/coches/UpdateCocheUseCase.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/java/com/example/myapplication/ui/common/MarginItemDecoration.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/java/com/example/myapplication/ui/common/StringProvider.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/java/com/example/myapplication/ui/common/UiEvent.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/java/com/example/myapplication/ui/pantalladetalle/DetalleActivity.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/java/com/example/myapplication/ui/pantalladetalle/DetalleState.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/java/com/example/myapplication/ui/pantalladetalle/DetalleViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/java/com/example/myapplication/ui/pantallamain/CocheAdapter.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/java/com/example/myapplication/ui/pantallamain/CocheItemViewholder.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/java/com/example/myapplication/ui/pantallamain/MainActivity.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/java/com/example/myapplication/ui/pantallamain/MainState.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/java/com/example/myapplication/ui/pantallamain/MainViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/drawable/add_24px.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/drawable/comment_24px.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/drawable/edit_24px.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/drawable/event_24px.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/drawable/ic_launcher_background.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/drawable/ic_launcher_foreground.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/layout-land/activity_detalle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/layout-land/activity_main.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/layout-land/coche_view.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/layout/activity_detalle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/layout/coche_view.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/mipmap-hdpi/ic_launcher.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/mipmap-hdpi/ic_launcher_round.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/mipmap-mdpi/ic_launcher.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/mipmap-mdpi/ic_launcher_round.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/mipmap-xhdpi/ic_launcher.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/values-night/colors.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/values-night/theme_overlays.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/values-night/themes.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/values/attrs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/values/colors.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/values/dimens.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/values/theme_overlays.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/values/themes.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/xml/backup_rules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/main/res/xml/data_extraction_rules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/app/src/test/java/com/example/myapplication/ExampleUnitTest.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/gradle.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/gradle/libs.versions.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navegacion/settings.gradle.kts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="psp" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;xnd-edu&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/xnd-edu/proyectos_pspmov.git&quot;,
+    &quot;accountId&quot;: &quot;4f79e815-af01-445f-8f3f-616ceda21aa2&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="35N9mTnxDSrV71t984OkPzjLfqe" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "moviles",
+    "last_opened_file_path": "C:/Users/Sasha/AndroidStudioProjects/proyectos_pspmov"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Sasha\AndroidStudioProjects\proyectos_pspmov" />
+    </key>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4faf2718-9f52-4c71-ae04-f6ce11653308" name="Changes" comment="" />
+      <created>1762939820565</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1762939820565</updated>
+    </task>
+    <servers />
+  </component>
+</project>

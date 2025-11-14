@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_8">8dp</dimen>
+    <dimen name="small_margin">4dp</dimen>
+    <dimen name="big_margin">24dp</dimen>
+    <dimen name="margin_16">16dp</dimen>
+    <dimen name="mainPadding">20dp</dimen>
+    <dimen name="title_text_size">20sp</dimen>
+    <dimen name="mediumRadius">12dp</dimen>
+    <dimen name="smallElevation">4dp</dimen>
+    <dimen name="titleSize">18sp</dimen>
+    <dimen name="subtitleSize">14sp</dimen>
+
+</resources>
