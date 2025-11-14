@@ -7,7 +7,12 @@
 
     <fragment
         android:id="@+id/cochesMainFragment"
-        android:name="com.example.navigation.CochesMainFragment"
+        android:name="com.example.navigation.ui.coches.cochesmain.CochesMainFragment"
         android:label="fragment_coches_main"
         tools:layout="@layout/fragment_coches_main" />
+    <fragment
+        android:id="@+id/conductoresMainFragment"
+        android:name="com.example.navigation.ConductoresMainFragment"
+        android:label="fragment_conductores_main"
+        tools:layout="@layout/fragment_conductores_main" />
 </navigation>

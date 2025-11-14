@@ -23,4 +23,8 @@
     <string name="error_eliminar">Ha ocurrido un error al eliminar</string>
     <string name="page_1">Coches</string>
     <string name="page_2">Conductores</string>
+    <string name="coche_nombre">%1$s %2$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="anyadirConductor">Añadir Conductor</string>
 </resources>
