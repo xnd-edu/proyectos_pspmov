@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ShapeAppearance.App.ListItem.Single" parent="ShapeAppearance.Material3.Corner.Full">
+        <item name="cornerSize">@dimen/big_margin</item>
+    </style>
+
+    <style name="ShapeAppearance.App.ListItem.First" parent="ShapeAppearance.Material3.Corner.None">
+        <item name="cornerSizeTopLeft">@dimen/big_margin</item>
+        <item name="cornerSizeTopRight">@dimen/big_margin</item>
+        <item name="cornerSizeBottomLeft">@dimen/small_margin</item>
+        <item name="cornerSizeBottomRight">@dimen/small_margin</item>
+    </style>
+
+    <style name="ShapeAppearance.App.ListItem.Middle" parent="ShapeAppearance.Material3.Corner.None">
+        <item name="cornerSize">0dp</item>
+    </style>
+
+    <style name="ShapeAppearance.App.ListItem.Last" parent="ShapeAppearance.Material3.Corner.None">
+        <item name="cornerSizeTopLeft">@dimen/small_margin</item>
+        <item name="cornerSizeTopRight">@dimen/small_margin</item>
+        <item name="cornerSizeBottomLeft">@dimen/big_margin</item>
+        <item name="cornerSizeBottomRight">@dimen/big_margin</item>
+    </style>
+</resources>
+

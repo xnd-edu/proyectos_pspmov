@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/mainPadding"
+    tools:context=".ui.coches.cochesedit.CochesEditFragment">
+
+    <TextView
+        android:id="@+id/editarCocheText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/editar_coche"
+        android:textStyle="bold"
+        android:textSize="@dimen/title_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/matriculaTextFieldLayout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/big_margin"
+        android:layout_marginEnd="@dimen/small_margin"
+        android:hint="@string/matricula"
+        app:startIconDrawable="@drawable/edit_24px"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/electricoCheckbox"
+        app:layout_constraintTop_toBottomOf="@id/editarCocheText">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/matriculaTextField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <CheckBox
+        android:id="@+id/electricoCheckbox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_margin"
+        android:layout_marginBottom="@dimen/margin_8"
+        android:text="@string/electrico"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/modeloTextFieldLayout"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/marcaTextFieldLayout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:layout_marginEnd="@dimen/small_margin"
+        android:hint="@string/marca"
+        app:startIconDrawable="@drawable/edit_24px"
+        app:layout_constraintEnd_toStartOf="@+id/modeloTextFieldLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/matriculaTextFieldLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/marcaTextField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/modeloTextFieldLayout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:layout_marginStart="@dimen/small_margin"
+        android:hint="@string/modelo"
+        app:startIconDrawable="@drawable/edit_24px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/marcaTextFieldLayout"
+        app:layout_constraintTop_toBottomOf="@+id/matriculaTextFieldLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/modeloTextField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/fechaMatriculaTextFieldLayout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:layout_marginEnd="@dimen/small_margin"
+        android:hint="@string/fecha_matricula"
+        app:startIconDrawable="@drawable/event_24px"
+        app:layout_constraintEnd_toStartOf="@+id/colorTextFieldLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/modeloTextFieldLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fechaMatriculaTextField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/colorTextFieldLayout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:hint="@string/color"
+        app:startIconDrawable="@drawable/edit_24px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/fechaMatriculaTextFieldLayout"
+        app:layout_constraintTop_toBottomOf="@+id/modeloTextFieldLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/colorTextField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tipoCoche"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:text="@string/tipo_coche"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tipoCocheRadioGroup"
+        app:layout_constraintTop_toBottomOf="@id/colorTextFieldLayout" />
+
+    <RadioGroup
+        android:id="@+id/tipoCocheRadioGroup"
+        android:checkedButton="@+id/sedan"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_8"
+        app:layout_constraintTop_toBottomOf="@+id/colorTextFieldLayout"
+        app:layout_constraintStart_toEndOf="@id/tipoCoche"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <RadioButton
+            android:id="@+id/sedanRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:layout_marginStart="@dimen/small_margin"
+            android:text="@string/sedan"/>
+
+        <RadioButton
+            android:id="@+id/suvRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:layout_marginStart="@dimen/margin_16"
+            android:text="@string/suv"/>
+
+        <RadioButton
+            android:id="@+id/otroRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:layout_marginStart="@dimen/margin_16"
+            android:text="@string/otro"/>
+    </RadioGroup>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/comentariosTextFieldLayout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        android:hint="@string/comentarios"
+        app:startIconDrawable="@drawable/comment_24px"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tipoCocheRadioGroup">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/comentariosTextField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:gravity="top|start"
+            android:lines="2"
+            android:scrollbars="vertical"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/eliminarButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundTint="?attr/colorError"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/eliminar"
+        android:checkable="true"/>
+
+    <Button
+        android:id="@+id/hechoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/hecho"
+        android:checkable="true"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

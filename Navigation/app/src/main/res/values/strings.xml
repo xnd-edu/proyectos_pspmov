@@ -1,15 +1,15 @@
 <resources>
-    <string name="app_name">ViewModelCoches</string>
+    <string name="app_name">AutosDB</string>
     <string name="comentarios">Comentarios</string>
-    <string name="anyadirCoche">Añadir coche</string>
-    <string name="editarCoche">Editar coche</string>
+    <string name="anadir_coche">Añadir coche</string>
+    <string name="editar_coche">Editar coche</string>
     <string name="matricula">Matrícula</string>
     <string name="marca">Marca</string>
     <string name="modelo">Modelo</string>
-    <string name="fechaMatricula">Fecha matr.</string>
+    <string name="fecha_matricula">Fecha matr.</string>
     <string name="color">Color</string>
     <string name="electrico">¿Eléctrico?</string>
-    <string name="tipoCoche">Tipo de coche:</string>
+    <string name="tipo_coche">Tipo de coche:</string>
     <string name="sedan">Sedán</string>
     <string name="suv">SUV</string>
     <string name="otro">Otro</string>
@@ -24,7 +24,11 @@
     <string name="page_1">Coches</string>
     <string name="page_2">Conductores</string>
     <string name="coche_nombre">%1$s %2$s</string>
+    <string name="date_format">%1$02d/%2$02d/%3$04d</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="anyadirConductor">Añadir Conductor</string>
+    <string name="anadir_conductor">Añadir Conductor</string>
+    <string name="nombre_conductor">Nombre conductor</string>
+    <string name="dni_conductor">DNI</string>
+    <string name="anadir">Añadir</string>
 </resources>

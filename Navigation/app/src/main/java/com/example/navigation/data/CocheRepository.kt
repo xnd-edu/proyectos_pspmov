@@ -2,7 +2,9 @@ package com.example.navigation.data
 
 import com.example.navigation.domain.model.Coche
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class CocheRepository @Inject constructor() {
 
     private val coches = mutableListOf<Coche>()
@@ -49,7 +51,13 @@ class CocheRepository @Inject constructor() {
     }
 
     fun deleteCoche(coche: Coche): Boolean {
-        return coches.remove(coche)
+        val index = coches.indexOfFirst { it.matricula == coche.matricula }
+        return if (index != -1) {
+            coches.removeAt(index)
+            true
+        } else {
+            false
+        }
     }
 
     fun getSizeList() = coches.size

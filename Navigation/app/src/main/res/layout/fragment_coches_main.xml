@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_8"
-        android:contentDescription="@string/anyadirCoche"
+        android:contentDescription="@string/anadir_coche"
         app:srcCompat="@drawable/add_24px"
         app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.Primary"
         app:layout_constraintEnd_toEndOf="parent"

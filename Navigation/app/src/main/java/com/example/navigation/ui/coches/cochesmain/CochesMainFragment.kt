@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.navigation.databinding.FragmentCochesMainBinding
 import com.example.navigation.ui.common.StringProvider
@@ -40,7 +41,10 @@ class CochesMainFragment : Fragment() {
         cochesAdapter = CochesAdapter(
             actions = object : CochesAdapter.CochesActions {
                 override fun onItemClick(coche: Coche) {
-//                    navigateToDetail(coche.matricula ?: "")
+                    val action = CochesMainFragmentDirections.actionCochesMainFragmentToCochesEditFragment(
+                        matricula = coche.matricula ?: ""
+                    )
+                    findNavController().navigate(action)
                 }
             },
             stringProvider = StringProvider(requireContext())
@@ -60,8 +64,14 @@ class CochesMainFragment : Fragment() {
 
     private fun events() {
         binding.buttonAnadir.setOnClickListener {
-//            navigateToDetail("")
+            val action = CochesMainFragmentDirections.actionCochesMainFragmentToCochesNewFragment()
+            findNavController().navigate(action)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadCoches()
     }
 
     override fun onDestroyView() {

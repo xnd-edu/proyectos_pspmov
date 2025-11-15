@@ -18,7 +18,8 @@ class CochesMainViewModel @Inject constructor(
         loadCoches()
     }
 
-    private fun loadCoches() {
+    fun loadCoches() {
+        val cochesFromRepo = getCoches.invoke()
         _state.value = _state.value?.copy(coches = getCoches.invoke())
     }
 }

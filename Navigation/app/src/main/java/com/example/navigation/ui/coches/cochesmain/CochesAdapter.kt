@@ -9,22 +9,19 @@ import com.example.navigation.domain.model.Coche
 import com.example.navigation.ui.common.StringProvider
 
 class CochesAdapter(
-    val actions : CochesActions,
+    val actions: CochesActions,
     private val stringProvider: StringProvider
 ) : ListAdapter<Coche, CocheItemViewholder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CocheItemViewholder {
-        return CocheItemViewholder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_coche, parent, false),
-            actions,
-            stringProvider
-            )
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_coche, parent, false)
+        return CocheItemViewholder(view, actions, stringProvider)
     }
 
     override fun onBindViewHolder(holder: CocheItemViewholder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item, position, itemCount)
     }
 
     class DiffCallback : DiffUtil.ItemCallback<Coche>() {
