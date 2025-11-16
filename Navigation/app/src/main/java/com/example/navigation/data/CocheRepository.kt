@@ -1,64 +1,61 @@
 package com.example.navigation.data
 
+import com.example.navigation.data.local.dao.CocheConductorDao
+import com.example.navigation.data.local.dao.CochesDao
+import com.example.navigation.data.local.entities.CocheConductorCrossRef
+import com.example.navigation.data.local.entities.toCoche
+import com.example.navigation.data.local.entities.toCocheEntity
+import com.example.navigation.data.local.entities.toConductor
 import com.example.navigation.domain.model.Coche
+import com.example.navigation.domain.model.Conductor
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CocheRepository @Inject constructor() {
+class CocheRepository @Inject constructor(
+    private val cochesDao: CochesDao,
+    private val cocheConductorDao: CocheConductorDao
+) {
 
-    private val coches = mutableListOf<Coche>()
+    suspend fun getCoches(): List<Coche> = cochesDao.getAllCoches().map { it.toCoche() }
 
-    init {
-        coches.add(
-            Coche(
-                matricula = "8923BCD",
-                marca = "Toyota",
-                modelo = "Corolla",
-                electrico = false,
-                fechaMatriculacion = "15/03/2018",
-                color = "Rojo",
-                tipo = "Sedan",
-                comentarios = "Buen estado general"
-            )
+    suspend fun getCoche(matricula: String): Coche? = cochesDao.getCocheByMatricula(matricula)?.toCoche()
+
+    suspend fun getConductoresDeCoche(matricula: String): List<Conductor> {
+        return cochesDao.getCocheConConductores(matricula)?.conductores?.map { it.toConductor() } ?: emptyList()
+    }
+
+    suspend fun asignarConductorACoche(cocheMatricula: String, conductorDni: String) {
+        cocheConductorDao.insertCocheConductor(
+            CocheConductorCrossRef(cocheMatricula, conductorDni)
         )
-        coches.add(Coche(
-            matricula = "4567LFG",
-            marca = "Tesla",
-            modelo = "Model 3",
-            electrico = true,
-            fechaMatriculacion = "22/07/2020",
-            color = "Blanco",
-            tipo = "Sedan",
-            comentarios = "Batería en excelente estado"
-        ))
     }
 
-    fun getCoches(): List<Coche> = coches.toList()
+    suspend fun desasignarConductorDeCoche(cocheMatricula: String, conductorDni: String) {
+        cocheConductorDao.deleteCocheConductor(
+            CocheConductorCrossRef(cocheMatricula, conductorDni)
+        )
+    }
 
-    fun getCoche(id: Int) = coches[id]
+    suspend fun addCoche(coche: Coche) {
+        cochesDao.insertCoche(coche.toCocheEntity())
+    }
 
-    fun addCoche(coche: Coche) = coches.add(coche)
-
-    fun updateCoche(matricula: String, coche: Coche): Boolean {
-        val index = coches.indexOfFirst { it.matricula == matricula }
-        return if (index != -1) {
-            coches[index] = coche
+    suspend fun updateCoche(coche: Coche): Boolean {
+        return try {
+            cochesDao.updateCoche(coche.toCocheEntity())
             true
-        } else {
+        } catch (_: Exception) {
             false
         }
     }
 
-    fun deleteCoche(coche: Coche): Boolean {
-        val index = coches.indexOfFirst { it.matricula == coche.matricula }
-        return if (index != -1) {
-            coches.removeAt(index)
+    suspend fun deleteCoche(coche: Coche): Boolean {
+        return try {
+            cochesDao.deleteCoche(coche.toCocheEntity())
             true
-        } else {
+        } catch (_: Exception) {
             false
         }
     }
-
-    fun getSizeList() = coches.size
 }

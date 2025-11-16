@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/mainPadding"
+    tools:context=".ui.conductores.edit.ConductoresEditFragment">
+
+    <TextView
+        style="@style/TextAppearance.Material3.TitleLarge.Emphasized"
+        android:id="@+id/editarConductorText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/editar_conductor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/nombreTextFieldLayout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/big_margin"
+        android:hint="@string/nombre"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editarConductorText"
+        app:startIconDrawable="@drawable/edit_24px">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/nombreTextField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/apellidosTextFieldLayout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:hint="@string/apellidos"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nombreTextFieldLayout"
+        app:startIconDrawable="@drawable/edit_24px">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/apellidosTextField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/dniTextFieldLayout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:hint="@string/dni"
+        app:startIconDrawable="@drawable/edit_24px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/apellidosTextFieldLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dniTextField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/telefonoTextFieldLayout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:hint="@string/telefono"
+        app:startIconDrawable="@drawable/call_24px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dniTextFieldLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/telefonoTextField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/fechaNacimientoTextFieldLayout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:hint="@string/fecha_de_nacimiento"
+        app:startIconDrawable="@drawable/event_24px"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/telefonoTextFieldLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fechaNacimientoTextField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/genero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:text="@string/genero"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/generoRadioGroup"
+        app:layout_constraintTop_toBottomOf="@id/fechaNacimientoTextFieldLayout" />
+
+    <RadioGroup
+        android:id="@+id/generoRadioGroup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_8"
+        app:layout_constraintTop_toBottomOf="@+id/fechaNacimientoTextFieldLayout"
+        app:layout_constraintStart_toEndOf="@id/genero"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <RadioButton
+            android:id="@+id/masculinoRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:layout_marginStart="@dimen/small_margin"
+            android:text="@string/masculino"/>
+
+        <RadioButton
+            android:id="@+id/femeninoRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:layout_marginStart="@dimen/margin_16"
+            android:text="@string/femenino"/>
+
+        <RadioButton
+            android:id="@+id/otroRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:layout_marginStart="@dimen/margin_16"
+            android:text="@string/otro"/>
+    </RadioGroup>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cochesCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        android:clickable="true"
+        android:focusable="true"
+        app:strokeWidth="1dp"
+        app:strokeColor="?attr/colorOutline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/generoRadioGroup">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/margin_16"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/directions_car_24px"
+                android:contentDescription="@string/page_1"
+                app:tint="?attr/colorPrimary"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/margin_16"
+                android:text="@string/gestionar_coches"
+                android:textSize="16sp"
+                android:textColor="?attr/colorOnSurface"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/chevron_right_24px"
+                android:contentDescription="@string/ir_a_coches"
+                app:tint="?attr/colorOnSurfaceVariant"/>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <Button
+        android:id="@+id/eliminarButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/eliminar"
+        android:textColor="?attr/colorOnError"
+        app:backgroundTint="?attr/colorError"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.Medium" />
+
+    <Button
+        android:id="@+id/hechoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.Medium"
+        android:text="@string/hecho"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

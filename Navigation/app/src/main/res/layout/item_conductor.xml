@@ -28,7 +28,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:text="@string/nombre_conductor" />
+                tools:text="@string/nombre" />
 
             <TextView
                 android:id="@+id/conductorDni"
@@ -40,7 +40,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/conductorNombre"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                tools:text="@string/dni_conductor" />
+                tools:text="@string/dni" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

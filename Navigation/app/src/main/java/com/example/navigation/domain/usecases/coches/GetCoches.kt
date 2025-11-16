@@ -7,5 +7,5 @@ import javax.inject.Inject
 class GetCoches @Inject constructor(
     private val cocheRepository: CocheRepository
 ) {
-    operator fun invoke(): List<Coche> = cocheRepository.getCoches()
+    suspend operator fun invoke(): List<Coche> = cocheRepository.getCoches()
 }

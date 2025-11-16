@@ -6,15 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/mainPadding"
-    tools:context=".ui.coches.cochesedit.CochesEditFragment">
+    tools:context=".ui.coches.edit.CochesEditFragment">
 
     <TextView
+        style="@style/TextAppearance.Material3.TitleLarge.Emphasized"
         android:id="@+id/editarCocheText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/editar_coche"
-        android:textStyle="bold"
-        android:textSize="@dimen/title_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -196,15 +195,64 @@
             android:scrollbars="vertical"/>
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/conductoresCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        android:clickable="true"
+        android:focusable="true"
+        app:strokeWidth="1dp"
+        app:strokeColor="?attr/colorOutline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/comentariosTextFieldLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/margin_16"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/person_24px"
+                android:contentDescription="@string/conductores"
+                app:tint="?attr/colorPrimary"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/margin_16"
+                android:text="@string/gestionar_conductores"
+                android:textSize="16sp"
+                android:textColor="?attr/colorOnSurface"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/chevron_right_24px"
+                android:contentDescription="@string/ir_a_conductores"
+                app:tint="?attr/colorOnSurfaceVariant"/>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
     <Button
+        style="@style/Widget.Material3Expressive.Button"
         android:id="@+id/eliminarButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/eliminar"
+        android:textColor="?attr/colorOnError"
         app:backgroundTint="?attr/colorError"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="@string/eliminar"
-        android:checkable="true"/>
+        app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.Medium" />
 
     <Button
         android:id="@+id/hechoButton"
@@ -212,8 +260,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="@string/hecho"
-        android:checkable="true"/>
+        app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.Medium"
+        android:text="@string/hecho"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

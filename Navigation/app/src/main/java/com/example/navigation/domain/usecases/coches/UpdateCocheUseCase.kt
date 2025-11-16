@@ -7,6 +7,5 @@ import javax.inject.Inject
 class UpdateCocheUseCase @Inject constructor(
     private val cocheRepository: CocheRepository
 ) {
-    operator fun invoke(matricula: String, coche: Coche): Boolean =
-        cocheRepository.updateCoche(matricula, coche)
+    suspend operator fun invoke(coche: Coche): Boolean = cocheRepository.updateCoche(coche)
 }

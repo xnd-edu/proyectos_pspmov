@@ -1,7 +1,7 @@
 package com.example.navigation.domain.model
 
 data class Coche(
-    val matricula: String? = null,
+    val matricula: String,
     val marca: String? = null,
     val modelo: String? = null,
     val electrico: Boolean? = null,

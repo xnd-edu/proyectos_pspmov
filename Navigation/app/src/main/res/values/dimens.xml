@@ -13,5 +13,6 @@
     <dimen name="subtitleSize">14sp</dimen>
     <dimen name="card_corner_radius_large">32dp</dimen>
     <dimen name="card_corner_radius_medium">16dp</dimen>
+    <dimen name="card_corner_radius_tiny">4dp</dimen>
 
 </resources>

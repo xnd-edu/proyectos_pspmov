@@ -46,5 +46,30 @@
         <item name="colorSurfaceContainer">@color/md_theme_surfaceContainer</item>
         <item name="colorSurfaceContainerHigh">@color/md_theme_surfaceContainerHigh</item>
         <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest</item>
+
+        <!-- AlertDialog Material 3 -->
+        <item name="alertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
+    </style>
+
+    <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.App.MediumComponent</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.Text</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.App.Body.Text</item>
+    </style>
+
+    <style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">28dp</item>
+    </style>
+
+    <style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.Material3.Title.Text">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="MaterialAlertDialog.App.Body.Text" parent="MaterialAlertDialog.Material3.Body.Text">
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0.0178</item>
     </style>
 </resources>
