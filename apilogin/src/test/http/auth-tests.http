@@ -1,0 +1,63 @@
+### 1. Login exitoso con admin
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+### 2. Login exitoso con usuario normal (juan)
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "juan",
+  "password": "juan123"
+}
+
+### 3. Login exitoso con usuario normal (maria)
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "maria",
+  "password": "maria123"
+}
+
+### 4. Login fallido - Contraseña incorrecta
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "wrongpassword"
+}
+
+### 5. Login fallido - Usuario inexistente
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "usuarioNoExiste",
+  "password": "cualquiera"
+}
+
+### 6. Login fallido - Contraseña vacía
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": ""
+}
+
+### 7. Login fallido - Usuario vacío
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "",
+  "password": "admin123"
+}
+

@@ -1,0 +1,34 @@
+### 1. Intentar listar renos sin autenticación - DENEGADO 401
+GET http://localhost:8080/api/renos
+
+### 2. Intentar obtener un reno sin autenticación - DENEGADO 401
+GET http://localhost:8080/api/renos/1
+
+### 3. Intentar filtrar renos sin autenticación - DENEGADO 401
+GET http://localhost:8080/api/renos/filtrar?nombre=Reno
+
+### 4. Intentar crear reno sin autenticación - DENEGADO 401
+POST http://localhost:8080/api/renos
+Content-Type: application/json
+
+{
+  "userId": 2,
+  "nombre": "Reno sin auth",
+  "color": "Rojo",
+  "cuernos": true
+}
+
+### 5. Intentar actualizar reno sin autenticación - DENEGADO 401
+PUT http://localhost:8080/api/renos/update/1
+Content-Type: application/json
+
+{
+  "userId": 2,
+  "nombre": "Reno modificado",
+  "color": "Azul",
+  "cuernos": false
+}
+
+### 6. Intentar eliminar reno sin autenticación - DENEGADO 401
+DELETE http://localhost:8080/api/renos/delete/1
+

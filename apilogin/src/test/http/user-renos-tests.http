@@ -1,0 +1,66 @@
+### IMPORTANTE: Primero debes loguearte como JUAN (USER id=2) para obtener la sesión
+### Ejecuta el request #1 antes de los demás
+### Juan tiene renos con id 1 y 2
+
+### 1. LOGIN COMO JUAN (ejecutar primero)
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "juan",
+  "password": "juan123"
+}
+
+### 2. Listar renos (como usuario) - Solo ve SUS renos
+GET http://localhost:8080/api/renos
+
+### 3. Obtener reno propio (id=1) - PERMITIDO
+GET http://localhost:8080/api/renos/1
+
+### 4. Obtener reno de OTRO usuario (id=3, pertenece a maria) - DENEGADO 403
+GET http://localhost:8080/api/renos/3
+
+### 5. Filtrar renos por nombre (como usuario) - Solo filtra SUS renos
+GET http://localhost:8080/api/renos/filtrar?nombre=Rodolfo
+
+### 6. Crear un reno (como usuario) - DENEGADO 403
+POST http://localhost:8080/api/renos
+Content-Type: application/json
+
+{
+  "userId": 2,
+  "nombre": "Nuevo Reno de Juan",
+  "color": "Verde",
+  "cuernos": false
+}
+
+### 7. Actualizar reno propio (como usuario) - DENEGADO 403
+PUT http://localhost:8080/api/renos/update/1
+Content-Type: application/json
+
+{
+  "userId": 2,
+  "nombre": "Reno 1 Modificado",
+  "color": "Negro",
+  "cuernos": true
+}
+
+### 8. Actualizar reno de otro usuario (como usuario) - DENEGADO 403
+PUT http://localhost:8080/api/renos/update/3
+Content-Type: application/json
+
+{
+  "userId": 3,
+  "nombre": "Intentando modificar reno de Maria",
+  "color": "Blanco",
+  "cuernos": false
+}
+
+### 9. Eliminar reno (como usuario) - PERMITIDO 204
+DELETE http://localhost:8080/api/renos/delete/1
+
+### 10. Obtener reno eliminado para verificar - DENEGADO 404
+GET http://localhost:8080/api/renos/1
+
+### 11. Intentar eliminar reno de otro usuario (como usuario) - DENEGADO 403
+DELETE http://localhost:8080/api/renos/delete/3

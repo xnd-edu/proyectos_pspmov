@@ -1,0 +1,48 @@
+### IMPORTANTE: Primero debes loguearte como ADMIN para obtener la sesión
+### Ejecuta el request #1 antes de los demás
+
+### 1. LOGIN COMO ADMIN (ejecutar primero)
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+### 2. Listar todos los renos (como admin)
+GET http://localhost:8080/api/renos
+
+### 3. Obtener un reno específico (como admin)
+GET http://localhost:8080/api/renos/1
+
+### 4. Filtrar renos por nombre (como admin)
+GET http://localhost:8080/api/renos/filtrar?nombre=Rodolfo
+
+### 5. Crear un nuevo reno (como admin) - PERMITIDO 201
+POST http://localhost:8080/api/renos
+Content-Type: application/json
+
+{
+  "userId": 2,
+  "nombre": "Vicente",
+  "color": "Rojo",
+  "cuernos": true
+}
+
+### 6. Actualizar un reno (como admin) - PERMITIDO 200
+PUT http://localhost:8080/api/renos/update/1
+Content-Type: application/json
+
+{
+  "userId": 2,
+  "nombre": "Actualizareno",
+  "color": "Amarillo",
+  "cuernos": true
+}
+
+### 7. Eliminar un reno (como admin) - PERMITIDO 204
+DELETE http://localhost:8080/api/renos/delete/1
+
+### 8. Eliminar un reno no existente - DENEGADO 404
+DELETE http://localhost:8080/api/renos/delete/1
