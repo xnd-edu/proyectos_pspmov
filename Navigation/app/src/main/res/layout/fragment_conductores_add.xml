@@ -8,13 +8,12 @@
     android:padding="@dimen/mainPadding"
     tools:context=".ui.conductores.add.ConductoresAddFragment">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/TextAppearance.Material3.TitleLarge.Emphasized"
         android:id="@+id/anadirConductorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/anadir_conductor"
-        android:textStyle="bold"
-        android:textSize="@dimen/title_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -115,7 +114,7 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/genero"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -135,7 +134,7 @@
         app:layout_constraintStart_toEndOf="@id/genero"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <RadioButton
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/masculinoRadio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -143,7 +142,7 @@
             android:layout_marginStart="@dimen/small_margin"
             android:text="@string/masculino"/>
 
-        <RadioButton
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/femeninoRadio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -151,7 +150,7 @@
             android:layout_marginStart="@dimen/margin_16"
             android:text="@string/femenino"/>
 
-        <RadioButton
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/otroRadio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -160,7 +159,7 @@
             android:text="@string/otro"/>
     </RadioGroup>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/hechoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

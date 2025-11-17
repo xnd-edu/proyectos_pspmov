@@ -63,9 +63,9 @@ class ConductoresEditViewModel @Inject constructor(
         }
     }
 
-    fun loadConductor(matricula: String) {
+    fun loadConductor(dni: String) {
         viewModelScope.launch {
-            val conductor = getConductor(matricula)
+            val conductor = getConductor(dni)
 
             if (conductor == null) {
                 _state.value = _state.value?.copy(

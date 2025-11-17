@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/margin_16">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/conductorNombre"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="@string/nombre" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/conductorDni"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

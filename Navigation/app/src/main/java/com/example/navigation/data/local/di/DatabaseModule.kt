@@ -3,6 +3,7 @@ package com.example.navigation.data.local.di
 import android.content.Context
 import androidx.room.Room
 import com.example.navigation.data.local.AppDatabase
+import com.example.navigation.data.common.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,9 +21,9 @@ object DatabaseModule {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
-            "app_database"
+            Constants.DATABASE_NAME
         )
-            .createFromAsset("database/app_database.db")
+            .createFromAsset(Constants.DATABASE_ASSET_PATH)
             .fallbackToDestructiveMigration()
             .build()
     }

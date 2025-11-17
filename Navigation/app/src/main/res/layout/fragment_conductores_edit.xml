@@ -8,7 +8,7 @@
     android:padding="@dimen/mainPadding"
     tools:context=".ui.conductores.edit.ConductoresEditFragment">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         style="@style/TextAppearance.Material3.TitleLarge.Emphasized"
         android:id="@+id/editarConductorText"
         android:layout_width="wrap_content"
@@ -114,7 +114,7 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/genero"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
         app:layout_constraintStart_toEndOf="@id/genero"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <RadioButton
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/masculinoRadio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -142,7 +142,7 @@
             android:layout_marginStart="@dimen/small_margin"
             android:text="@string/masculino"/>
 
-        <RadioButton
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/femeninoRadio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -150,7 +150,7 @@
             android:layout_marginStart="@dimen/margin_16"
             android:text="@string/femenino"/>
 
-        <RadioButton
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/otroRadio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -186,7 +186,7 @@
                 android:contentDescription="@string/page_1"
                 app:tint="?attr/colorPrimary"/>
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -206,7 +206,7 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/eliminarButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -217,7 +217,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.Medium" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/hechoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

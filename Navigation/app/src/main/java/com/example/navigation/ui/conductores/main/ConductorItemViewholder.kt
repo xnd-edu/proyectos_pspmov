@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.navigation.R
 import com.example.navigation.databinding.ItemConductorBinding
 import com.example.navigation.domain.model.Conductor
-import com.example.navigation.ui.conductores.main.ConductoresAdapter
 import com.example.navigation.ui.common.StringProvider
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.listitem.ListItemLayout

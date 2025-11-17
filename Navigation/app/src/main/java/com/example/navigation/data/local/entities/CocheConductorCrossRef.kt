@@ -2,22 +2,23 @@ package com.example.navigation.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import com.example.navigation.data.common.Constants
 
 @Entity(
-    primaryKeys = ["cocheMatricula", "conductorDni"],
-    tableName = "coche_conductor_cross_ref",
+    primaryKeys = [Constants.COLUMN_COCHE_MATRICULA, Constants.COLUMN_CONDUCTOR_DNI],
+    tableName = Constants.TABLE_COCHE_CONDUCTOR_CROSS_REF,
     foreignKeys = [
         ForeignKey(
             entity = CocheEntity::class,
-            parentColumns = ["matricula"],
-            childColumns = ["cocheMatricula"],
+            parentColumns = [Constants.COLUMN_MATRICULA],
+            childColumns = [Constants.COLUMN_COCHE_MATRICULA],
             onDelete = ForeignKey.NO_ACTION,
             onUpdate = ForeignKey.NO_ACTION
         ),
         ForeignKey(
             entity = ConductorEntity::class,
-            parentColumns = ["dni"],
-            childColumns = ["conductorDni"],
+            parentColumns = [Constants.COLUMN_DNI],
+            childColumns = [Constants.COLUMN_CONDUCTOR_DNI],
             onDelete = ForeignKey.NO_ACTION,
             onUpdate = ForeignKey.NO_ACTION
         )

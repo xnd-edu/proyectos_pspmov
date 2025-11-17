@@ -8,23 +8,19 @@ import androidx.room.Transaction
 import androidx.room.Update
 import com.example.navigation.data.local.entities.ConductorEntity
 import com.example.navigation.data.local.entities.ConductorConCoches
+import com.example.navigation.data.common.Constants
 
 @Dao
 interface ConductoresDao {
-    @Query("SELECT * FROM conductores ORDER BY apellidos ASC")
+    @Query("SELECT * FROM ${Constants.TABLE_CONDUCTORES} ORDER BY ${Constants.COLUMN_APELLIDOS} ASC")
     suspend fun getAllConductores(): List<ConductorEntity>
 
-    @Query("SELECT * FROM conductores WHERE dni = :dni")
+    @Query("SELECT * FROM ${Constants.TABLE_CONDUCTORES} WHERE ${Constants.COLUMN_DNI} = :dni")
     suspend fun getConductorByDni(dni: String): ConductorEntity?
 
     @Transaction
-    @Query("SELECT * FROM conductores WHERE dni = :dni")
+    @Query("SELECT * FROM ${Constants.TABLE_CONDUCTORES} WHERE ${Constants.COLUMN_DNI} = :dni")
     suspend fun getConductorConCoches(dni: String): ConductorConCoches?
-
-    @Transaction
-    @Query("SELECT * FROM conductores ORDER BY apellidos ASC")
-    suspend fun getTodosLosConductoresConCoches(): List<ConductorConCoches>
-
 
     @Insert
     suspend fun insertConductor(conductor: ConductorEntity)

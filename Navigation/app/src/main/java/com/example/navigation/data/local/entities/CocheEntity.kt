@@ -3,8 +3,9 @@ package com.example.navigation.data.local.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.navigation.domain.model.Coche
+import com.example.navigation.data.common.Constants
 
-@Entity(tableName = "coches")
+@Entity(tableName = Constants.TABLE_COCHES)
 data class CocheEntity(
     @PrimaryKey
     val matricula: String,

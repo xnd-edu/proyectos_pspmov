@@ -3,8 +3,9 @@ package com.example.navigation.data.local.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.navigation.domain.model.Conductor
+import com.example.navigation.data.common.Constants
 
-@Entity(tableName = "conductores")
+@Entity(tableName = Constants.TABLE_CONDUCTORES)
 data class ConductorEntity(
     @PrimaryKey
     val dni: String,

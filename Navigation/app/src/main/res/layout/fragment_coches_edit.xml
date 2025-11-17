@@ -8,7 +8,7 @@
     android:padding="@dimen/mainPadding"
     tools:context=".ui.coches.edit.CochesEditFragment">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         style="@style/TextAppearance.Material3.TitleLarge.Emphasized"
         android:id="@+id/editarCocheText"
         android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <CheckBox
+    <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/electricoCheckbox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -127,7 +127,7 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tipoCoche"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -148,7 +148,7 @@
         app:layout_constraintStart_toEndOf="@id/tipoCoche"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <RadioButton
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/sedanRadio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -156,7 +156,7 @@
             android:layout_marginStart="@dimen/small_margin"
             android:text="@string/sedan"/>
 
-        <RadioButton
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/suvRadio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -164,7 +164,7 @@
             android:layout_marginStart="@dimen/margin_16"
             android:text="@string/suv"/>
 
-        <RadioButton
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/otroRadio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -222,7 +222,7 @@
                 android:contentDescription="@string/conductores"
                 app:tint="?attr/colorPrimary"/>
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -242,7 +242,7 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         style="@style/Widget.Material3Expressive.Button"
         android:id="@+id/eliminarButton"
         android:layout_width="wrap_content"
@@ -254,7 +254,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.Medium" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/hechoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

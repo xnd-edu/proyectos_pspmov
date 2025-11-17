@@ -8,23 +8,19 @@ import androidx.room.Transaction
 import androidx.room.Update
 import com.example.navigation.data.local.entities.CocheEntity
 import com.example.navigation.data.local.entities.CocheConConductores
+import com.example.navigation.data.common.Constants
 
 @Dao
 interface CochesDao {
-    @Query("SELECT * FROM coches ORDER BY marca ASC")
+    @Query("SELECT * FROM ${Constants.TABLE_COCHES} ORDER BY ${Constants.COLUMN_MARCA} ASC")
     suspend fun getAllCoches(): List<CocheEntity>
 
-    @Query("SELECT * FROM coches WHERE matricula = :matricula")
+    @Query("SELECT * FROM ${Constants.TABLE_COCHES} WHERE ${Constants.COLUMN_MATRICULA} = :matricula")
     suspend fun getCocheByMatricula(matricula: String): CocheEntity?
 
     @Transaction
-    @Query("SELECT * FROM coches WHERE matricula = :matricula")
+    @Query("SELECT * FROM ${Constants.TABLE_COCHES} WHERE ${Constants.COLUMN_MATRICULA} = :matricula")
     suspend fun getCocheConConductores(matricula: String): CocheConConductores?
-
-    @Transaction
-    @Query("SELECT * FROM coches ORDER BY marca ASC")
-    suspend fun getTodosLosCochesConConductores(): List<CocheConConductores>
-
 
     @Insert
     suspend fun insertCoche(coche: CocheEntity)

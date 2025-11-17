@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/margin_16">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/cocheNombre"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="@string/marca" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/cocheMatricula"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
