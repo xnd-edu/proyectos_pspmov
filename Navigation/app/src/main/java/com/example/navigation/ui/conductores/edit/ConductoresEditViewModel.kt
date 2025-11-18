@@ -24,7 +24,6 @@ class ConductoresEditViewModel @Inject constructor(
 ) : ViewModel() {
     private var _state: MutableLiveData<ConductoresEditState> = MutableLiveData(ConductoresEditState())
     val state: LiveData<ConductoresEditState> get() = _state
-    private var originalDni: String? = null
 
     fun saveConductor(conductor: Conductor) {
         viewModelScope.launch {
@@ -72,7 +71,6 @@ class ConductoresEditViewModel @Inject constructor(
                     event = UiEvent.ShowSnackbar(stringProvider.getString(R.string.error_get_conductor))
                 )
             } else {
-                originalDni = conductor.dni
                 _state.value = _state.value?.copy(conductor = conductor) ?: ConductoresEditState(conductor)
             }
         }

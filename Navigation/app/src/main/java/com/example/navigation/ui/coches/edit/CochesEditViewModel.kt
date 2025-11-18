@@ -24,7 +24,6 @@ class CochesEditViewModel @Inject constructor(
 ) : ViewModel() {
     private var _state: MutableLiveData<CochesEditState> = MutableLiveData(CochesEditState())
     val state: LiveData<CochesEditState> get() = _state
-    private var originalMatricula: String? = null
 
     fun saveCoche(coche: Coche) {
         viewModelScope.launch {
@@ -72,7 +71,6 @@ class CochesEditViewModel @Inject constructor(
                     event = UiEvent.ShowSnackbar(stringProvider.getString(R.string.error_get_coche))
                 )
             } else {
-                originalMatricula = coche.matricula
                 _state.value = _state.value?.copy(coche = coche) ?: CochesEditState(coche)
             }
         }
