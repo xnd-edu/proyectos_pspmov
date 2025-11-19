@@ -11,7 +11,6 @@ import com.example.navigation.domain.model.Conductor
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
 class ConductorRepository @Inject constructor(
     private val conductoresDao: ConductoresDao,
     private val cocheConductorDao: CocheConductorDao

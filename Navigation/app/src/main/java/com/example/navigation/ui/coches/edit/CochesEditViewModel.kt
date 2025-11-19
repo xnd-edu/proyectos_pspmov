@@ -76,7 +76,7 @@ class CochesEditViewModel @Inject constructor(
         }
     }
 
-    fun limpiarMensaje() {
+    fun limpiarEvento() {
         _state.value = _state.value?.copy(event = null)
     }
 }

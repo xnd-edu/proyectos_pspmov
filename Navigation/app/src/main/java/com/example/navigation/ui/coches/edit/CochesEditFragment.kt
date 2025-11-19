@@ -51,6 +51,7 @@ class CochesEditFragment : Fragment() {
         eventos()
         observer()
     }
+
     private fun eventos() {
         with(binding) {
             fechaMatriculaTextField.isFocusable = false
@@ -72,7 +73,10 @@ class CochesEditFragment : Fragment() {
                     fechaMatriculaTextField.setText(fecha)
                 }
 
-                datePicker.show(parentFragmentManager, stringProvider.getString(R.string.date_picker_tag))
+                datePicker.show(
+                    parentFragmentManager,
+                    stringProvider.getString(R.string.date_picker_tag)
+                )
             }
 
             eliminarButton.setOnClickListener {
@@ -82,9 +86,10 @@ class CochesEditFragment : Fragment() {
             }
 
             conductoresCard.setOnClickListener {
-                val action = CochesEditFragmentDirections.actionCochesEditFragmentToCochesEditConductoresFragment(
-                    matricula = args.matricula
-                )
+                val action =
+                    CochesEditFragmentDirections.actionCochesEditFragmentToCochesEditConductoresFragment(
+                        matricula = args.matricula
+                    )
                 findNavController().navigate(action)
             }
 
@@ -98,18 +103,30 @@ class CochesEditFragment : Fragment() {
     private fun observer() {
         viewModel.state.observe(viewLifecycleOwner) { state ->
             state.coche?.let { coche ->
-                binding.matriculaTextField.setText(coche.matricula)
-                binding.electricoCheckbox.isChecked = coche.electrico == true
-                binding.marcaTextField.setText(coche.marca)
-                binding.modeloTextField.setText(coche.modelo)
-                binding.fechaMatriculaTextField.setText(coche.fechaMatriculacion)
-                binding.colorTextField.setText(coche.color)
-                binding.comentariosTextField.setText(coche.comentarios)
-                when (coche.tipo) {
-                    stringProvider.getString(R.string.sedan) -> binding.tipoCocheRadioGroup.check(R.id.sedanRadio)
-                    stringProvider.getString(R.string.suv) -> binding.tipoCocheRadioGroup.check(R.id.suvRadio)
-                    stringProvider.getString(R.string.otro) -> binding.tipoCocheRadioGroup.check(R.id.otroRadio)
-                    else -> binding.tipoCocheRadioGroup.clearCheck()
+                with(binding) {
+                    matriculaTextField.setText(coche.matricula)
+                    electricoCheckbox.isChecked = coche.electrico == true
+                    marcaTextField.setText(coche.marca)
+                    modeloTextField.setText(coche.modelo)
+                    fechaMatriculaTextField.setText(coche.fechaMatriculacion)
+                    colorTextField.setText(coche.color)
+                    comentariosTextField.setText(coche.comentarios)
+
+                    when (coche.tipo) {
+                        stringProvider.getString(R.string.sedan) -> tipoCocheRadioGroup.check(
+                            R.id.sedanRadio
+                        )
+
+                        stringProvider.getString(R.string.suv) -> tipoCocheRadioGroup.check(
+                            R.id.suvRadio
+                        )
+
+                        stringProvider.getString(R.string.otro) -> tipoCocheRadioGroup.check(
+                            R.id.otroRadio
+                        )
+
+                        else -> tipoCocheRadioGroup.clearCheck()
+                    }
                 }
             }
             state.event?.let { event ->
@@ -119,7 +136,7 @@ class CochesEditFragment : Fragment() {
                     Toast.makeText(requireContext(), event.message, Toast.LENGTH_SHORT)
                         .show()
                 }
-                viewModel.limpiarMensaje()
+                viewModel.limpiarEvento()
             }
         }
     }
