@@ -1,7 +1,8 @@
 package org.example.apilogin.domain.service;
 
+import org.example.apilogin.common.Constantes;
 import org.example.apilogin.data.RenoRepository;
-import org.example.apilogin.data.entities.RenoEntity;
+import org.example.apilogin.domain.errores.ResourceNotFoundException;
 import org.example.apilogin.domain.mapper.RenoMapper;
 import org.example.apilogin.domain.model.Reno;
 import org.springframework.stereotype.Service;
@@ -29,30 +30,25 @@ public class RenoService {
     public Reno findById(int id) {
         return renoRepository.findById(id)
                 .map(renoMapper::toDomain)
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(Constantes.MSG_RENO_NO_ENCONTRADO, id)));
     }
 
     public Reno save(Reno reno) {
-        RenoEntity saved = renoRepository.save(renoMapper.toEntity(reno));
-        return renoMapper.toDomain(saved);
+        return renoMapper.toDomain(renoRepository.save(renoMapper.toEntity(reno)));
     }
 
     public Reno update(int id, Reno reno) {
-        return renoRepository.findById(id)
-                .map(existing -> {
-                    RenoEntity updated = renoMapper.toEntity(reno);
-                    updated.setId(existing.getId());
-                    return renoMapper.toDomain(renoRepository.save(updated));
-                })
-                .orElse(null);
+        renoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(Constantes.MSG_RENO_NO_ENCONTRADO, id)));
+
+        return renoMapper.toDomain(renoRepository.save(renoMapper.toEntity(reno)));
     }
 
-    public boolean delete(int id) {
-        if (renoRepository.existsById(id)) {
-            renoRepository.deleteById(id);
-            return true;
+    public void delete(int id) {
+        if (!renoRepository.existsById(id)) {
+            throw new ResourceNotFoundException(String.format(Constantes.MSG_RENO_NO_ENCONTRADO, id));
         }
-        return false;
+        renoRepository.deleteById(id);
     }
 
     public List<Reno> findByUserId(int userId) {

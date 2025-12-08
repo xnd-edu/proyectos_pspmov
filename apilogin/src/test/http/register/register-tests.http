@@ -1,0 +1,20 @@
+### Registro exitoso - Usuario nuevo
+POST http://localhost:8080/register
+Content-Type: application/json
+
+{
+  "username": "carlos",
+  "password": "carlos123",
+  "email": "carlos@example.com",
+  "nombre": "Carlos López"
+}
+
+### Login
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "carlos",
+  "password": "carlos123"
+}
+

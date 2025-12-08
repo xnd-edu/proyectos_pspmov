@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import org.example.apilogin.common.Constantes;
 import org.example.apilogin.domain.model.Rol;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = Constantes.TABLE_USUARIOS)
 public class UsuarioEntity {
@@ -16,18 +18,24 @@ public class UsuarioEntity {
     private String password;
     private String email;
     private String nombre;
+    private boolean activado;
+    private String codigoActivacion;
+    private LocalDateTime fechaExpiracionCodigo;
 
     @Enumerated(EnumType.STRING)
     private Rol rol;
 
     public UsuarioEntity() {}
 
-    public UsuarioEntity(Long id, String username, String password, String email, String nombre, Rol rol) {
+    public UsuarioEntity(Long id, String username, String password, String email, String nombre, boolean activado, String codigoActivacion, LocalDateTime fechaExpiracionCodigo, Rol rol) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
         this.nombre = nombre;
+        this.activado = activado;
+        this.codigoActivacion = codigoActivacion;
+        this.fechaExpiracionCodigo = fechaExpiracionCodigo;
         this.rol = rol;
     }
 
@@ -69,6 +77,30 @@ public class UsuarioEntity {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public boolean isActivado() {
+        return activado;
+    }
+
+    public void setActivado(boolean activado) {
+        this.activado = activado;
+    }
+
+    public String getCodigoActivacion() {
+        return codigoActivacion;
+    }
+
+    public void setCodigoActivacion(String codigoActivacion) {
+        this.codigoActivacion = codigoActivacion;
+    }
+
+    public LocalDateTime getFechaExpiracionCodigo() {
+        return fechaExpiracionCodigo;
+    }
+
+    public void setFechaExpiracionCodigo(LocalDateTime fechaExpiracionCodigo) {
+        this.fechaExpiracionCodigo = fechaExpiracionCodigo;
     }
 
     public Rol getRol() {

@@ -16,6 +16,9 @@ public class UsuarioMapper {
                 e.getPassword(),
                 e.getEmail(),
                 e.getNombre(),
+                e.isActivado(),
+                e.getCodigoActivacion(),
+                e.getFechaExpiracionCodigo(),
                 e.getRol()
         );
     }
@@ -28,6 +31,9 @@ public class UsuarioMapper {
                 u.password(),
                 u.email(),
                 u.nombre(),
+                u.activado(),
+                u.codigoActivacion(),
+                u.fechaExpiracionCodigo(),
                 u.rol()
         );
     }

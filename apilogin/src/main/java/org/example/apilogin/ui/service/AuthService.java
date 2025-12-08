@@ -17,8 +17,7 @@ public class AuthService {
 
     public Usuario login(String username, String password, HttpSession session) {
         Usuario usuario = usuarioService.login(username, password);
-        if (usuario != null)
-            session.setAttribute(Constantes.SESSION_ATTR_USUARIO, usuario);
+        session.setAttribute(Constantes.SESSION_ATTR_USUARIO, usuario);
         return usuario;
     }
 
@@ -44,5 +43,4 @@ public class AuthService {
         Rol rol = getRolFromSession(session);
         return Rol.ADMIN.equals(rol);
     }
-
 }
