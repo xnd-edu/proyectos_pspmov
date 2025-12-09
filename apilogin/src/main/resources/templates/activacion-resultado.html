@@ -106,13 +106,11 @@
             <p th:text="${mensaje}">¡Tu cuenta ha sido activada exitosamente!</p>
             <p class="usuario">¡Bienvenido, <span th:text="${usuario}">Usuario</span>!</p>
             <p>Ya puedes iniciar sesión con tus credenciales.</p>
-            <a href="/login" class="btn">Ir a Login</a>
         </div>
 
         <div th:if="${!exitoso}">
             <p th:text="${mensaje}">Error al activar la cuenta.</p>
             <p>Por favor, verifica el enlace o contacta con soporte.</p>
-            <a href="/" class="btn">Volver al Inicio</a>
         </div>
 
         <div class="footer">

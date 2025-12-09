@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ActivacionController {
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
 
     public ActivacionController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
@@ -20,13 +20,13 @@ public class ActivacionController {
     public String activarCuenta(@RequestParam String codigo, Model model) {
         try {
             Usuario usuario = usuarioService.activarCuenta(codigo);
-            model.addAttribute("exitoso", true);
-            model.addAttribute("mensaje", "¡Cuenta activada exitosamente!");
-            model.addAttribute("usuario", usuario.nombre());
+            model.addAttribute(Constantes.PARAM_EXITOSO, true);
+            model.addAttribute(Constantes.PARAM_MENSAJE, Constantes.MSG_CUENTA_ACTIVADA_EXITOSAMENTE);
+            model.addAttribute(Constantes.PARAM_USUARIO, usuario.nombre());
         } catch (Exception e) {
-            model.addAttribute("exitoso", false);
-            model.addAttribute("mensaje", "Error al activar la cuenta. El código puede ser inválido o ya ha expirado.");
+            model.addAttribute(Constantes.PARAM_EXITOSO, false);
+            model.addAttribute(Constantes.PARAM_MENSAJE, Constantes.MSG_ERROR_ACTIVACION);
         }
-        return "activacion-resultado";
+        return Constantes.TEMPLATE_ACTIVACION_RESULTADO;
     }
 }

@@ -27,7 +27,7 @@ public class RestRenos {
     @GetMapping
     @RequiresAuth
     public ResponseEntity<List<Reno>> listarRenos(HttpSession session) {
-       if (!authService.isAdmin(session)) {
+       if (authService.isUser(session)) {
            int userId = authService.getUsuarioIdFromSession(session).intValue();
            return ResponseEntity.ok(renoService.findByUserId(userId));
        }
@@ -39,7 +39,7 @@ public class RestRenos {
     public ResponseEntity<Reno> obtenerReno(@PathVariable int id, HttpSession session) {
         Reno reno = renoService.findById(id);
 
-        if (!authService.isAdmin(session)) {
+        if (authService.isUser(session)) {
             int userId = authService.getUsuarioIdFromSession(session).intValue();
             if (reno.userId() != userId) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -55,7 +55,7 @@ public class RestRenos {
         if (renos.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        if (!authService.isAdmin(session)) {
+        if (authService.isUser(session)) {
             int userId = authService.getUsuarioIdFromSession(session).intValue();
             List<Reno> renosFiltrados = renos.stream()
                     .filter(reno -> reno.userId() == userId)
@@ -68,14 +68,14 @@ public class RestRenos {
 
     @PostMapping
     @RequiresAuth(rol = Rol.ADMIN)
-    public ResponseEntity<Reno> crearReno(@RequestBody Reno reno, HttpSession session) {
+    public ResponseEntity<Reno> crearReno(@RequestBody Reno reno) {
         Reno newReno = renoService.save(reno);
         return ResponseEntity.status(HttpStatus.CREATED).body(newReno);
     }
 
     @PutMapping(Constantes.API_RENO_UPDATE)
     @RequiresAuth(rol = Rol.ADMIN)
-    public ResponseEntity<Reno> actualizarReno(@PathVariable int id, @RequestBody Reno reno, HttpSession session) {
+    public ResponseEntity<Reno> actualizarReno(@PathVariable int id, @RequestBody Reno reno) {
         Reno updatedReno = renoService.update(id, reno);
         return ResponseEntity.ok(updatedReno);
     }
@@ -85,7 +85,7 @@ public class RestRenos {
     public ResponseEntity<Void> eliminarReno(@PathVariable int id, HttpSession session) {
         Reno reno = renoService.findById(id);
 
-        if (!authService.isAdmin(session)) {
+        if (authService.isUser(session)) {
             int userId = authService.getUsuarioIdFromSession(session).intValue();
             if (reno.userId() != userId) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

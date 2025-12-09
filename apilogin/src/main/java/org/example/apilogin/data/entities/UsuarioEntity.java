@@ -25,18 +25,8 @@ public class UsuarioEntity {
     @Enumerated(EnumType.STRING)
     private Rol rol;
 
-    public UsuarioEntity() {}
-
-    public UsuarioEntity(Long id, String username, String password, String email, String nombre, boolean activado, String codigoActivacion, LocalDateTime fechaExpiracionCodigo, Rol rol) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.nombre = nombre;
-        this.activado = activado;
-        this.codigoActivacion = codigoActivacion;
-        this.fechaExpiracionCodigo = fechaExpiracionCodigo;
-        this.rol = rol;
+    public UsuarioEntity() {
+        // Constructor requerido por JPA
     }
 
     public Long getId() {

@@ -25,16 +25,16 @@ public class UsuarioMapper {
 
     public UsuarioEntity toEntity(Usuario u) {
         if (u == null) return null;
-        return new UsuarioEntity(
-                u.id(),
-                u.username(),
-                u.password(),
-                u.email(),
-                u.nombre(),
-                u.activado(),
-                u.codigoActivacion(),
-                u.fechaExpiracionCodigo(),
-                u.rol()
-        );
+        UsuarioEntity entity = new UsuarioEntity();
+        entity.setId(u.id());
+        entity.setUsername(u.username());
+        entity.setPassword(u.password());
+        entity.setEmail(u.email());
+        entity.setNombre(u.nombre());
+        entity.setActivado(u.activado());
+        entity.setCodigoActivacion(u.codigoActivacion());
+        entity.setFechaExpiracionCodigo(u.fechaExpiracionCodigo());
+        entity.setRol(u.rol());
+        return entity;
     }
 }

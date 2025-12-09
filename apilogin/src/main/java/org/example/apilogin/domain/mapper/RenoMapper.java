@@ -21,10 +21,7 @@ public class RenoMapper {
     public RenoEntity toEntity(Reno r) {
         if (r == null) return null;
         RenoEntity entity = new RenoEntity();
-        // Solo establecer ID si no es null y no es 0 (nuevo registro)
-        if (r.id() != null && r.id() != 0) {
-            entity.setId(r.id());
-        }
+        entity.setId(r.id());
         entity.setUserId(r.userId());
         entity.setNombre(r.nombre());
         entity.setColor(r.color());

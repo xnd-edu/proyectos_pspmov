@@ -16,14 +16,8 @@ public class RenoEntity {
     private String color;
     private Boolean cuernos;
 
-    public RenoEntity() {}
-
-    public RenoEntity(Integer id, Integer userId, String nombre, String color, Boolean cuernos) {
-        this.id = id;
-        this.userId = userId;
-        this.nombre = nombre;
-        this.color = color;
-        this.cuernos = cuernos;
+    public RenoEntity() {
+        // Constructor requerido por JPA
     }
 
     public Integer getId() {

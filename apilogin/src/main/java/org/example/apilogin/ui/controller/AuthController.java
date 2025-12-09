@@ -2,34 +2,27 @@ package org.example.apilogin.ui.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.example.apilogin.common.Constantes;
-import org.example.apilogin.domain.model.Rol;
 import org.example.apilogin.domain.model.Usuario;
 import org.example.apilogin.domain.service.UsuarioService;
 import org.example.apilogin.ui.dto.LoginDTO;
 import org.example.apilogin.ui.dto.LoginResponse;
-import org.example.apilogin.ui.dto.RegisterRequest;
+import org.example.apilogin.ui.dto.RegisterDTO;
 import org.example.apilogin.ui.dto.UsuarioDTO;
 import org.example.apilogin.ui.service.AuthService;
-import org.example.apilogin.ui.service.EmailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
-
 @RestController
 public class AuthController {
     private final AuthService authService;
     private final UsuarioService usuarioService;
-    private final EmailService emailService;
 
-    public AuthController(AuthService authService, UsuarioService usuarioService, EmailService emailService) {
+    public AuthController(AuthService authService, UsuarioService usuarioService) {
         this.authService = authService;
         this.usuarioService = usuarioService;
-        this.emailService = emailService;
     }
 
     @PostMapping(Constantes.API_LOGIN)
@@ -55,30 +48,18 @@ public class AuthController {
     }
 
     @PostMapping(Constantes.API_REGISTER)
-    public ResponseEntity<LoginResponse> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<LoginResponse> register(@RequestBody RegisterDTO request) {
         if (usuarioService.existsByUsername(request.username())) {
-            LoginResponse response = new LoginResponse("El username ya existe");
+            LoginResponse response = new LoginResponse(Constantes.MSG_USERNAME_YA_EXISTE);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
-        String hashedPassword = usuarioService.encodePassword(request.password());
-        String codigoActivacion = UUID.randomUUID().toString();
-
-        Usuario newUser = new Usuario(
-                null,
+        Usuario newUser = authService.register(
                 request.username(),
-                hashedPassword,
+                request.password(),
                 request.email(),
-                request.nombre(),
-                false,
-                codigoActivacion,
-                LocalDateTime.now().plusHours(24),
-                Rol.USER
+                request.nombre()
         );
-
-        newUser = usuarioService.register(newUser);
-
-        emailService.enviarEmailActivacion(newUser.username(), newUser.email(), newUser.codigoActivacion());
 
         UsuarioDTO usuarioDTO = new UsuarioDTO(
                 newUser.id(),
@@ -88,7 +69,7 @@ public class AuthController {
                 newUser.rol()
         );
 
-        LoginResponse response = new LoginResponse(usuarioDTO, "Te has registrado exitosamente. Por favor, revisa tu correo para activar tu cuenta.");
+        LoginResponse response = new LoginResponse(usuarioDTO, Constantes.MSG_REGISTRO_EXITOSO);
         return ResponseEntity.ok(response);
     }
 }

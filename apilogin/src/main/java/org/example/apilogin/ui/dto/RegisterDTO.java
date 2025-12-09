@@ -1,6 +1,6 @@
 package org.example.apilogin.ui.dto;
 
-public record RegisterRequest(
+public record RegisterDTO(
     String username,
     String password,
     String email,

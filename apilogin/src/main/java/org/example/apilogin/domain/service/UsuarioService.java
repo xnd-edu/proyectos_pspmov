@@ -1,5 +1,6 @@
 package org.example.apilogin.domain.service;
 
+import org.example.apilogin.common.Constantes;
 import org.example.apilogin.data.UsuarioRepository;
 import org.example.apilogin.data.entities.UsuarioEntity;
 import org.example.apilogin.domain.errores.ForbiddenException;
@@ -8,6 +9,8 @@ import org.example.apilogin.domain.mapper.UsuarioMapper;
 import org.example.apilogin.domain.model.Usuario;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class UsuarioService {
@@ -28,14 +31,14 @@ public class UsuarioService {
 
     public Usuario login(String username, String password) {
         UsuarioEntity entity = usuarioRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("No se encontró un usuario con el nombre de usuario proporcionado."));
+                .orElseThrow(() -> new ResourceNotFoundException(Constantes.MSG_USUARIO_NO_ENCONTRADO));
         if (!entity.isActivado()) {
-            throw new ForbiddenException("La cuenta no está activada.");
+            throw new ForbiddenException(Constantes.MSG_CUENTA_NO_ACTIVADA);
         }
         if (passwordEncoder.matches(password, entity.getPassword())) {
             return usuarioMapper.toDomain(entity);
         }
-        throw new ForbiddenException("Credenciales inválidas.");
+        throw new ForbiddenException(Constantes.MSG_CREDENCIALES_INVALIDAS);
     }
 
     public Usuario register(Usuario usuario) {
@@ -52,11 +55,12 @@ public class UsuarioService {
 
     public Usuario activarCuenta(String codigoActivacion) {
         UsuarioEntity entity = usuarioRepository.findByCodigoActivacion(codigoActivacion)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "No se encontró un usuario con el código de activación proporcionado."));
-
+                .orElseThrow(() -> new ResourceNotFoundException(Constantes.MSG_CODIGO_ACTIVACION_NO_ENCONTRADO));
+        if (entity.getFechaExpiracionCodigo().isBefore(LocalDateTime.now())) {
+            throw new ForbiddenException(Constantes.MSG_CODIGO_ACTIVACION_EXPIRADO);
+        }
         if (entity.isActivado()) {
-            throw new ForbiddenException("La cuenta ya está activada.");
+            throw new ForbiddenException(Constantes.MSG_CUENTA_YA_ACTIVADA);
         }
 
         entity.setActivado(true);

@@ -1,15 +1,12 @@
 package org.example.apilogin.ui.interceptor;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.apilogin.common.Constantes;
 import org.example.apilogin.domain.errores.ForbiddenException;
 import org.example.apilogin.domain.errores.UnauthorizedException;
 import org.example.apilogin.domain.model.Rol;
-import org.example.apilogin.ui.dto.ErrorResponse;
 import org.example.apilogin.ui.service.AuthService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -17,15 +14,13 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
     private final AuthService authService;
-    private final ObjectMapper objectMapper;
 
-    public AuthInterceptor(AuthService authService, ObjectMapper objectMapper) {
+    public AuthInterceptor(AuthService authService) {
         this.authService = authService;
-        this.objectMapper = objectMapper;
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ForbiddenException, UnauthorizedException {
         if (!(handler instanceof HandlerMethod handlerMethod)) {
             return true;
         }
