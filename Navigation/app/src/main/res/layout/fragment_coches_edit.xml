@@ -255,6 +255,7 @@
         app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.Medium" />
 
     <com.google.android.material.button.MaterialButton
+        style="@style/Widget.Material3Expressive.Button"
         android:id="@+id/hechoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -15,6 +15,7 @@ import com.example.navigation.domain.model.Coche
 import com.example.navigation.ui.common.StringProvider
 import com.example.navigation.ui.common.UiEvent
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -133,8 +134,7 @@ class CochesEditFragment : Fragment() {
                 if (event is UiEvent.PopBackStack) {
                     findNavController().navigateUp()
                 } else if (event is UiEvent.ShowSnackbar) {
-                    Toast.makeText(requireContext(), event.message, Toast.LENGTH_SHORT)
-                        .show()
+                    Snackbar.make(binding.root, event.message, Toast.LENGTH_SHORT).show()
                 }
                 viewModel.limpiarEvento()
             }
