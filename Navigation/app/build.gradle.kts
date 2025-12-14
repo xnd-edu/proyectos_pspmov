@@ -1,9 +1,19 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.navigation.safeargs.kotlin)
+}
+
+// Cargar local.properties
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    FileInputStream(localPropertiesFile).use { localProperties.load(it) }
 }
 
 android {
@@ -18,11 +28,19 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "TWITCH_CLIENT_ID", "\"${localProperties.getProperty("TWITCH_CLIENT_ID") ?: ""}\"")
+        buildConfigField("String", "IGDB_ACCESS_TOKEN", "\"${localProperties.getProperty("IGDB_ACCESS_TOKEN") ?: ""}\"")
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
     buildTypes {
+        debug {
+            resValue("string", "twitch_client_id", localProperties["TWITCH_CLIENT_ID"] as String)
+            resValue("string", "igdb_token", localProperties["IGDB_ACCESS_TOKEN"] as String)
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(

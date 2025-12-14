@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="?attr/materialCardViewElevatedStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_8"
+    app:cardPreventCornerOverlap="false">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivCharacterImage"
+            android:layout_width="@dimen/game_cover_width"
+            android:layout_height="@dimen/game_cover_height"
+            android:contentDescription="@string/character_image"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearance="?attr/shapeAppearanceCornerMedium"
+            app:shapeAppearanceOverlay="@style/GameCoverRounded"
+            app:strokeColor="@android:color/darker_gray"
+            app:strokeWidth="1dp"
+            tools:src="@drawable/ic_launcher_foreground" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvGameName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:textSize="@dimen/titleSize"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnSurface"
+            android:maxLines="2"
+            android:ellipsize="end"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivCharacterImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="The Legend of Zelda: Breath of the Wild" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvGameReleaseDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_marginTop="@dimen/small_margin"
+            android:textSize="12sp"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            app:layout_constraintTop_toBottomOf="@+id/tvGameName"
+            app:layout_constraintStart_toEndOf="@id/ivCharacterImage"
+            tools:text="2017" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvGameRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_8"
+            android:layout_marginTop="@dimen/small_margin"
+            android:textSize="12sp"
+            android:textColor="?attr/colorPrimary"
+            android:textStyle="bold"
+            android:drawablePadding="4dp"
+            app:drawableStartCompat="@drawable/star_24px"
+            app:drawableTint="?attr/colorPrimary"
+            app:layout_constraintTop_toBottomOf="@+id/tvGameName"
+            app:layout_constraintStart_toEndOf="@id/tvGameReleaseDate"
+            tools:text="97/100" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvGameSummary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:textSize="@dimen/subtitleSize"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:maxLines="3"
+            android:ellipsize="end"
+            app:layout_constraintTop_toBottomOf="@+id/tvGameReleaseDate"
+            app:layout_constraintStart_toEndOf="@id/ivCharacterImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="An epic adventure game set in a vast open world with stunning landscapes and challenging puzzles." />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
+
+

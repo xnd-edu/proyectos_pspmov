@@ -68,5 +68,7 @@
     <string name="titulo">Título</string>
     <string name="cuerpo">Cuerpo</string>
     <string name="id_usuario">ID Usuario</string>
+    <string name="character_image">Imagen del juego</string>
+    <string name="search_hint">Busca un juego</string>
 
 </resources>

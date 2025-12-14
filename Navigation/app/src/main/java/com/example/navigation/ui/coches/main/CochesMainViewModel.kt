@@ -4,29 +4,51 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.navigation.R
+import com.example.navigation.common.NetworkResult
 import com.example.navigation.domain.usecases.coches.GetCoches
+import com.example.navigation.domain.usecases.igdb.SearchGamesUsecase
+import com.example.navigation.ui.common.StringProvider
+import com.example.navigation.ui.common.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CochesMainViewModel @Inject constructor(
-    private val getCoches: GetCoches) : ViewModel() {
+    private val searchGamesUsecase: SearchGamesUsecase,
+    private val stringProvider: StringProvider
+) : ViewModel() {
+    private val _state = MutableStateFlow(CocheMainState())
+    val state: StateFlow<CocheMainState> = _state.asStateFlow()
 
-    private val _state = MutableLiveData(CocheMainState())
-    val state: LiveData<CocheMainState> get() = _state
-
-    init {
-        loadCoches()
+    fun handleIntent(intent: GameMainIntent) {
+        when (intent) {
+            is GameMainIntent.SearchGames -> searchGames(intent.query)
+        }
     }
 
-    fun loadCoches() {
+    private fun searchGames(query: String) {
         viewModelScope.launch {
-            try {
-                val cochesList = getCoches()
-                _state.value = _state.value?.copy(coches = cochesList)
-            } catch (_: Exception) {
-                // Error al cargar coches
+            val gamesList = searchGamesUsecase(query)
+            _state.update { it.copy(isLoading = true) }
+
+            when (gamesList) {
+                is NetworkResult.Success -> {
+                    _state.update { it.copy(coches = gamesList.data) }
+                    _state.update { it.copy(isLoading = false) }
+                }
+                is NetworkResult.Loading -> {
+                    _state.update { it.copy(isLoading = true) }
+                }
+                is NetworkResult.Error -> {
+                    _state.update { it.copy(event = UiEvent.ShowSnackbar(stringProvider.getString(R.string.error_guardar))) }
+                    _state.update { it.copy(isLoading = false) }
+                }
             }
         }
     }

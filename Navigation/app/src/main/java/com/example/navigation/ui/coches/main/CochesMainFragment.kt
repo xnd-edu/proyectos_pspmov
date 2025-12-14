@@ -6,19 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.navigation.databinding.FragmentCochesMainBinding
-import com.example.navigation.ui.common.StringProvider
-import com.example.navigation.domain.model.Coche
+import com.example.navigation.ui.SearchableFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CochesMainFragment : Fragment() {
+class CochesMainFragment : Fragment(), SearchableFragment {
 
     private var _binding: FragmentCochesMainBinding? = null
     private val binding get() = _binding!!
-    private lateinit var cochesAdapter: CochesAdapter
+    private lateinit var gamesAdapter: GamesAdapter
     private val viewModel: CochesMainViewModel by viewModels()
 
     override fun onCreateView(
@@ -32,46 +34,31 @@ class CochesMainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        events()
         configureRecyclerView()
         observarState()
     }
 
     private fun configureRecyclerView() {
-        cochesAdapter = CochesAdapter(
-            actions = object : CochesAdapter.CochesActions {
-                override fun onItemClick(coche: Coche) {
-                    val action = CochesMainFragmentDirections.actionCochesMainFragmentToCochesEditFragment(
-                        matricula = coche.matricula
-                    )
-                    findNavController().navigate(action)
-                }
-            },
-            stringProvider = StringProvider(requireContext())
-        )
+        gamesAdapter = GamesAdapter()
 
         binding.listaCoches.apply {
-            adapter = cochesAdapter
+            adapter = gamesAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
     }
 
     private fun observarState() {
-        viewModel.state.observe(viewLifecycleOwner) { state ->
-            cochesAdapter.submitList(state.coches)
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect { state ->
+                    gamesAdapter.submitList(state.coches)
+                }
+            }
         }
     }
 
-    private fun events() {
-        binding.buttonAnadir.setOnClickListener {
-            val action = CochesMainFragmentDirections.actionCochesMainFragmentToCochesNewFragment()
-            findNavController().navigate(action)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.loadCoches()
+    override fun onSearchQuery(query: String) {
+        viewModel.handleIntent(GameMainIntent.SearchGames(query))
     }
 
     override fun onDestroyView() {
