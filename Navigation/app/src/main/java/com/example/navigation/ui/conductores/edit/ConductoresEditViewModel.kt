@@ -1,17 +1,20 @@
 package com.example.navigation.ui.conductores.edit
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.navigation.R
-import com.example.navigation.domain.model.Conductor
+import com.example.navigation.common.NetworkResult
+import com.example.navigation.domain.model.JsonPlaceholderPost
 import com.example.navigation.domain.usecases.conductores.DeleteConductorUseCase
 import com.example.navigation.domain.usecases.conductores.GetConductorByDniUseCase
 import com.example.navigation.domain.usecases.conductores.UpdateConductorUseCase
 import com.example.navigation.ui.common.StringProvider
 import com.example.navigation.ui.common.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,61 +25,85 @@ class ConductoresEditViewModel @Inject constructor(
     private val deleteConductorUseCase: DeleteConductorUseCase,
     private val getConductor: GetConductorByDniUseCase
 ) : ViewModel() {
-    private var _state: MutableLiveData<ConductoresEditState> = MutableLiveData(ConductoresEditState())
-    val state: LiveData<ConductoresEditState> get() = _state
+    private val _state = MutableStateFlow(ConductoresEditState())
+    val state: StateFlow<ConductoresEditState> = _state.asStateFlow()
 
-    fun saveConductor(conductor: Conductor) {
+    fun handleIntent(intent: JsonPlaceholderEditIntent) {
+        when (intent) {
+            is JsonPlaceholderEditIntent.LoadPost -> loadPost(intent.id)
+            is JsonPlaceholderEditIntent.UpdatePost -> updatePost(intent.jsonPlaceholderPost)
+            is JsonPlaceholderEditIntent.DeletePost -> deletePost(intent.jsonPlaceholderPost)
+            is JsonPlaceholderEditIntent.LimpiarMensaje -> limpiarMensaje()
+        }
+    }
+
+    private fun loadPost(id: Int) {
         viewModelScope.launch {
-            val success = updateConductorUseCase(conductor)
+            val result = getConductor(id)
 
-            if (success) {
-                _state.value = _state.value?.copy(
-                    event = UiEvent.ShowSnackbar(stringProvider.getString(R.string.conductor_guardado_exito))
-                )
-                _state.value = _state.value?.copy(
-                    event = UiEvent.PopBackStack
-                )
-            } else {
-                _state.value = _state.value?.copy(
-                    event = UiEvent.ShowSnackbar(stringProvider.getString(R.string.error_guardar))
-                )
+            when (result) {
+                is NetworkResult.Success -> {
+                    _state.update { it.copy(conductor = result.data) }
+                }
+                is NetworkResult.Loading -> {
+                    // Optionally handle loading state
+                }
+                is NetworkResult.Error -> {
+                    _state.update {
+                        it.copy(event = UiEvent.ShowSnackbar(stringProvider.getString(R.string.error_get_conductor)))
+                    }
+                }
             }
         }
     }
 
-    fun deleteConductor(conductor: Conductor) {
+    private fun updatePost(jsonPlaceholderPost: JsonPlaceholderPost) {
         viewModelScope.launch {
-            val result = deleteConductorUseCase(conductor)
-            if (result) {
-                _state.value = _state.value?.copy(
-                    event = UiEvent.ShowSnackbar(stringProvider.getString(R.string.conductor_eliminado_exito))
-                )
-                _state.value = _state.value?.copy(
-                    event = UiEvent.PopBackStack
-                )
-            } else {
-                _state.value = _state.value?.copy(
-                    event = UiEvent.ShowSnackbar(stringProvider.getString(R.string.error_eliminar))
-                )
+            val result = updateConductorUseCase(jsonPlaceholderPost)
+
+            when (result) {
+                is NetworkResult.Success -> {
+                    _state.update {
+                        it.copy(event = UiEvent.ShowSnackbar(stringProvider.getString(R.string.conductor_guardado_exito)))
+                    }
+                    _state.update { it.copy(event = UiEvent.PopBackStack) }
+                }
+                is NetworkResult.Loading -> {
+                    // Optionally handle loading state
+                }
+                is NetworkResult.Error -> {
+                    _state.update {
+                        it.copy(event = UiEvent.ShowSnackbar(stringProvider.getString(R.string.error_guardar)))
+                    }
+                }
             }
         }
     }
 
-    fun loadConductor(dni: String) {
+    private fun deletePost(jsonPlaceholderPost: JsonPlaceholderPost) {
         viewModelScope.launch {
-            val conductor = getConductor(dni)
+            val result = deleteConductorUseCase(jsonPlaceholderPost)
 
-            if (conductor == null) {
-                _state.value = _state.value?.copy(
-                    event = UiEvent.ShowSnackbar(stringProvider.getString(R.string.error_get_conductor))
-                )
-            } else {
-                _state.value = _state.value?.copy(conductor = conductor) ?: ConductoresEditState(conductor)
+            when (result) {
+                is NetworkResult.Success -> {
+                    _state.update {
+                        it.copy(event = UiEvent.ShowSnackbar(stringProvider.getString(R.string.conductor_eliminado_exito)))
+                    }
+                    _state.update { it.copy(event = UiEvent.PopBackStack) }
+                }
+                is NetworkResult.Loading -> {
+                    // Optionally handle loading state
+                }
+                is NetworkResult.Error -> {
+                    _state.update {
+                        it.copy(event = UiEvent.ShowSnackbar(stringProvider.getString(R.string.error_eliminar)))
+                    }
+                }
             }
         }
     }
 
-    fun limpiarMensaje() {
-        _state.value = _state.value?.copy(event = null)
+    private fun limpiarMensaje() {
+        _state.update { it.copy(event = null) }
     }
 }

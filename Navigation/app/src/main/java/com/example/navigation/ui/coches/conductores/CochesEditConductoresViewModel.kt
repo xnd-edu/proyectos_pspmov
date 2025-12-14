@@ -30,7 +30,7 @@ class CochesEditConductoresViewModel @Inject constructor(
                 val conductoresList = getConductoresDeCoche(matricula)
                 _state.value = _state.value?.copy(conductores = conductoresList)
             } catch (_: Exception) {
-                // Error al cargar conductores
+                // Error al cargar jsonplaceholder
             }
         }
     }
@@ -40,10 +40,10 @@ class CochesEditConductoresViewModel @Inject constructor(
             try {
                 val todosConductores = getTodosConductores()
                 val conductoresAsignados = getConductoresDeCoche(matricula)
-                val disponibles = todosConductores.filter { conductor ->
-                    conductoresAsignados.none { it.dni == conductor.dni }
-                }
-                onResult(disponibles)
+//                val disponibles = todosConductores.filter { conductor ->
+//                    conductoresAsignados.none { it.dni == conductor.dni }
+//                }
+                onResult(conductoresAsignados)
             } catch (_: Exception) {
                 onResult(emptyList())
             }

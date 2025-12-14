@@ -65,5 +65,8 @@
     <string name="titulo_anadir_conductor">Añadir Conductor</string>
     <string name="titulo_conductores_del_coche">Conductores</string>
     <string name="titulo_coches_del_conductor">Coches</string>
+    <string name="titulo">Título</string>
+    <string name="cuerpo">Cuerpo</string>
+    <string name="id_usuario">ID Usuario</string>
 
 </resources>

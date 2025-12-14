@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.navigation.databinding.FragmentConductoresMainBinding
-import com.example.navigation.domain.model.Conductor
-import com.example.navigation.ui.common.StringProvider
+import com.example.navigation.domain.model.JsonPlaceholderPost
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ConductoresMainFragment : Fragment() {
@@ -40,14 +43,13 @@ class ConductoresMainFragment : Fragment() {
     private fun configureRecyclerView() {
         conductoresAdapter = ConductoresAdapter(
             actions = object : ConductoresAdapter.ConductoresActions {
-                override fun onItemClick(conductor: Conductor) {
+                override fun onItemClick(jsonPlaceholderPost: JsonPlaceholderPost) {
                     val action = ConductoresMainFragmentDirections.actionConductoresMainFragmentToConductoresEditFragment(
-                        dni = conductor.dni
+                        dni = jsonPlaceholderPost.id.toString()
                     )
                     findNavController().navigate(action)
                 }
-            },
-            stringProvider = StringProvider(requireContext())
+            }
         )
 
         binding.listaConductores.apply {
@@ -57,8 +59,12 @@ class ConductoresMainFragment : Fragment() {
     }
 
     private fun observarState() {
-        viewModel.state.observe(viewLifecycleOwner) { state ->
-            conductoresAdapter.submitList(state.conductores)
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect { state ->
+                    conductoresAdapter.submitList(state.conductores)
+                }
+            }
         }
     }
 
@@ -71,7 +77,7 @@ class ConductoresMainFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.loadConductores()
+        viewModel.handleIntent(JsonPlaceholderMainIntent.LoadConductores)
     }
 
     override fun onDestroyView() {

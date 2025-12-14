@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.navigation.R
 import com.example.navigation.databinding.ItemConductorBinding
 import com.example.navigation.domain.model.Conductor
+import com.example.navigation.domain.model.JsonPlaceholderPost
 import com.example.navigation.ui.common.StringProvider
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.listitem.ListItemLayout
@@ -12,20 +13,15 @@ import com.google.android.material.shape.ShapeAppearanceModel
 
 class ConductorItemViewholder(
     itemView: View,
-    val actions: ConductoresAdapter.ConductoresActions,
-    private val stringProvider: StringProvider
+    val actions: ConductoresAdapter.ConductoresActions
 ) : RecyclerView.ViewHolder(itemView) {
 
     private val binding = ItemConductorBinding.bind(itemView)
 
-    fun bind(item: Conductor, position: Int, itemCount: Int) {
+    fun bind(item: JsonPlaceholderPost, position: Int, itemCount: Int) {
         with(binding) {
-            conductorNombre.text = stringProvider.getString(
-                R.string.conductor_nombre,
-                item.apellidos ?: "",
-                item.nombre ?: ""
-            )
-            conductorDni.text = item.dni
+            conductorNombre.text = item.title
+            conductorDni.text = item.body
 
             itemView.setOnLongClickListener {
                 true

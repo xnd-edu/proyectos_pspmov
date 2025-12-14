@@ -1,7 +1,8 @@
 package com.example.navigation.ui.conductores.main
 
-import com.example.navigation.domain.model.Conductor
+import com.example.navigation.domain.model.JsonPlaceholderPost
 
 data class ConductoresMainState(
-    val conductores: List<Conductor> = emptyList(),
+    val conductores: List<JsonPlaceholderPost> = emptyList(),
+    val isLoading: Boolean = false
 )
