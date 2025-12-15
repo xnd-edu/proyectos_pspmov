@@ -17,30 +17,7 @@
             style="@style/Widget.Material3Expressive.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:titleTextColor="@android:color/primary_text_light">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/search_input_layout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:visibility="gone"
-                app:startIconDrawable="@android:drawable/ic_menu_search"
-                app:endIconMode="clear_text">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/search_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/search_hint"
-                    android:imeOptions="actionSearch"
-                    android:inputType="text"
-                    android:maxLines="1" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-        </com.google.android.material.appbar.MaterialToolbar>
+            app:titleTextColor="@android:color/primary_text_light" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

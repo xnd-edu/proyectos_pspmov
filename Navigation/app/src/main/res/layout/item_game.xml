@@ -24,7 +24,7 @@
             app:shapeAppearance="?attr/shapeAppearanceCornerMedium"
             app:shapeAppearanceOverlay="@style/GameCoverRounded"
             app:strokeColor="@android:color/darker_gray"
-            app:strokeWidth="1dp"
+            app:strokeWidth="@dimen/stroke_width_1"
             tools:src="@drawable/ic_launcher_foreground" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -42,35 +42,37 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/ivCharacterImage"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="The Legend of Zelda: Breath of the Wild" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvGameReleaseDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_16"
-            android:layout_marginTop="@dimen/small_margin"
-            android:textSize="12sp"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            app:layout_constraintTop_toBottomOf="@+id/tvGameName"
-            app:layout_constraintStart_toEndOf="@id/ivCharacterImage"
-            tools:text="2017" />
+            tools:text="@string/preview_game_name" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvGameRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_8"
+            android:layout_marginStart="@dimen/margin_16"
             android:layout_marginTop="@dimen/small_margin"
-            android:textSize="12sp"
-            android:textColor="?attr/colorPrimary"
+            android:background="@drawable/rating_background"
+            android:paddingStart="@dimen/rating_badge_padding_horizontal"
+            android:paddingEnd="@dimen/rating_badge_padding_horizontal"
+            android:paddingTop="@dimen/rating_badge_padding_vertical"
+            android:paddingBottom="@dimen/rating_badge_padding_vertical"
+            android:textSize="@dimen/text_size_12"
+            android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:drawablePadding="4dp"
-            app:drawableStartCompat="@drawable/star_24px"
-            app:drawableTint="?attr/colorPrimary"
             app:layout_constraintTop_toBottomOf="@+id/tvGameName"
-            app:layout_constraintStart_toEndOf="@id/tvGameReleaseDate"
-            tools:text="97/100" />
+            app:layout_constraintStart_toEndOf="@id/ivCharacterImage"
+            tools:text="@string/preview_game_rating" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvGameReleaseDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_8"
+            android:textSize="@dimen/text_size_12"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            app:layout_constraintTop_toTopOf="@id/tvGameRating"
+            app:layout_constraintBottom_toBottomOf="@id/tvGameRating"
+            app:layout_constraintStart_toEndOf="@id/tvGameRating"
+            tools:text="@string/preview_game_date" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvGameSummary"
@@ -82,13 +84,13 @@
             android:layout_marginBottom="@dimen/margin_8"
             android:textSize="@dimen/subtitleSize"
             android:textColor="?attr/colorOnSurfaceVariant"
-            android:maxLines="3"
+            android:maxLines="4"
             android:ellipsize="end"
-            app:layout_constraintTop_toBottomOf="@+id/tvGameReleaseDate"
+            app:layout_constraintTop_toBottomOf="@+id/tvGameRating"
             app:layout_constraintStart_toEndOf="@id/ivCharacterImage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="An epic adventure game set in a vast open world with stunning landscapes and challenging puzzles." />
+            tools:text="@string/preview_game_summary" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -16,5 +16,9 @@
     <dimen name="card_corner_radius_tiny">4dp</dimen>
     <dimen name="game_cover_width">135dp</dimen>
     <dimen name="game_cover_height">180dp</dimen>
+    <dimen name="rating_badge_padding_horizontal">8dp</dimen>
+    <dimen name="rating_badge_padding_vertical">4dp</dimen>
+    <dimen name="stroke_width_1">1dp</dimen>
+    <dimen name="text_size_12">12sp</dimen>
 
 </resources>

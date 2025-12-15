@@ -1,5 +1,6 @@
 package com.example.navigation.data
 
+import com.example.navigation.common.NetworkError
 import com.example.navigation.common.NetworkResult
 import com.example.navigation.data.remote.api.JsonPlaceholderApi
 import com.example.navigation.domain.model.JsonPlaceholderPost
@@ -14,88 +15,39 @@ import javax.inject.Singleton
 class JsonPlaceholderRepository @Inject constructor(
     private val api: JsonPlaceholderApi
 ) {
-    suspend fun getPosts(): NetworkResult<List<JsonPlaceholderPost>> {
+    private suspend fun <T> safeApiCall(apiCall: suspend () -> T): NetworkResult<T> {
         return try {
-            val response = api.getPosts()
-            NetworkResult.Success(response)
+            NetworkResult.Success(apiCall())
         } catch (e: SocketTimeoutException) {
-            NetworkResult.Error("Tiempo de espera agotado. Verifica tu conexión a internet.")
+            NetworkResult.Error(NetworkError.Timeout)
         } catch (e: UnknownHostException) {
-            NetworkResult.Error("No se pudo conectar al servidor. Verifica tu conexión a internet.")
+            NetworkResult.Error(NetworkError.NoConnection)
         } catch (e: IOException) {
-            NetworkResult.Error("Error de red. Por favor, inténtalo de nuevo.")
+            NetworkResult.Error(NetworkError.Connection)
         } catch (e: HttpException) {
-            NetworkResult.Error("Error del servidor (${e.code()}). Inténtalo más tarde.")
+            NetworkResult.Error(NetworkError.ServerError(e.code()))
         } catch (e: Exception) {
-            NetworkResult.Error("Error inesperado: ${e.message ?: "Desconocido"}")
+            NetworkResult.Error(NetworkError.Unknown(e.message))
         }
+    }
+
+    suspend fun getPosts(): NetworkResult<List<JsonPlaceholderPost>> {
+        return safeApiCall { api.getPosts() }
     }
 
     suspend fun addPost(post: JsonPlaceholderPost): NetworkResult<JsonPlaceholderPost> {
-        return try {
-            val response = api.addPost(post)
-            NetworkResult.Success(response)
-        } catch (e: SocketTimeoutException) {
-            NetworkResult.Error("Tiempo de espera agotado. Verifica tu conexión a internet.")
-        } catch (e: UnknownHostException) {
-            NetworkResult.Error("No se pudo conectar al servidor. Verifica tu conexión a internet.")
-        } catch (e: IOException) {
-            NetworkResult.Error("Error de red. Por favor, inténtalo de nuevo.")
-        } catch (e: HttpException) {
-            NetworkResult.Error("Error del servidor (${e.code()}). Inténtalo más tarde.")
-        } catch (e: Exception) {
-            NetworkResult.Error("Error inesperado: ${e.message ?: "Desconocido"}")
-        }
+        return safeApiCall { api.addPost(post) }
     }
 
     suspend fun getPost(id: Int): NetworkResult<JsonPlaceholderPost> {
-        return try {
-            val response = api.getPost(id)
-            NetworkResult.Success(response)
-        } catch (e: SocketTimeoutException) {
-            NetworkResult.Error("Tiempo de espera agotado. Verifica tu conexión a internet.")
-        } catch (e: UnknownHostException) {
-            NetworkResult.Error("No se pudo conectar al servidor. Verifica tu conexión a internet.")
-        } catch (e: IOException) {
-            NetworkResult.Error("Error de red. Por favor, inténtalo de nuevo.")
-        } catch (e: HttpException) {
-            NetworkResult.Error("Error del servidor (${e.code()}). Inténtalo más tarde.")
-        } catch (e: Exception) {
-            NetworkResult.Error("Error inesperado: ${e.message ?: "Desconocido"}")
-        }
+        return safeApiCall { api.getPost(id) }
     }
 
     suspend fun updatePost(post: JsonPlaceholderPost): NetworkResult<JsonPlaceholderPost> {
-        return try {
-            val response = api.updatePost(post.id, post)
-            NetworkResult.Success(response)
-        } catch (e: SocketTimeoutException) {
-            NetworkResult.Error("Tiempo de espera agotado. Verifica tu conexión a internet.")
-        } catch (e: UnknownHostException) {
-            NetworkResult.Error("No se pudo conectar al servidor. Verifica tu conexión a internet.")
-        } catch (e: IOException) {
-            NetworkResult.Error("Error de red. Por favor, inténtalo de nuevo.")
-        } catch (e: HttpException) {
-            NetworkResult.Error("Error del servidor (${e.code()}). Inténtalo más tarde.")
-        } catch (e: Exception) {
-            NetworkResult.Error("Error inesperado: ${e.message ?: "Desconocido"}")
-        }
+        return safeApiCall { api.updatePost(post.id, post) }
     }
 
     suspend fun deletePost(id: Int): NetworkResult<Unit> {
-        return try {
-            api.deletePost(id)
-            NetworkResult.Success(Unit)
-        } catch (e: SocketTimeoutException) {
-            NetworkResult.Error("Tiempo de espera agotado. Verifica tu conexión a internet.")
-        } catch (e: UnknownHostException) {
-            NetworkResult.Error("No se pudo conectar al servidor. Verifica tu conexión a internet.")
-        } catch (e: IOException) {
-            NetworkResult.Error("Error de red. Por favor, inténtalo de nuevo.")
-        } catch (e: HttpException) {
-            NetworkResult.Error("Error del servidor (${e.code()}). Inténtalo más tarde.")
-        } catch (e: Exception) {
-            NetworkResult.Error("Error inesperado: ${e.message ?: "Desconocido"}")
-        }
+        return safeApiCall { api.deletePost(id) }
     }
 }

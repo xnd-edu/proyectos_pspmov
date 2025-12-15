@@ -1,5 +1,8 @@
 package com.example.navigation.data
 
+import com.example.navigation.common.ApiConstants
+import com.example.navigation.common.IgdbQueryConstants
+import com.example.navigation.common.NetworkError
 import com.example.navigation.common.NetworkResult
 import com.example.navigation.data.remote.api.IGDBApi
 import com.example.navigation.domain.model.Game
@@ -18,25 +21,25 @@ class IGDBRepository @Inject constructor(
 ) {
     suspend fun searchGames(searchQuery: String, limit: Int = 10): NetworkResult<List<Game>> {
         return try {
-            val query = "search \"$searchQuery\"; fields name, first_release_date, summary, rating, cover.image_id; limit $limit;"
-            val requestBody = query.toRequestBody("text/plain".toMediaTypeOrNull())
+            val query = String.format(IgdbQueryConstants.SEARCH_QUERY_TEMPLATE, searchQuery, limit)
+            val requestBody = query.toRequestBody(ApiConstants.CONTENT_TYPE_TEXT_PLAIN.toMediaTypeOrNull())
             val response = api.searchGames(requestBody)
 
             if (response.isSuccessful) {
                 NetworkResult.Success(response.body() ?: emptyList())
             } else {
-                NetworkResult.Error("Error del servidor (${response.code()}). Inténtalo más tarde.")
+                NetworkResult.Error(NetworkError.ServerError(response.code()))
             }
         } catch (e: SocketTimeoutException) {
-            NetworkResult.Error("Tiempo de espera agotado. Verifica tu conexión a internet.")
+            NetworkResult.Error(NetworkError.Timeout)
         } catch (e: UnknownHostException) {
-            NetworkResult.Error("No se pudo conectar al servidor. Verifica tu conexión a internet.")
+            NetworkResult.Error(NetworkError.NoConnection)
         } catch (e: IOException) {
-            NetworkResult.Error("Error de red. Por favor, inténtalo de nuevo.")
+            NetworkResult.Error(NetworkError.Connection)
         } catch (e: HttpException) {
-            NetworkResult.Error("Error del servidor (${e.code()}). Inténtalo más tarde.")
+            NetworkResult.Error(NetworkError.ServerError(e.code()))
         } catch (e: Exception) {
-            NetworkResult.Error("Error inesperado: ${e.message ?: "Desconocido"}")
+            NetworkResult.Error(NetworkError.Unknown(e.message))
         }
     }
 }

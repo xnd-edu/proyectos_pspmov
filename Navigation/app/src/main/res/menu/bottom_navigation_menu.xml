@@ -3,11 +3,11 @@
     <item
         android:id="@+id/cochesMainFragment"
         android:enabled="true"
-        android:icon="@drawable/directions_car_24px"
+        android:icon="@drawable/sports_esports_24px"
         android:title="@string/page_1"/>
     <item
         android:id="@+id/conductoresMainFragment"
         android:enabled="true"
-        android:icon="@drawable/person_24px"
+        android:icon="@drawable/library_books_24px"
         android:title="@string/page_2"/>
 </menu>

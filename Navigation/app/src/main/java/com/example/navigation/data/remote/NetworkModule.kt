@@ -1,10 +1,11 @@
 package com.example.navigation.data.remote
 
 import com.example.navigation.BuildConfig
+import com.example.navigation.common.ApiConstants
+import com.example.navigation.common.DaggerNames
 import com.example.navigation.data.remote.api.IGDBApi
 import com.example.navigation.data.remote.api.JsonPlaceholderApi
 import com.example.navigation.data.remote.igdb.IgdbAuthInterceptor
-import com.example.navigation.data.remote.igdb.TwitchAuthApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,9 +30,6 @@ object NetworkModule {
 
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .connectTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
-            .readTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
-            .writeTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
             .build()
     }
 
@@ -39,7 +37,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://jsonplaceholder.typicode.com/")
+            .baseUrl(ApiConstants.JSON_PLACEHOLDER_BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -51,24 +49,14 @@ object NetworkModule {
         return retrofit.create(JsonPlaceholderApi::class.java)
     }
 
-    // === IGDB / Twitch Configuration ===
-
     @Provides
     @Singleton
-    @Named("TwitchAuth")
+    @Named(DaggerNames.TWITCH_AUTH)
     fun provideTwitchAuthRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://id.twitch.tv/")
+            .baseUrl(ApiConstants.TWITCH_AUTH_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideTwitchAuthApi(
-        @Named("TwitchAuth") retrofit: Retrofit
-    ): TwitchAuthApi {
-        return retrofit.create(TwitchAuthApi::class.java)
     }
 
     @Provides
@@ -82,7 +70,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @Named("IgdbOkHttp")
+    @Named(DaggerNames.IGDB_OKHTTP)
     fun provideIgdbOkHttpClient(
         igdbAuthInterceptor: IgdbAuthInterceptor
     ): OkHttpClient {
@@ -93,20 +81,17 @@ object NetworkModule {
         return OkHttpClient.Builder()
             .addInterceptor(igdbAuthInterceptor)
             .addInterceptor(loggingInterceptor)
-            .connectTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
-            .readTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
-            .writeTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
             .build()
     }
 
     @Provides
     @Singleton
-    @Named("Igdb")
+    @Named(DaggerNames.IGDB)
     fun provideIgdbRetrofit(
-        @Named("IgdbOkHttp") okHttpClient: OkHttpClient
+        @Named(DaggerNames.IGDB_OKHTTP) okHttpClient: OkHttpClient
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://api.igdb.com/v4/")
+            .baseUrl(ApiConstants.IGDB_BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -115,7 +100,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideIgdbApi(
-        @Named("Igdb") retrofit: Retrofit
+        @Named(DaggerNames.IGDB) retrofit: Retrofit
     ): IGDBApi {
         return retrofit.create(IGDBApi::class.java)
     }
