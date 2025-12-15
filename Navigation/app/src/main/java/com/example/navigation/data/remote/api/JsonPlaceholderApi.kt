@@ -1,5 +1,6 @@
 package com.example.navigation.data.remote.api
 
+import com.example.navigation.common.ApiEndpoints
 import com.example.navigation.domain.model.JsonPlaceholderPost
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -9,18 +10,18 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface JsonPlaceholderApi {
-    @GET("posts")
+    @GET(ApiEndpoints.POSTS)
     suspend fun getPosts(): List<JsonPlaceholderPost>
 
-    @GET("posts/{id}")
-    suspend fun getPost(@Path("id") id: Int): JsonPlaceholderPost
+    @GET(ApiEndpoints.POSTS_BY_ID)
+    suspend fun getPost(@Path(ApiEndpoints.PATH_ID) id: Int): JsonPlaceholderPost
 
-    @POST("posts")
+    @POST(ApiEndpoints.POSTS)
     suspend fun addPost(@Body post: JsonPlaceholderPost): JsonPlaceholderPost
 
-    @PUT("posts/{id}")
-    suspend fun updatePost(@Path("id") id: Int, @Body post: JsonPlaceholderPost): JsonPlaceholderPost
+    @PUT(ApiEndpoints.POSTS_BY_ID)
+    suspend fun updatePost(@Path(ApiEndpoints.PATH_ID) id: Int, @Body post: JsonPlaceholderPost): JsonPlaceholderPost
 
-    @DELETE("posts/{id}")
-    suspend fun deletePost(@Path("id") id: Int)
+    @DELETE(ApiEndpoints.POSTS_BY_ID)
+    suspend fun deletePost(@Path(ApiEndpoints.PATH_ID) id: Int)
 }

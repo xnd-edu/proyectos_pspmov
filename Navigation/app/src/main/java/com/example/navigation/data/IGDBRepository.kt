@@ -19,7 +19,7 @@ import javax.inject.Singleton
 class IGDBRepository @Inject constructor(
     private val api: IGDBApi
 ) {
-    suspend fun searchGames(searchQuery: String, limit: Int = 10): NetworkResult<List<Game>> {
+    suspend fun searchGames(searchQuery: String, limit: Int = IgdbQueryConstants.DEFAULT_SEARCH_LIMIT): NetworkResult<List<Game>> {
         return try {
             val query = String.format(IgdbQueryConstants.SEARCH_QUERY_TEMPLATE, searchQuery, limit)
             val requestBody = query.toRequestBody(ApiConstants.CONTENT_TYPE_TEXT_PLAIN.toMediaTypeOrNull())

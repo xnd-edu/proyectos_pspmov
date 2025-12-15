@@ -1,29 +1,30 @@
 package com.example.navigation.domain.model
 
+import com.example.navigation.common.IgdbFieldNames
 import com.google.gson.annotations.SerializedName
 
 data class Game(
-    @SerializedName("id")
+    @SerializedName(IgdbFieldNames.ID)
     val id: Int,
 
-    @SerializedName("name")
+    @SerializedName(IgdbFieldNames.NAME)
     val name: String,
 
-    @SerializedName("rating")
+    @SerializedName(IgdbFieldNames.RATING)
     val rating: Double? = null,
 
-    @SerializedName("summary")
+    @SerializedName(IgdbFieldNames.SUMMARY)
     val summary: String? = null,
 
-    @SerializedName("cover")
+    @SerializedName(IgdbFieldNames.COVER)
     val cover: GameCover? = null,
 
-    @SerializedName("first_release_date")
+    @SerializedName(IgdbFieldNames.FIRST_RELEASE_DATE)
     val firstReleaseDate: Long? = null
 )
 
 data class GameCover(
-    @SerializedName("image_id")
+    @SerializedName(IgdbFieldNames.IMAGE_ID)
     val imageId: String
 )
 
