@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">ComposeApp</string>
+    <string name="anyadirCoche">Añadir Coche</string>
+    <string name="matricula">Matrícula</string>
+    <string name="electrico">Eléctrico</string>
+    <string name="marca">Marca</string>
+    <string name="modelo">Modelo</string>
+    <string name="fechaMatricula">Fecha matr.</string>
+    <string name="color">Color</string>
+    <string name="tipoCoche">Tipo Coche:</string>
+    <string name="sedan">Sedán</string>
+    <string name="suv">SUV</string>
+    <string name="otro">Otro</string>
+    <string name="comentarios">Comentarios</string>
+    <string name="contador">0/0</string>
+
+    <!-- Mensajes ViewModel -->
+    <string name="msg_no_coches_anteriores">No hay coches anteriores</string>
+    <string name="msg_no_mas_coches">No hay más coches</string>
+    <string name="msg_coche_guardado">Coche guardado con éxito</string>
+    <string name="msg_error_guardar_coche">Error al guardar el coche</string>
+    <string name="msg_matricula_vacia">Matrícula no puede estar vacía</string>
+    <string name="msg_coche_actualizado">Coche actualizado con éxito</string>
+    <string name="msg_error_actualizar_coche">Error al actualizar el coche</string>
+    <string name="msg_coche_eliminado">Coche eliminado con éxito</string>
+    <string name="msg_error_eliminar_coche">Error al eliminar el coche</string>
+</resources>
