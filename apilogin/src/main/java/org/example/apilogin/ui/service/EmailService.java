@@ -38,7 +38,29 @@ public class EmailService {
             helper.setText(htmlContent, true);
 
             mailSender.send(message);
-        } catch (MessagingException e) {
+        } catch (MessagingException _) {
+            throw new EmailException(Constantes.EMAIL_ERROR_ENVIO);
+        }
+    }
+
+    public void enviarCodigo2FA(String usuario, String email, String codigo) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, Constantes.CHARSET_UTF8);
+
+            helper.setTo(email);
+            helper.setSubject(Constantes.EMAIL_SUBJECT_2FA);
+
+            Context context = new Context();
+            context.setVariable(Constantes.PARAM_USUARIO, usuario);
+            context.setVariable(Constantes.PARAM_CODIGO_2FA, codigo);
+
+            String htmlContent = templateEngine.process(Constantes.TEMPLATE_EMAIL_2FA, context);
+
+            helper.setText(htmlContent, true);
+
+            mailSender.send(message);
+        } catch (MessagingException _) {
             throw new EmailException(Constantes.EMAIL_ERROR_ENVIO);
         }
     }

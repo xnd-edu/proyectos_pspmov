@@ -1,0 +1,50 @@
+### FLUJO COMPLETO: Usuario SIN 2FA habilitado
+
+### 1. Login normal (sin 2FA)
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "juan",
+  "password": "juan123"
+}
+
+### 2. Habilitar 2FA (generar QR)
+POST http://localhost:8080/2fa/enable?method=TOTP
+
+### 3. Confirmar 2FA con código de la app
+POST http://localhost:8080/2fa/confirm
+Content-Type: application/json
+
+{
+  "code": "306019"
+}
+
+### 4. Logout
+POST http://localhost:8080/logout
+
+###
+### FLUJO COMPLETO: Usuario CON 2FA habilitado
+
+### 5. Login con usuario que tiene 2FA habilitado (retorna 202 Accepted)
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "juan",
+  "password": "juan123"
+}
+
+### 6. Verificar código 2FA para completar login
+POST http://localhost:8080/2fa/verify
+Content-Type: application/json
+
+{
+  "code": "172061"
+}
+
+### 7. Ahora el usuario está autenticado y puede acceder a recursos protegidos
+POST http://localhost:8080/logout
+
+###
+

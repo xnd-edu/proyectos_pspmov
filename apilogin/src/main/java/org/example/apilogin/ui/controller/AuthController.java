@@ -4,10 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import org.example.apilogin.common.Constantes;
 import org.example.apilogin.domain.model.Usuario;
 import org.example.apilogin.domain.service.UsuarioService;
-import org.example.apilogin.ui.dto.LoginDTO;
-import org.example.apilogin.ui.dto.LoginResponse;
-import org.example.apilogin.ui.dto.RegisterDTO;
-import org.example.apilogin.ui.dto.UsuarioDTO;
+import org.example.apilogin.ui.dto.*;
 import org.example.apilogin.ui.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +25,11 @@ public class AuthController {
     @PostMapping(Constantes.API_LOGIN)
     public ResponseEntity<LoginResponse> login(@RequestBody LoginDTO request, HttpSession session) {
         Usuario usuario = authService.login(request.username(), request.password(), session);
+
+        if (Boolean.TRUE.equals(usuario.twoFactorEnabled())) {
+            LoginResponse response = new LoginResponse(Constantes.MSG_2FA_REQUIRED);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+        }
 
         UsuarioDTO usuarioDTO = new UsuarioDTO(
                 usuario.id(),

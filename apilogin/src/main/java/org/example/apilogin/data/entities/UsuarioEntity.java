@@ -3,6 +3,7 @@ package org.example.apilogin.data.entities;
 import jakarta.persistence.*;
 import org.example.apilogin.common.Constantes;
 import org.example.apilogin.domain.model.Rol;
+import org.example.apilogin.domain.model.TwoFactorMethod;
 
 import java.time.LocalDateTime;
 
@@ -24,6 +25,13 @@ public class UsuarioEntity {
 
     @Enumerated(EnumType.STRING)
     private Rol rol;
+
+    private Boolean twoFactorEnabled;
+
+    @Enumerated(EnumType.STRING)
+    private TwoFactorMethod twoFactorMethod;
+
+    private String twoFactorSecret;
 
     public UsuarioEntity() {
         // Constructor requerido por JPA
@@ -99,5 +107,29 @@ public class UsuarioEntity {
 
     public void setRol(Rol rol) {
         this.rol = rol;
+    }
+
+    public Boolean getTwoFactorEnabled() {
+        return twoFactorEnabled;
+    }
+
+    public void setTwoFactorEnabled(Boolean twoFactorEnabled) {
+        this.twoFactorEnabled = twoFactorEnabled;
+    }
+
+    public TwoFactorMethod getTwoFactorMethod() {
+        return twoFactorMethod;
+    }
+
+    public void setTwoFactorMethod(TwoFactorMethod twoFactorMethod) {
+        this.twoFactorMethod = twoFactorMethod;
+    }
+
+    public String getTwoFactorSecret() {
+        return twoFactorSecret;
+    }
+
+    public void setTwoFactorSecret(String twoFactorSecret) {
+        this.twoFactorSecret = twoFactorSecret;
     }
 }

@@ -1,0 +1,53 @@
+### FLUJO COMPLETO: 2FA por EMAIL
+
+### 1. Login normal (sin 2FA habilitado)
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "maria",
+  "password": "maria123"
+}
+
+### 2. Habilitar 2FA por EMAIL
+POST http://localhost:8080/2fa/enable?method=EMAIL
+
+### 3. Revisar el email y obtener el código (válido por 10 minutos)
+
+### 4. Confirmar 2FA con código del email
+POST http://localhost:8080/2fa/confirm
+Content-Type: application/json
+
+{
+  "code": "660153"
+}
+
+### 5. Logout
+POST http://localhost:8080/logout
+
+###
+### FLUJO DE LOGIN: Usuario CON 2FA EMAIL habilitado
+
+### 6. Login con usuario que tiene 2FA EMAIL (se envía código automáticamente)
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "maria",
+  "password": "maria123"
+}
+
+### 7. Revisar el email y obtener el código (válido por 10 minutos)
+### El código se envió automáticamente al hacer login
+
+### 8. Verificar código EMAIL para completar login
+POST http://localhost:8080/2fa/verify
+Content-Type: application/json
+
+{
+  "code": "224677"
+}
+
+### 9. Ahora el usuario está autenticado
+POST http://localhost:8080/logout
+

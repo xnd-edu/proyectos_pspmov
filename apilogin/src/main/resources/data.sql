@@ -1,6 +1,6 @@
 -- ADMIN
 INSERT INTO usuarios
-(username, password, email, nombre, activado, codigo_activacion, fecha_expiracion_codigo, rol)
+(username, password, email, nombre, activado, codigo_activacion, fecha_expiracion_codigo, rol, two_factor_enabled, two_factor_secret)
 VALUES
     (
         'admin',
@@ -10,12 +10,14 @@ VALUES
         true,
         NULL,
         NULL,
-        'ADMIN'
+        'ADMIN',
+        false,
+        ''
     );
 
 -- JUAN
 INSERT INTO usuarios
-(username, password, email, nombre, activado, codigo_activacion, fecha_expiracion_codigo, rol)
+(username, password, email, nombre, activado, codigo_activacion, fecha_expiracion_codigo, rol, two_factor_enabled, two_factor_secret)
 VALUES
     (
         'juan',
@@ -25,12 +27,14 @@ VALUES
         true,
         NULL,
         NULL,
-        'USER'
+        'USER',
+        false,
+        ''
     );
 
 -- MARIA
 INSERT INTO usuarios
-(username, password, email, nombre, activado, codigo_activacion, fecha_expiracion_codigo, rol)
+(username, password, email, nombre, activado, codigo_activacion, fecha_expiracion_codigo, rol, two_factor_enabled, two_factor_secret)
 VALUES
     (
         'maria',
@@ -40,7 +44,9 @@ VALUES
         true,
         NULL,
         NULL,
-        'USER'
+        'USER',
+        false,
+        ''
     );
 
 -- Renos de prueba

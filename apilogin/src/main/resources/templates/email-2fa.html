@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Código de Verificación 2FA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .email-header {
+            background-color: #2196F3;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .email-header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+        .email-body {
+            padding: 40px 30px;
+            color: #333333;
+        }
+        .email-body h2 {
+            color: #2196F3;
+            margin-top: 0;
+        }
+        .email-body p {
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+        .codigo-container {
+            background-color: #f9f9f9;
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: center;
+        }
+        .codigo-2fa {
+            font-size: 36px;
+            font-weight: bold;
+            color: #2196F3;
+            letter-spacing: 8px;
+            font-family: 'Courier New', monospace;
+        }
+        .email-footer {
+            background-color: #f4f4f4;
+            padding: 20px 30px;
+            text-align: center;
+            color: #666666;
+            font-size: 12px;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .security-tip {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            <h1>🔐 Verificación de Seguridad</h1>
+        </div>
+
+        <div class="email-body">
+            <h2>Hola, <span th:text="${usuario}">Usuario</span>!</h2>
+
+            <p>Has solicitado iniciar sesión en tu cuenta con autenticación de dos factores (2FA).</p>
+
+            <p>Para completar el proceso de inicio de sesión, utiliza el siguiente código de verificación:</p>
+
+            <div class="codigo-container">
+                <p style="margin: 0; font-size: 14px; color: #666;">Tu código de verificación es:</p>
+                <div class="codigo-2fa" th:text="${codigo2FA}">123456</div>
+            </div>
+
+            <div class="warning">
+                <p style="margin: 0;"><strong>⏰ Importante:</strong> Este código es válido por <strong>10 minutos</strong>. Si ha expirado, deberás iniciar sesión nuevamente para recibir un nuevo código.</p>
+            </div>
+
+            <div class="security-tip">
+                <p style="margin: 0;"><strong>💡 Consejo de seguridad:</strong> Nunca compartas este código con nadie. Nuestro equipo nunca te pedirá este código por teléfono o correo electrónico.</p>
+            </div>
+
+            <p>Si no has solicitado este código, es posible que alguien esté intentando acceder a tu cuenta. Te recomendamos cambiar tu contraseña de inmediato.</p>
+
+            <p>Saludos cordiales,<br>El equipo de seguridad</p>
+        </div>
+
+        <div class="email-footer">
+            <p>Este es un correo automático, por favor no respondas a este mensaje.</p>
+            <p>&copy; <span th:text="${#dates.year(#dates.createNow())}">2025</span> Tu Aplicación. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</body>
+</html>
+

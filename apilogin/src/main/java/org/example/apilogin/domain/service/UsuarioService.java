@@ -67,4 +67,21 @@ public class UsuarioService {
         return usuarioMapper.toDomain(usuarioRepository.save(entity));
     }
 
+    public Usuario findById(Long id) {
+        UsuarioEntity entity = usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(Constantes.MSG_USUARIO_NO_ENCONTRADO));
+        return usuarioMapper.toDomain(entity);
+    }
+
+    public void update2FA(Usuario usuario) {
+        UsuarioEntity entity = usuarioRepository.findById(usuario.id())
+                .orElseThrow(() -> new ResourceNotFoundException(Constantes.MSG_USUARIO_NO_ENCONTRADO));
+
+        entity.setTwoFactorEnabled(usuario.twoFactorEnabled());
+        entity.setTwoFactorMethod(usuario.twoFactorMethod());
+        entity.setTwoFactorSecret(usuario.twoFactorSecret());
+        entity.setFechaExpiracionCodigo(usuario.fechaExpiracionCodigo());
+
+        usuarioRepository.save(entity);
+    }
 }
