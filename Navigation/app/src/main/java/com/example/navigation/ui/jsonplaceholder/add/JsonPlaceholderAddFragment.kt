@@ -11,7 +11,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.example.navigation.common.JsonPlaceholderConstants
 import com.example.navigation.databinding.FragmentPostsAddBinding
 import com.example.navigation.domain.model.JsonPlaceholderPost
 import com.example.navigation.ui.common.UiEvent

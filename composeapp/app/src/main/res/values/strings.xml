@@ -14,6 +14,14 @@
     <string name="comentarios">Comentarios</string>
     <string name="contador">0/0</string>
 
+    <!-- Content Descriptions -->
+    <string name="cd_coche_anterior">Coche anterior</string>
+    <string name="cd_siguiente_coche">Siguiente coche</string>
+    <string name="cd_limpiar">Limpiar</string>
+    <string name="cd_actualizar">Actualizar</string>
+    <string name="cd_eliminar">Eliminar</string>
+    <string name="cd_guardar">Guardar</string>
+
     <!-- Mensajes ViewModel -->
     <string name="msg_no_coches_anteriores">No hay coches anteriores</string>
     <string name="msg_no_mas_coches">No hay más coches</string>
