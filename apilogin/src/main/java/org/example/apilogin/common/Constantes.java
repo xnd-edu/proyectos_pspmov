@@ -10,8 +10,16 @@ public final class Constantes {
 
     public static final String URL = "http://localhost:8080";
 
-    public static final String SESSION_ATTR_USUARIO = "usuario";
-    public static final String SESSION_ATTR_2FA_PENDING_USER_ID = "2fa_pending_user_id";
+    public static final String SPRING_JWT_SECRET = "${application.security.jwt.secret-key}";
+    public static final String SPRING_JWT_EXPIRATION = "${application.security.jwt.expiration}";
+    public static final String SPRING_JWT_REFRESH_EXPIRATION = "${application.security.jwt.refresh-token.expiration}";
+    public static final String SPRING_2FA_CODE_EXPIRATION = "${application.security.jwt.pretoken.expiration}";
+
+    public static final String ATTR_USUARIO = "usuario";
+    public static final String ATTR_ROL = "rol";
+    public static final String ATTR_USER_ID = "userId";
+
+    public static final String HEADER_X_PRETOKEN = "X-PreToken";
 
     public static final String MSG_LOGIN_EXITOSO = "Login exitoso";
     public static final String MSG_LOGOUT_EXITOSO = "Logout exitoso";
@@ -42,7 +50,8 @@ public final class Constantes {
     public static final String EMAIL_ERROR_ENVIO = "Error al enviar el email de activación";
     public static final String CHARSET_UTF8 = "UTF-8";
 
-    public static final String API_BASE_RENOS = "api/renos";
+    public static final String API_ADMIN_RENOS = "/api/admin/renos";
+    public static final String API_USER_RENOS = "/api/user/renos";
     public static final String API_LOGIN = "/login";
     public static final String API_LOGOUT = "/logout";
     public static final String API_ENABLE_2FA = "/2fa/enable";
@@ -54,8 +63,12 @@ public final class Constantes {
     public static final String API_RENO_FILTRAR = "/filtrar";
     public static final String API_RENO_UPDATE = "/update/{id}";
     public static final String API_RENO_DELETE = "/delete/{id}";
+    public static final String API_JWT = "/token";
+    public static final String API_JWT_VALIDATE = "/validate";
+    public static final String API_JWT_REFRESH = "/refresh";
 
     public static final String API_PATH_PATTERN = "/api/**";
+    public static final String API_2FA_PATH_PATTERN = "/2fa/**";
 
     public static final String TEMPLATE_EMAIL_ACTIVACION = "email-activacion";
     public static final String TEMPLATE_EMAIL_2FA = "email-2fa";
@@ -70,5 +83,20 @@ public final class Constantes {
 
     public static final String TABLE_USUARIOS = "usuarios";
     public static final String TABLE_RENOS = "renos";
+    public static final String TABLE_TOKENS = "tokens";
+
+    public static final String JWT_CLAIM_AUTH = "auth";
+    public static final String JWT_CLAIM_USER_ID = "userId";
+    public static final String JWT_LOG_ERROR_FIRMA = "Error al generar la clave de firma JWT: Algoritmo {} no encontrado";
+    public static final String JWT_ALGORITHM_SHA512 = "SHA-512";
+    public static final String JWT_ALGORITHM_AES = "AES";
+    public static final int JWT_KEY_SIZE = 64;
+    public static final String PENDING2FA = "pending2FA";
+
+    public static final int JWT_BEARER_PREFIX_LENGTH = 7;
+    public static final String JWT_HEADER_AUTHORIZATION = "Authorization";
+    public static final String JWT_TOKEN_TYPE_BEARER = "Bearer";
+    public static final String JWT_REFRESH_TOKEN_INVALIDO = "Refresh token inválido o expirado";
+    public static final String JWT_USER_ID_INVALID_TYPE = "userId claim is not a number: %s";
 }
 

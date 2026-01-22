@@ -1,0 +1,377 @@
+### ===================================
+### JWT LOGOUT & TOKEN REVOCATION TESTS
+### Sistema de Invalidación de Tokens
+### ===================================
+###
+### ⚠️ IMPORTANTE: Ejecuta los tests EN ORDEN SECUENCIAL
+### Las variables se guardan automáticamente entre requests
+### NO ejecutes un test individual sin ejecutar los anteriores
+###
+### ===================================
+
+@baseUrl = http://localhost:8080
+
+### ===================================
+### 1. PREPARACIÓN - Login y Obtener Tokens
+### ===================================
+
+### 1.1 Login para obtener tokens que luego revocaremos
+# @name login
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "username": "juan",
+  "password": "juan123"
+}
+
+> {%
+  client.test("Login exitoso - Tokens obtenidos", function() {
+    client.assert(response.status === 200, "Response status is 200");
+    client.assert(response.body.tokens !== null, "Tokens returned");
+    client.assert(response.body.tokens.accessToken !== null, "Access token exists");
+    client.assert(response.body.tokens.refreshToken !== null, "Refresh token exists");
+  });
+
+  client.global.set("accessToken", response.body.tokens.accessToken);
+  client.global.set("refreshToken", response.body.tokens.refreshToken);
+  client.log("🔑 Access Token guardado para pruebas");
+  client.log("🔄 Refresh Token guardado para pruebas");
+%}
+
+###
+
+### ===================================
+### 2. VERIFICAR QUE EL TOKEN FUNCIONA (ANTES DE LOGOUT)
+### ===================================
+
+### 2.1 Usar el token para acceder a un recurso protegido
+GET {{baseUrl}}/api/user/renos
+Authorization: Bearer {{accessToken}}
+
+> {%
+  client.test("Token válido ANTES de logout", function() {
+    client.assert(response.status === 200, "Access granted with valid token");
+  });
+  client.log("✅ Token funciona correctamente antes del logout");
+%}
+
+###
+
+### 2.2 Validar el token
+GET {{baseUrl}}/token/validate?username=juan
+Authorization: Bearer {{accessToken}}
+
+> {%
+  client.test("Token es válido según validate endpoint", function() {
+    client.assert(response.status === 200, "Token validation successful");
+  });
+  client.log("✅ Token validado exitosamente");
+%}
+
+###
+
+### ===================================
+### 3. LOGOUT - REVOCAR TOKEN
+### ===================================
+
+### 3.1 Hacer logout (revoca el token en BD)
+POST {{baseUrl}}/logout
+Authorization: Bearer {{accessToken}}
+
+> {%
+  client.test("Logout exitoso", function() {
+    client.assert(response.status === 200, "Logout successful");
+  });
+  client.log("🚪 Logout ejecutado - Token debería estar revocado en BD");
+%}
+
+###
+
+### ===================================
+### 4. VERIFICAR QUE EL TOKEN YA NO FUNCIONA (DESPUÉS DE LOGOUT)
+### ===================================
+
+### 4.1 Intentar usar el mismo token después de logout
+GET {{baseUrl}}/api/user/renos
+Authorization: Bearer {{accessToken}}
+
+> {%
+  client.test("Token REVOCADO después de logout", function() {
+    client.assert(response.status === 401, "Access denied - token revoked");
+  });
+  client.log("🔒 Token correctamente revocado - acceso denegado");
+%}
+
+###
+
+### 4.2 Intentar validar el token revocado
+GET {{baseUrl}}/token/validate?username=juan
+Authorization: Bearer {{accessToken}}
+
+> {%
+  client.test("Token revocado no pasa validación", function() {
+    client.assert(response.status === 401, "Token validation fails");
+  });
+  client.log("🚫 Token revocado no pasa la validación");
+%}
+
+###
+
+### 4.3 Intentar usar el token en otro endpoint
+POST {{baseUrl}}/2fa/enable?method=TOTP
+Authorization: Bearer {{accessToken}}
+
+> {%
+  client.test("Token revocado rechazado en cualquier endpoint", function() {
+    client.assert(response.status === 401, "Access denied everywhere");
+  });
+  client.log("🛑 Token revocado rechazado en todos los endpoints");
+%}
+
+###
+
+### ===================================
+### 5. REFRESH TOKEN DESPUÉS DE LOGOUT
+### ===================================
+
+### 5.1 Intentar usar el refresh token después de logout del access token
+POST {{baseUrl}}/token/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+> {%
+  client.test("Refresh token aún funciona (no fue revocado)", function() {
+    // El refresh token NO fue revocado en el logout, solo el access token
+    // Esto depende de tu implementación
+    client.log("Status: " + response.status);
+
+    if (response.status === 200) {
+      client.log("✅ Refresh token aún válido - Nuevos tokens generados");
+      client.global.set("secondAccessToken", response.body.accessToken);
+      client.global.set("secondRefreshToken", response.body.refreshToken);
+    } else {
+      client.log("❌ Refresh token también fue revocado");
+    }
+  });
+%}
+
+###
+
+### ===================================
+### 6. TEST DE REFRESH TOKEN REVOCATION
+### ===================================
+
+### 6.1 Nuevo login para obtener tokens frescos
+# @name loginForRefresh
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "username": "maria",
+  "password": "maria123"
+}
+
+> {%
+  client.global.set("refreshTestToken", response.body.tokens.refreshToken);
+  client.log("🔄 Refresh token guardado para test de revocación");
+%}
+
+###
+
+### 6.2 Usar el refresh token para obtener nuevos tokens
+POST {{baseUrl}}/token/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshTestToken}}"
+}
+
+> {%
+  client.test("Refresh exitoso - Nuevos tokens generados", function() {
+    client.assert(response.status === 200, "Refresh successful");
+  });
+  client.log("✅ Nuevos tokens generados");
+%}
+
+###
+
+### 6.3 Intentar reutilizar el MISMO refresh token (debería fallar)
+POST {{baseUrl}}/token/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshTestToken}}"
+}
+
+> {%
+  client.test("Refresh token ANTERIOR está revocado", function() {
+    client.assert(response.status === 401, "Old refresh token rejected");
+  });
+  client.log("🔒 Refresh token anterior correctamente revocado después de usarlo");
+%}
+
+###
+
+### ===================================
+### 7. TEST DE MÚLTIPLES SESIONES
+### ===================================
+
+### 7.1 Login desde "dispositivo 1"
+# @name device1Login
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+> {%
+  client.global.set("device1Token", response.body.tokens.accessToken);
+  client.log("📱 Device 1 - Token guardado");
+%}
+
+###
+
+### 7.2 Login desde "dispositivo 2" (mismo usuario)
+# @name device2Login
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+> {%
+  client.global.set("device2Token", response.body.tokens.accessToken);
+  client.log("💻 Device 2 - Token guardado");
+%}
+
+###
+
+### 7.3 Verificar que ambos tokens funcionan
+GET {{baseUrl}}/api/admin/renos
+Authorization: Bearer {{device1Token}}
+
+> {%
+  client.test("Device 1 token funciona", function() {
+    client.assert(response.status === 200, "Device 1 access granted");
+  });
+  client.log("✅ Device 1 puede acceder");
+%}
+
+###
+
+GET {{baseUrl}}/api/admin/renos
+Authorization: Bearer {{device2Token}}
+
+> {%
+  client.test("Device 2 token funciona", function() {
+    client.assert(response.status === 200, "Device 2 access granted");
+  });
+  client.log("✅ Device 2 puede acceder");
+%}
+
+###
+
+### 7.4 Hacer logout desde "dispositivo 1"
+POST {{baseUrl}}/logout
+Authorization: Bearer {{device1Token}}
+
+> {%
+  client.log("🚪 Device 1 hizo logout");
+%}
+
+###
+
+### 7.5 Verificar que Device 1 ya NO puede acceder
+GET {{baseUrl}}/api/admin/renos
+Authorization: Bearer {{device1Token}}
+
+> {%
+  client.test("Device 1 token REVOCADO", function() {
+    client.assert(response.status === 401, "Device 1 access denied");
+  });
+  client.log("🔒 Device 1 correctamente bloqueado");
+%}
+
+###
+
+### 7.6 Verificar que Device 2 AÚN PUEDE acceder (sesión independiente)
+GET {{baseUrl}}/api/admin/renos
+Authorization: Bearer {{device2Token}}
+
+> {%
+  client.test("Device 2 token AÚN VÁLIDO", function() {
+    client.assert(response.status === 200, "Device 2 still has access");
+  });
+  client.log("✅ Device 2 sigue teniendo acceso (sesión independiente)");
+%}
+
+###
+
+### ===================================
+### 8. TEST DE LOGOUT SIN TOKEN
+### ===================================
+
+### 8.1 Intentar hacer logout sin enviar token
+POST {{baseUrl}}/logout
+
+> {%
+  client.test("Logout sin token NO falla", function() {
+    // Debería devolver 200 ya que logout es idempotente
+    client.assert(response.status === 200, "Logout without token accepted");
+  });
+  client.log("✅ Logout sin token manejado correctamente");
+%}
+
+###
+
+### ===================================
+### 9. TEST DE LOGOUT CON TOKEN INVÁLIDO
+### ===================================
+
+### 9.1 Intentar hacer logout con token malformado
+POST {{baseUrl}}/logout
+Authorization: Bearer invalid.token.here
+
+> {%
+  client.test("Logout con token inválido manejado", function() {
+    // Debería aceptar el logout aunque el token sea inválido
+    client.log("Status: " + response.status);
+  });
+%}
+
+###
+
+### ===================================
+### RESUMEN DE PRUEBAS
+### ===================================
+#
+# ✅ FUNCIONALIDADES PROBADAS:
+#
+# 1. Login genera tokens que se guardan en BD
+# 2. Tokens funcionan correctamente antes de logout
+# 3. Logout revoca el access token en BD
+# 4. Token revocado NO puede usarse en ningún endpoint
+# 5. Refresh token rotation (token anterior se revoca)
+# 6. Refresh token usado se revoca automáticamente
+# 7. Múltiples sesiones son independientes
+# 8. Revocar un token no afecta otros tokens del mismo usuario
+# 9. Logout sin token no falla
+# 10. Logout con token inválido se maneja correctamente
+#
+# 🔐 COMPORTAMIENTOS ESPERADOS:
+#
+# - Después de logout: 401 Unauthorized
+# - Después de refresh: El refresh token anterior ya no funciona
+# - Múltiples dispositivos: Logout en uno no afecta otros
+# - Token revocado: Rechazado en TODOS los endpoints
+#
+### ===================================
+

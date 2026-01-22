@@ -17,7 +17,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
-                .addPathPatterns(Constantes.API_PATH_PATTERN);
+                .addPathPatterns(Constantes.API_PATH_PATTERN)
+                .addPathPatterns(Constantes.API_2FA_PATH_PATTERN);
     }
 }
 

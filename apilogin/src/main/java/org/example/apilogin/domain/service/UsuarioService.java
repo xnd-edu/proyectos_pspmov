@@ -73,6 +73,12 @@ public class UsuarioService {
         return usuarioMapper.toDomain(entity);
     }
 
+    public Usuario findByUsername(String username) {
+        UsuarioEntity entity = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException(Constantes.MSG_USUARIO_NO_ENCONTRADO));
+        return usuarioMapper.toDomain(entity);
+    }
+
     public void update2FA(Usuario usuario) {
         UsuarioEntity entity = usuarioRepository.findById(usuario.id())
                 .orElseThrow(() -> new ResourceNotFoundException(Constantes.MSG_USUARIO_NO_ENCONTRADO));

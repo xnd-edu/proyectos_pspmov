@@ -1,0 +1,352 @@
+### ===================================
+### JWT 2FA SETUP TESTS
+### Habilitar y Confirmar 2FA con JWT
+### ===================================
+
+@baseUrl = http://localhost:8080
+@userToken =
+@totpSecret =
+
+### ===================================
+### PREREQUISITO: Login y obtener token
+### ===================================
+
+### 1. Login con usuario sin 2FA
+# @name loginUser
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "username": "juan",
+  "password": "juan123"
+}
+
+> {%
+  client.test("Login exitoso", function() {
+    client.assert(response.status === 200, "Response status is 200");
+    client.assert(response.body.tokens !== null, "Tokens returned");
+  });
+
+  client.global.set("userToken", response.body.tokens.accessToken);
+  client.log("User Token: " + response.body.tokens.accessToken);
+%}
+
+###
+
+### ===================================
+### 2. HABILITAR 2FA - TOTP
+### ===================================
+
+### 2.1 Habilitar 2FA TOTP
+POST {{baseUrl}}/2fa/enable?method=TOTP
+Authorization: Bearer {{userToken}}
+
+> {%
+  client.test("2FA TOTP habilitado", function() {
+    client.assert(response.status === 200, "Response status is 200");
+    client.assert(response.body.secret !== null, "Secret returned");
+    client.assert(response.body.qrCodeUrl !== null, "QR code URL returned");
+  });
+
+  client.global.set("totpSecret", response.body.secret);
+  client.log("TOTP Secret: " + response.body.secret);
+  client.log("QR Code: " + response.body.qrCodeUrl);
+  client.log("⚠️ Escanea el QR con Google Authenticator o ingresa el secret manualmente");
+%}
+
+###
+
+### 2.2 Intentar habilitar 2FA sin autenticación
+POST {{baseUrl}}/2fa/enable?method=TOTP
+
+> {%
+  client.test("Sin autenticación rechazado", function() {
+    client.assert(response.status === 401, "Response status is 401");
+  });
+%}
+
+###
+
+### 2.3 Habilitar 2FA con método inválido
+POST {{baseUrl}}/2fa/enable?method=INVALID
+Authorization: Bearer {{userToken}}
+
+> {%
+  client.test("Método 2FA inválido rechazado", function() {
+    client.assert(response.status === 400, "Response status is 400");
+  });
+%}
+
+###
+
+### ===================================
+### 3. CONFIRMAR 2FA - TOTP
+### ===================================
+
+### 3.1 Confirmar 2FA TOTP con código correcto
+# NOTA: Obtén el código de tu app de autenticación
+POST {{baseUrl}}/2fa/confirm
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "code": "123456"
+}
+
+> {%
+  client.test("2FA TOTP confirmado", function() {
+    client.assert(response.status === 200, "Response status is 200");
+    client.assert(response.body.success === true, "Confirmation successful");
+  });
+  client.log("✅ 2FA TOTP activado exitosamente");
+%}
+
+###
+
+### 3.2 Confirmar 2FA con código incorrecto
+POST {{baseUrl}}/2fa/confirm
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "code": "000000"
+}
+
+> {%
+  client.test("Código incorrecto rechazado", function() {
+    client.assert(response.status === 403, "Response status is 403");
+    client.assert(response.body.success === false, "Confirmation failed");
+  });
+%}
+
+###
+
+### 3.3 Confirmar 2FA sin autenticación
+POST {{baseUrl}}/2fa/confirm
+Content-Type: application/json
+
+{
+  "code": "123456"
+}
+
+> {%
+  client.test("Sin autenticación rechazado", function() {
+    client.assert(response.status === 401, "Response status is 401");
+  });
+%}
+
+###
+
+### ===================================
+### 4. HABILITAR 2FA - EMAIL
+### ===================================
+
+### 4.1 Login con otro usuario para probar EMAIL 2FA
+# @name loginMaria
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "username": "maria",
+  "password": "maria123"
+}
+
+> {%
+  client.test("Login exitoso", function() {
+    client.assert(response.status === 200, "Response status is 200");
+  });
+
+  client.global.set("mariaToken", response.body.tokens.accessToken);
+%}
+
+###
+
+### 4.2 Habilitar 2FA EMAIL
+POST {{baseUrl}}/2fa/enable?method=EMAIL
+Authorization: Bearer {{mariaToken}}
+
+> {%
+  client.test("2FA EMAIL habilitado", function() {
+    client.assert(response.status === 200, "Response status is 200");
+  });
+  client.log("📧 Revisa el email para el código de confirmación");
+%}
+
+###
+
+### 4.3 Confirmar 2FA EMAIL con código del correo
+# NOTA: Obtén el código del email recibido
+POST {{baseUrl}}/2fa/confirm
+Content-Type: application/json
+Authorization: Bearer {{mariaToken}}
+
+{
+  "code": "123456"
+}
+
+> {%
+  client.test("2FA EMAIL confirmado", function() {
+    client.assert(response.status === 200, "Response status is 200");
+    client.assert(response.body.success === true, "Confirmation successful");
+  });
+  client.log("✅ 2FA EMAIL activado exitosamente");
+%}
+
+###
+
+### ===================================
+### 5. VERIFICAR QUE 2FA ESTÁ ACTIVO
+### ===================================
+
+### 5.1 Logout y re-login con usuario que ahora tiene 2FA
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "username": "juan",
+  "password": "juan123"
+}
+
+> {%
+  client.test("Login requiere 2FA", function() {
+    client.assert(response.status === 202, "Response status is 202 Accepted");
+    client.assert(response.body.success === false, "2FA required");
+    client.assert(response.headers.valueOf("X-PreToken") !== null, "Pre-token returned");
+  });
+  client.log("✅ 2FA está activo - se requiere código para completar login");
+%}
+
+###
+
+### ===================================
+### 6. INTENTAR HABILITAR 2FA CUANDO YA ESTÁ ACTIVO
+### ===================================
+
+### 6.1 Login normal con admin (sin 2FA)
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+> {%
+  client.global.set("adminToken", response.body.tokens.accessToken);
+%}
+
+###
+
+### 6.2 Habilitar 2FA en admin
+POST {{baseUrl}}/2fa/enable?method=TOTP
+Authorization: Bearer {{adminToken}}
+
+> {%
+  client.global.set("adminSecret", response.body.secret);
+%}
+
+###
+
+### 6.3 Confirmar 2FA en admin
+POST {{baseUrl}}/2fa/confirm
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "code": "123456"
+}
+
+###
+
+### 6.4 Intentar habilitar 2FA nuevamente (debería fallar)
+POST {{baseUrl}}/2fa/enable?method=TOTP
+Authorization: Bearer {{adminToken}}
+
+> {%
+  client.test("No se puede habilitar 2FA dos veces", function() {
+    client.assert(response.status === 400, "Response status is 400");
+  });
+%}
+
+###
+
+### ===================================
+### FLUJO COMPLETO DE EJEMPLO
+### ===================================
+
+### PASO 1: Usuario nuevo hace login
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "username": "nuevo_usuario",
+  "password": "password123"
+}
+
+###
+
+### PASO 2: Habilitar 2FA TOTP
+# POST {{baseUrl}}/2fa/enable?method=TOTP
+# Authorization: Bearer {token_del_paso_1}
+
+###
+
+### PASO 3: Escanear QR Code con app de autenticación
+# (Google Authenticator, Microsoft Authenticator, etc)
+
+###
+
+### PASO 4: Confirmar con código de la app
+# POST {{baseUrl}}/2fa/confirm
+# Authorization: Bearer {token_del_paso_1}
+# {
+#   "code": "{codigo_de_6_digitos}"
+# }
+
+###
+
+### PASO 5: Logout
+# POST {{baseUrl}}/logout
+
+###
+
+### PASO 6: Login nuevamente (ahora requiere 2FA)
+# POST {{baseUrl}}/login
+# {
+#   "username": "nuevo_usuario",
+#   "password": "password123"
+# }
+# → Recibe pre-token en header X-PreToken
+
+###
+
+### PASO 7: Verificar 2FA para completar login
+# POST {{baseUrl}}/2fa/verify
+# Authorization: Bearer {pre_token}
+# {
+#   "code": "{codigo_de_6_digitos}"
+# }
+# → Recibe tokens finales
+
+###
+
+### ===================================
+### NOTAS
+### ===================================
+#
+# 1. ENABLE 2FA:
+#    - Requiere token JWT válido
+#    - Genera secret para TOTP o envía código por EMAIL
+#    - No activa el 2FA aún (solo prepara)
+#
+# 2. CONFIRM 2FA:
+#    - Requiere token JWT válido
+#    - Verifica el código
+#    - ACTIVA el 2FA en el usuario
+#
+# 3. DESPUÉS DE ACTIVAR:
+#    - Todos los logins requieren 2FA
+#    - Proceso: login → pre-token → verify → tokens finales
+#
+###
+

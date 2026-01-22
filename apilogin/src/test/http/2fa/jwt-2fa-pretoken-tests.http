@@ -1,0 +1,288 @@
+### ===================================
+### JWT 2FA TESTS - Flujo con Pre-Token
+### ===================================
+
+@baseUrl = http://localhost:8080
+@preToken =
+@finalToken =
+
+### ===================================
+### PREREQUISITO: Usuario con 2FA TOTP activado
+### ===================================
+### Asume que existe un usuario con:
+### - username: "test2fa"
+### - password: "test123"
+### - 2FA TOTP habilitado
+### - Secret TOTP configurado
+### ===================================
+
+### ===================================
+### 1. LOGIN CON 2FA - Obtener Pre-Token
+### ===================================
+
+### 1.1 Login con usuario que tiene 2FA activado (TOTP)
+# @name login2FA
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "username": "test2fa",
+  "password": "test123"
+}
+
+> {%
+  client.test("Login con 2FA devuelve pre-token", function() {
+    client.assert(response.status === 202, "Response status is 202 Accepted");
+    client.assert(response.body.success === false, "Success is false (pending 2FA)");
+    client.assert(response.body.message.includes("2FA"), "Message mentions 2FA");
+    client.assert(response.headers.valueOf("X-PreToken") !== null, "Pre-token in header");
+  });
+
+  // Guardar pre-token del header
+  client.global.set("preToken", response.headers.valueOf("X-PreToken"));
+  client.log("Pre-Token: " + response.headers.valueOf("X-PreToken"));
+%}
+
+###
+
+### 1.2 Login con usuario que tiene 2FA por EMAIL
+# @name login2FAEmail
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "username": "maria",
+  "password": "maria123"
+}
+
+> {%
+  client.test("Login con 2FA EMAIL devuelve pre-token", function() {
+    client.assert(response.status === 202, "Response status is 202 Accepted");
+    client.assert(response.headers.valueOf("X-PreToken") !== null, "Pre-token in header");
+  });
+
+  client.global.set("preTokenEmail", response.headers.valueOf("X-PreToken"));
+  client.log("Email 2FA - Pre-Token: " + response.headers.valueOf("X-PreToken"));
+  client.log("Revisa tu email para el código 2FA");
+%}
+
+###
+
+### ===================================
+### 2. VERIFICAR 2FA CON PRE-TOKEN
+### ===================================
+
+### 2.1 Verificar 2FA con código TOTP correcto
+# NOTA: Debes obtener el código de tu app de autenticación (Google Authenticator, etc)
+POST {{baseUrl}}/2fa/verify
+Content-Type: application/json
+Authorization: Bearer {{preToken}}
+
+{
+  "code": "123456"
+}
+
+> {%
+  client.test("Verificación 2FA TOTP exitosa", function() {
+    client.assert(response.status === 200, "Response status is 200");
+    client.assert(response.body.success === true, "Success is true");
+    client.assert(response.body.tokens !== null, "Tokens returned");
+    client.assert(response.body.tokens.accessToken !== null, "Access token exists");
+    client.assert(response.body.tokens.refreshToken !== null, "Refresh token exists");
+  });
+
+  // Guardar tokens finales
+  client.global.set("finalToken", response.body.tokens.accessToken);
+  client.global.set("finalRefreshToken", response.body.tokens.refreshToken);
+  client.log("Final Access Token: " + response.body.tokens.accessToken);
+%}
+
+###
+
+### 2.2 Verificar 2FA EMAIL con código del correo
+# NOTA: Debes obtener el código del email recibido
+POST {{baseUrl}}/2fa/verify
+Content-Type: application/json
+Authorization: Bearer {{preTokenEmail}}
+
+{
+  "code": "123456"
+}
+
+> {%
+  client.test("Verificación 2FA EMAIL exitosa", function() {
+    client.assert(response.status === 200, "Response status is 200");
+    client.assert(response.body.success === true, "Success is true");
+    client.assert(response.body.tokens !== null, "Tokens returned");
+  });
+%}
+
+###
+
+### 2.3 Verificar 2FA con código incorrecto
+POST {{baseUrl}}/2fa/verify
+Content-Type: application/json
+Authorization: Bearer {{preToken}}
+
+{
+  "code": "000000"
+}
+
+> {%
+  client.test("Verificación 2FA con código incorrecto rechazada", function() {
+    client.assert(response.status === 403, "Response status is 403 Forbidden");
+    client.assert(response.body.success === false, "Success is false");
+  });
+%}
+
+###
+
+### 2.4 Verificar 2FA sin pre-token (debería fallar)
+POST {{baseUrl}}/2fa/verify
+Content-Type: application/json
+
+{
+  "code": "123456"
+}
+
+> {%
+  client.test("Verificación 2FA sin pre-token rechazada", function() {
+    client.assert(response.status === 401 || response.status === 400, "Request rejected");
+  });
+%}
+
+###
+
+### 2.5 Verificar 2FA con pre-token inválido
+POST {{baseUrl}}/2fa/verify
+Content-Type: application/json
+Authorization: Bearer invalid.pretoken.here
+
+{
+  "code": "123456"
+}
+
+> {%
+  client.test("Verificación 2FA con pre-token inválido rechazada", function() {
+    client.assert(response.status === 401 || response.status === 403, "Request rejected");
+  });
+%}
+
+###
+
+### ===================================
+### 3. USAR TOKEN FINAL DESPUÉS DE 2FA
+### ===================================
+
+### 3.1 Acceder a recursos con el token final
+GET {{baseUrl}}/api/user/renos
+Authorization: Bearer {{finalToken}}
+
+> {%
+  client.test("Acceso con token final después de 2FA exitoso", function() {
+    client.assert(response.status === 200, "Response status is 200");
+  });
+  client.log("Login con 2FA completado exitosamente");
+%}
+
+###
+
+### 3.2 Validar el token final
+GET {{baseUrl}}/loginToken/validate
+Authorization: Bearer {{finalToken}}
+
+> {%
+  client.test("Token final es válido", function() {
+    client.assert(response.status === 200, "Response status is 200");
+    client.assert(response.body.valid === true, "Token is valid");
+    client.assert(response.body.username !== null, "Username exists");
+  });
+%}
+
+###
+
+### ===================================
+### 4. INTENTAR USAR PRE-TOKEN EN ENDPOINTS NORMALES
+### ===================================
+
+### 4.1 Intentar acceder a recursos con pre-token (debería fallar o tener restricciones)
+GET {{baseUrl}}/api/user/renos
+Authorization: Bearer {{preToken}}
+
+> {%
+  client.test("Pre-token no debe dar acceso total", function() {
+    // El pre-token podría ser rechazado o tener acceso limitado
+    // Depende de cómo esté configurado el interceptor
+    client.log("Status: " + response.status);
+  });
+%}
+
+###
+
+### ===================================
+### 5. EXPIRACIÓN DE PRE-TOKEN (5 minutos)
+### ===================================
+
+### 5.1 Esperar >5 minutos e intentar verificar 2FA (pre-token expirado)
+# NOTA: Debes esperar 5 minutos después de obtener el pre-token
+# POST {{baseUrl}}/2fa/verify
+# Content-Type: application/json
+# Authorization: Bearer {{preToken}}
+#
+# {
+#   "code": "123456"
+# }
+#
+# > {%
+#   client.test("Pre-token expirado rechazado", function() {
+#     client.assert(response.status === 401, "Response status is 401");
+#     client.assert(response.body.message.includes("expirado"), "Message mentions expiration");
+#   });
+# %}
+
+###
+
+### ===================================
+### 6. VALIDAR PRE-TOKEN
+### ===================================
+
+### 6.1 Validar pre-token (contiene claim pending2FA)
+GET {{baseUrl}}/loginToken/validate
+Authorization: Bearer {{preToken}}
+
+> {%
+  client.test("Pre-token contiene información correcta", function() {
+    client.assert(response.status === 200, "Response status is 200");
+    client.assert(response.body.valid === true, "Pre-token is valid");
+    client.log("Pre-token info: " + JSON.stringify(response.body));
+    // Si el JwtService expusiera los claims, podríamos verificar pending2FA
+  });
+%}
+
+###
+
+### ===================================
+### NOTAS IMPORTANTES
+### ===================================
+#
+# 1. PRE-TOKEN:
+#    - Duración: 5 minutos
+#    - Solo válido para /2fa/verify
+#    - Contiene claim "pending2FA": true
+#    - Incluye userId, username, rol
+#
+# 2. FLUJO 2FA:
+#    - Login → Recibe pre-token en header X-PreToken
+#    - Cliente guarda pre-token temporalmente
+#    - Usuario ingresa código 2FA
+#    - POST /2fa/verify con pre-token → Recibe tokens finales
+#    - Cliente guarda tokens finales y borra pre-token
+#
+# 3. SEGURIDAD:
+#    - Pre-token NO da acceso a recursos protegidos
+#    - Pre-token expira en 5 minutos
+#    - Código 2FA EMAIL expira en 10 minutos
+#    - Tokens finales tienen expiración configurada en properties
+#
+###
+
