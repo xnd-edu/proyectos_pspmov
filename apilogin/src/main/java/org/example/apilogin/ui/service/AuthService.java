@@ -10,6 +10,10 @@ import org.example.apilogin.domain.service.UsuarioService;
 import org.example.apilogin.ui.dto.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -24,19 +28,64 @@ public class AuthService {
     private final TotpService totpService;
     private final JwtService jwtService;
     private final TokenService tokenService;
+    private final AuthenticationManager authenticationManager;
+    private final UserDetailsService userDetailsService;
     private final Random random = new Random();
 
 
-    public AuthService(UsuarioService usuarioService, EmailService emailService, TotpService totpService, JwtService jwtService, TokenService tokenService) {
+    public AuthService(UsuarioService usuarioService,
+                      EmailService emailService,
+                      TotpService totpService,
+                      JwtService jwtService,
+                      TokenService tokenService,
+                      AuthenticationManager authenticationManager,
+                      UserDetailsService userDetailsService) {
         this.usuarioService = usuarioService;
         this.emailService = emailService;
         this.totpService = totpService;
         this.jwtService = jwtService;
         this.tokenService = tokenService;
+        this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
     }
 
-    public Usuario login(String username, String password) {
-        return usuarioService.login(username, password);
+    public ResponseEntity<LoginResponse> login(String username, String password) {
+        // Autenticar con Spring Security
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username, password)
+        );
+
+        // Cargar usuario completo para obtener datos y verificar 2FA
+        Usuario usuario = usuarioService.findByUsername(username);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        if (Boolean.TRUE.equals(usuario.twoFactorEnabled())) {
+            // Generar pre-token para 2FA
+            String preToken = jwtService.generatePreToken(userDetails);
+
+            LoginResponse response = new LoginResponse(Constantes.MSG_2FA_REQUIRED);
+            // Devolver el pre-token en el header (el controller lo pondrá en el header de respuesta)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
+                    .header(Constantes.HEADER_X_PRETOKEN, preToken)
+                    .body(response);
+        }
+
+        // Login exitoso sin 2FA - generar tokens reales
+        TokenResponse tokens = jwtService.generateTokens(userDetails);
+
+        // Guardar tokens en BD
+        tokenService.saveTokens(tokens.accessToken(), tokens.refreshToken(), usuario.id());
+
+        UsuarioDTO usuarioDTO = new UsuarioDTO(
+                usuario.id(),
+                usuario.username(),
+                usuario.email(),
+                usuario.nombre(),
+                usuario.rol()
+        );
+
+        LoginResponse response = new LoginResponse(usuarioDTO, tokens, Constantes.MSG_LOGIN_EXITOSO);
+        return ResponseEntity.ok(response);
     }
 
     public Usuario register(String username, String password, String email, String nombre) {

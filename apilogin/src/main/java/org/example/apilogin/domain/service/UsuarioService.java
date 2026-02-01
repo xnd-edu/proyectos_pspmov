@@ -29,18 +29,6 @@ public class UsuarioService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Usuario login(String username, String password) {
-        UsuarioEntity entity = usuarioRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException(Constantes.MSG_USUARIO_NO_ENCONTRADO));
-        if (!entity.isActivado()) {
-            throw new ForbiddenException(Constantes.MSG_CUENTA_NO_ACTIVADA);
-        }
-        if (passwordEncoder.matches(password, entity.getPassword())) {
-            return usuarioMapper.toDomain(entity);
-        }
-        throw new ForbiddenException(Constantes.MSG_CREDENCIALES_INVALIDAS);
-    }
-
     public Usuario register(Usuario usuario) {
         return usuarioMapper.toDomain(usuarioRepository.save(usuarioMapper.toEntity(usuario)));
     }

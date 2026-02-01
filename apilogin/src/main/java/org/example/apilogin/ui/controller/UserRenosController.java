@@ -1,12 +1,11 @@
 package org.example.apilogin.ui.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.example.apilogin.common.Constantes;
 import org.example.apilogin.domain.model.Reno;
 import org.example.apilogin.domain.service.RenoService;
-import org.example.apilogin.ui.interceptor.RequiresAuth;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,16 +20,14 @@ public class UserRenosController {
     }
 
     @GetMapping
-    @RequiresAuth
-    public ResponseEntity<List<Reno>> listarMisRenos(HttpServletRequest request) {
-        Long userId = (Long) request.getAttribute(Constantes.ATTR_USER_ID);
+    public ResponseEntity<List<Reno>> listarMisRenos(Authentication authentication) {
+        Long userId = Long.parseLong(authentication.getName());
         return ResponseEntity.ok(renoService.findByUserId(userId.intValue()));
     }
 
     @GetMapping(Constantes.API_RENO_BY_ID)
-    @RequiresAuth
-    public ResponseEntity<Reno> obtenerReno(@PathVariable int id, HttpServletRequest request) {
-        Long userId = (Long) request.getAttribute(Constantes.ATTR_USER_ID);
+    public ResponseEntity<Reno> obtenerReno(@PathVariable int id, Authentication authentication) {
+        Long userId = Long.parseLong(authentication.getName());
         Reno reno = renoService.findById(id);
 
         if (reno.userId() != userId.intValue()) {
@@ -40,12 +37,11 @@ public class UserRenosController {
     }
 
     @GetMapping(Constantes.API_RENO_FILTRAR)
-    @RequiresAuth
     public ResponseEntity<List<Reno>> filtrarMisRenos(
             @RequestParam String nombre,
-            HttpServletRequest request
+            Authentication authentication
     ) {
-        Long userId = (Long) request.getAttribute(Constantes.ATTR_USER_ID);
+        Long userId = Long.parseLong(authentication.getName());
         List<Reno> renos = renoService.findNameLike(nombre);
 
         List<Reno> renosFiltrados = renos.stream()
@@ -59,9 +55,8 @@ public class UserRenosController {
     }
 
     @DeleteMapping(Constantes.API_RENO_DELETE)
-    @RequiresAuth
-    public ResponseEntity<Void> eliminarReno(@PathVariable int id, HttpServletRequest request) {
-        Long userId = (Long) request.getAttribute(Constantes.ATTR_USER_ID);
+    public ResponseEntity<Void> eliminarReno(@PathVariable int id, Authentication authentication) {
+        Long userId = Long.parseLong(authentication.getName());
         Reno reno = renoService.findById(id);
 
         if (reno.userId() != userId.intValue()) {

@@ -15,10 +15,6 @@ public final class Constantes {
     public static final String SPRING_JWT_REFRESH_EXPIRATION = "${application.security.jwt.refresh-token.expiration}";
     public static final String SPRING_2FA_CODE_EXPIRATION = "${application.security.jwt.pretoken.expiration}";
 
-    public static final String ATTR_USUARIO = "usuario";
-    public static final String ATTR_ROL = "rol";
-    public static final String ATTR_USER_ID = "userId";
-
     public static final String HEADER_X_PRETOKEN = "X-PreToken";
 
     public static final String MSG_LOGIN_EXITOSO = "Login exitoso";
@@ -34,15 +30,12 @@ public final class Constantes {
     public static final String MSG_REGISTRO_EXITOSO = "Te has registrado exitosamente. Por favor, revisa tu correo para activar tu cuenta.";
     public static final String MSG_USERNAME_YA_EXISTE = "El username ya existe";
     public static final String MSG_CREDENCIALES_INVALIDAS = "Credenciales inválidas.";
-    public static final String MSG_DEBE_INICIAR_SESION = "Debe iniciar sesión";
     public static final String MSG_CUENTA_ACTIVADA_EXITOSAMENTE = "¡Cuenta activada exitosamente!";
-    public static final String MSG_CUENTA_NO_ACTIVADA = "La cuenta no está activada.";
     public static final String MSG_CUENTA_YA_ACTIVADA = "La cuenta ya está activada.";
     public static final String MSG_ERROR_ACTIVACION = "Error al activar la cuenta. El código puede ser inválido o ya ha expirado.";
     public static final String MSG_USUARIO_NO_ENCONTRADO = "No se encontró un usuario con el nombre de usuario proporcionado.";
     public static final String MSG_CODIGO_ACTIVACION_NO_ENCONTRADO = "No se encontró un usuario con el código de activación proporcionado.";
     public static final String MSG_CODIGO_ACTIVACION_EXPIRADO = "El código de activación ha expirado.";
-    public static final String MSG_ACCESO_DENEGADO = "Acceso denegado";
     public static final String MSG_RENO_NO_ENCONTRADO = "Reno con ID %d no encontrado";
     public static final String MSG_TOKEN_NO_ENCONTRADO = "Token no encontrado";
 
@@ -67,8 +60,7 @@ public final class Constantes {
     public static final String API_JWT = "/token";
     public static final String API_JWT_REFRESH = "/refresh";
 
-    public static final String API_PATH_PATTERN = "/api/**";
-    public static final String API_2FA_PATH_PATTERN = "/2fa/**";
+    public static final String PREAUTHORIZE_ROLE_ADMIN = "hasRole('ADMIN')";
 
     public static final String TEMPLATE_EMAIL_ACTIVACION = "email-activacion";
     public static final String TEMPLATE_EMAIL_2FA = "email-2fa";
@@ -96,8 +88,10 @@ public final class Constantes {
     public static final int JWT_BEARER_PREFIX_LENGTH = 7;
     public static final String JWT_HEADER_AUTHORIZATION = "Authorization";
     public static final String JWT_TOKEN_TYPE_BEARER = "Bearer";
+    public static final String JWT_ROLE_PREFIX = "ROLE_";
     public static final String JWT_REFRESH_TOKEN_INVALIDO = "Refresh token inválido o expirado";
     public static final String JWT_USER_ID_INVALID_TYPE = "userId claim is not a number: %s";
+    public static final String JWT_NO_ROL_ENCONTRADO = "No se encontró rol en las authorities";
 
     public static final String QUERY_REVOKE_TOKEN = "UPDATE TokenEntity t SET t.revoked = true WHERE t.token = :token";
 }

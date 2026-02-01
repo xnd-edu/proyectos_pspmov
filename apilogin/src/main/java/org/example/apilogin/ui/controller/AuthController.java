@@ -9,7 +9,6 @@ import org.example.apilogin.ui.dto.LoginResponse;
 import org.example.apilogin.ui.dto.RegisterDTO;
 import org.example.apilogin.ui.dto.UsuarioDTO;
 import org.example.apilogin.ui.service.AuthService;
-import org.example.apilogin.ui.service.JwtService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,53 +20,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
     private final UsuarioService usuarioService;
-    private final JwtService jwtService;
     private final TokenService tokenService;
 
-    public AuthController(AuthService authService, UsuarioService usuarioService, JwtService jwtService, TokenService tokenService) {
+    public AuthController(AuthService authService,
+                          UsuarioService usuarioService,
+                          TokenService tokenService) {
         this.authService = authService;
         this.usuarioService = usuarioService;
-        this.jwtService = jwtService;
         this.tokenService = tokenService;
     }
 
     @PostMapping(Constantes.API_LOGIN)
     public ResponseEntity<LoginResponse> login(@RequestBody LoginDTO request) {
-        Usuario usuario = authService.login(request.username(), request.password());
-
-        if (Boolean.TRUE.equals(usuario.twoFactorEnabled())) {
-            // Generar pre-token para 2FA
-            String preToken = jwtService.generatePreToken(
-                    usuario.rol().name(),
-                    usuario.id()
-            );
-
-            LoginResponse response = new LoginResponse(Constantes.MSG_2FA_REQUIRED);
-            // Devolver el pre-token en el header
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
-                    .header(Constantes.HEADER_X_PRETOKEN, preToken)
-                    .body(response);
-        }
-
-        // Login exitoso sin 2FA - generar tokens reales
-        var tokens = jwtService.generateTokens(
-            usuario.rol().name(),
-            usuario.id()
-        );
-
-        // Guardar tokens en BD
-        tokenService.saveTokens(tokens.accessToken(), tokens.refreshToken(), usuario.id());
-
-        UsuarioDTO usuarioDTO = new UsuarioDTO(
-                usuario.id(),
-                usuario.username(),
-                usuario.email(),
-                usuario.nombre(),
-                usuario.rol()
-        );
-
-        LoginResponse response = new LoginResponse(usuarioDTO, tokens, Constantes.MSG_LOGIN_EXITOSO);
-        return ResponseEntity.ok(response);
+        return authService.login(request.username(), request.password());
     }
 
     @PostMapping(Constantes.API_LOGOUT)

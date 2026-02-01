@@ -30,19 +30,13 @@ Content-Type: application/json
 
 ###
 
-### 2️⃣ Validar token
-GET {{baseUrl}}/token/validate?username=juan
-Authorization: Bearer {{accessToken}}
-
-###
-
-### 3️⃣ Acceder a recurso protegido
+### 2️⃣ Acceder a recurso protegido
 GET {{baseUrl}}/api/user/renos
 Authorization: Bearer {{accessToken}}
 
 ###
 
-### 4️⃣ Refrescar token
+### 3️⃣ Refrescar token
 POST {{baseUrl}}/token/refresh
 Content-Type: application/json
 
@@ -62,7 +56,7 @@ Content-Type: application/json
 ### PARTE 2: CONTROL DE ACCESO POR ROL
 ### ===================================
 
-### 5️⃣ Login como admin
+### 4️⃣ Login como admin
 POST {{baseUrl}}/login
 Content-Type: application/json
 
@@ -77,13 +71,13 @@ Content-Type: application/json
 
 ###
 
-### 6️⃣ Admin accede a endpoint de admin ✅
+### 5️⃣ Admin accede a endpoint de admin ✅
 GET {{baseUrl}}/api/admin/renos
 Authorization: Bearer {{adminToken}}
 
 ###
 
-### 7️⃣ Usuario intenta acceder a endpoint de admin ❌
+### 6️⃣ Usuario intenta acceder a endpoint de admin ❌
 GET {{baseUrl}}/api/admin/renos
 Authorization: Bearer {{accessToken}}
 
@@ -99,7 +93,7 @@ Authorization: Bearer {{accessToken}}
 ### PARTE 3: HABILITAR 2FA
 ### ===================================
 
-### 8️⃣ Habilitar 2FA TOTP
+### 7️⃣ Habilitar 2FA TOTP
 POST {{baseUrl}}/2fa/enable?method=TOTP
 Authorization: Bearer {{accessToken}}
 
@@ -112,13 +106,13 @@ Authorization: Bearer {{accessToken}}
 
 ###
 
-### 9️⃣ Confirmar 2FA (ingresa el código de tu app)
+### 8️⃣ Confirmar 2FA (ingresa el código de tu app)
 POST {{baseUrl}}/2fa/confirm
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-  "code": "184535"
+  "code": "934762"
 }
 
 > {%
@@ -131,7 +125,7 @@ Authorization: Bearer {{accessToken}}
 ### PARTE 4: LOGIN CON 2FA
 ### ===================================
 
-### 🔟 Login con usuario que tiene 2FA
+### 9️⃣ Login con usuario que tiene 2FA
 POST {{baseUrl}}/login
 Content-Type: application/json
 
@@ -148,13 +142,13 @@ Content-Type: application/json
 
 ###
 
-### 1️⃣1️⃣ Verificar 2FA para completar login
+### 🔟 Verificar 2FA para completar login
 POST {{baseUrl}}/2fa/verify
 Content-Type: application/json
-Authorization: Bearer {{preToken}}
+X-PreToken: {{preToken}}
 
 {
-  "code": "385573"
+  "code": "750028"
 }
 
 > {%
@@ -169,7 +163,7 @@ Authorization: Bearer {{preToken}}
 ### PARTE 5: CASOS DE ERROR
 ### ===================================
 
-### 1️⃣2️⃣ Login con credenciales incorrectas
+### 1️⃣1️⃣ Login con credenciales incorrectas
 POST {{baseUrl}}/login
 Content-Type: application/json
 
@@ -186,7 +180,7 @@ Content-Type: application/json
 
 ###
 
-### 1️⃣3️⃣ Acceder sin token
+### 1️⃣2️⃣ Acceder sin token
 GET {{baseUrl}}/api/user/renos
 
 > {%
@@ -197,7 +191,7 @@ GET {{baseUrl}}/api/user/renos
 
 ###
 
-### 1️⃣4️⃣ Token inválido
+### 1️⃣3️⃣ Token inválido
 GET {{baseUrl}}/api/user/renos
 Authorization: Bearer invalid.token.here
 
@@ -209,10 +203,10 @@ Authorization: Bearer invalid.token.here
 
 ###
 
-### 1️⃣5️⃣ Código 2FA incorrecto
+### 1️⃣4️⃣ Código 2FA incorrecto
 POST {{baseUrl}}/2fa/verify
 Content-Type: application/json
-Authorization: Bearer {{preToken}}
+X-PreToken: {{preToken}}
 
 {
   "code": "000000"
@@ -232,12 +226,11 @@ Authorization: Bearer {{preToken}}
 #
 # AUTENTICACIÓN:
 # - POST /login                    → Obtener tokens JWT
-# - POST /logout                   → Logout (cliente borra tokens)
+# - POST /logout                   → Revocar token actual
 # - POST /register                 → Registrar nuevo usuario
 #
 # TOKENS:
-# - GET  /token/validate             → Validar token (testing)
-# - POST /token/refresh              → Refrescar tokens
+# - POST /token/refresh            → Refrescar tokens
 #
 # 2FA SETUP:
 # - POST /2fa/enable?method={tipo} → Habilitar 2FA (TOTP|EMAIL)
@@ -247,7 +240,7 @@ Authorization: Bearer {{preToken}}
 # - POST /2fa/verify               → Verificar código 2FA
 #
 # RECURSOS:
-# - GET  /api/user/renos           → Renos del usuario (USER)
+# - GET  /api/user/renos           → Renos del usuario (autenticado)
 # - GET  /api/admin/renos          → Todos los renos (ADMIN)
 #
 ### ===================================

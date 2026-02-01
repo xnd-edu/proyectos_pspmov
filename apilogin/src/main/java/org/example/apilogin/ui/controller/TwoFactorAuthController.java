@@ -1,13 +1,12 @@
 package org.example.apilogin.ui.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.example.apilogin.common.Constantes;
 import org.example.apilogin.domain.model.Usuario;
 import org.example.apilogin.domain.service.UsuarioService;
 import org.example.apilogin.ui.dto.*;
-import org.example.apilogin.ui.interceptor.RequiresAuth;
 import org.example.apilogin.ui.service.AuthService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,26 +19,24 @@ public class TwoFactorAuthController {
         this.usuarioService = usuarioService;
     }
 
-    @RequiresAuth
     @PostMapping(Constantes.API_ENABLE_2FA)
     public ResponseEntity<Enable2FAResponse> enable2FA(
             @RequestParam String method,
-            HttpServletRequest request
+            Authentication authentication
     ) {
-        String username = (String) request.getAttribute(Constantes.ATTR_USUARIO);
-        Usuario usuario = usuarioService.findByUsername(username);
+        Long userId = Long.parseLong(authentication.getName());
+        Usuario usuario = usuarioService.findById(userId);
 
         return authService.enable2FA(method, usuario);
     }
 
-    @RequiresAuth
     @PostMapping(Constantes.API_CONFIRM_2FA)
     public ResponseEntity<Confirm2FAResponse> confirm2FA(
             @RequestBody Confirm2FADTO request,
-            HttpServletRequest httpRequest
+            Authentication authentication
     ) {
-        String username = (String) httpRequest.getAttribute(Constantes.ATTR_USUARIO);
-        Usuario usuario = usuarioService.findByUsername(username);
+        Long userId = Long.parseLong(authentication.getName());
+        Usuario usuario = usuarioService.findById(userId);
 
         return authService.confirm2FA(request.code(), usuario);
     }
@@ -47,10 +44,8 @@ public class TwoFactorAuthController {
     @PostMapping(Constantes.API_VERIFY_2FA)
     public ResponseEntity<LoginResponse> verify2FA(
             @RequestBody Verify2FADTO request,
-            @RequestHeader(Constantes.JWT_HEADER_AUTHORIZATION) String authHeader
+            @RequestHeader(Constantes.HEADER_X_PRETOKEN) String preToken
     ) {
-        // Extraer el pre-token del header "Authorization: Bearer {preToken}"
-        String preToken = authHeader.substring(7);
 
         return authService.verify2FA(request.code(), preToken);
     }

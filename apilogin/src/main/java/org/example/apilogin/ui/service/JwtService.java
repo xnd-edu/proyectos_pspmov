@@ -8,6 +8,8 @@ import org.example.apilogin.common.Constantes;
 import org.example.apilogin.domain.errores.UnauthorizedException;
 import org.example.apilogin.ui.dto.TokenResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -56,9 +58,25 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
+    public String generateToken(UserDetails userDetails) {
+        String rol = extractRolFromAuthorities(userDetails);
+        Long userId = Long.parseLong(userDetails.getUsername());
+
+        Map<String, Object> claims = buildStandardClaims(rol, userId);
+        return buildToken(claims, userId.toString(), jwtExpiration);
+    }
+
     public String generateToken(String rol, Long userId) {
         Map<String, Object> claims = buildStandardClaims(rol, userId);
         return buildToken(claims, userId.toString(), jwtExpiration);
+    }
+
+    public String generateRefreshToken(UserDetails userDetails) {
+        String rol = extractRolFromAuthorities(userDetails);
+        Long userId = Long.parseLong(userDetails.getUsername());
+
+        Map<String, Object> claims = buildStandardClaims(rol, userId);
+        return buildToken(claims, userId.toString(), refreshExpiration);
     }
 
     public String generateRefreshToken(String rol, Long userId) {
@@ -66,9 +84,18 @@ public class JwtService {
         return buildToken(claims, userId.toString(), refreshExpiration);
     }
 
-    public String generatePreToken(String rol, Long userId) {
+    public String generatePreToken(UserDetails userDetails) {
+        String rol = extractRolFromAuthorities(userDetails);
+        Long userId = Long.parseLong(userDetails.getUsername());
+
         Map<String, Object> claims = build2FAPendingClaims(rol, userId);
         return buildToken(claims, userId.toString(), twoFactorCodeExpiration);
+    }
+
+    public TokenResponse generateTokens(UserDetails userDetails) {
+        String accessToken = generateToken(userDetails);
+        String refreshToken = generateRefreshToken(userDetails);
+        return new TokenResponse(accessToken, refreshToken);
     }
 
     public TokenResponse generateTokens(String rol, Long userId) {
@@ -85,7 +112,21 @@ public class JwtService {
             throw new UnauthorizedException(Constantes.JWT_REFRESH_TOKEN_INVALIDO);
         }
 
-        return generateTokens(rol, userId);
+        // Recrear UserDetails temporal para generar nuevos tokens
+        UserDetails userDetails = User.builder()
+                .username(userId.toString())
+                .password("")
+                .roles(rol)
+                .build();
+
+        return generateTokens(userDetails);
+    }
+
+    private String extractRolFromAuthorities(UserDetails userDetails) {
+        return userDetails.getAuthorities().stream()
+                .findFirst()
+                .map(auth -> auth.getAuthority().replace(Constantes.JWT_ROLE_PREFIX, ""))
+                .orElseThrow(() -> new IllegalStateException(Constantes.JWT_NO_ROL_ENCONTRADO));
     }
 
     private Map<String, Object> buildStandardClaims(String rol, Long userId) {
