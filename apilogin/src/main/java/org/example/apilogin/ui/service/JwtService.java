@@ -32,10 +32,6 @@ public class JwtService {
     @Value(Constantes.SPRING_2FA_CODE_EXPIRATION)
     private long twoFactorCodeExpiration;
 
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
-
     public String extractRol(String token) {
         return extractClaim(token, claims -> (String)claims.get(Constantes.JWT_CLAIM_AUTH));
     }
@@ -60,29 +56,28 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(String username, String rol, Long userId) {
+    public String generateToken(String rol, Long userId) {
         Map<String, Object> claims = buildStandardClaims(rol, userId);
-        return buildToken(claims, username, jwtExpiration);
+        return buildToken(claims, userId.toString(), jwtExpiration);
     }
 
-    public String generateRefreshToken(String username, String rol, Long userId) {
+    public String generateRefreshToken(String rol, Long userId) {
         Map<String, Object> claims = buildStandardClaims(rol, userId);
-        return buildToken(claims, username, refreshExpiration);
+        return buildToken(claims, userId.toString(), refreshExpiration);
     }
 
-    public String generatePreToken(String username, String rol, Long userId) {
+    public String generatePreToken(String rol, Long userId) {
         Map<String, Object> claims = build2FAPendingClaims(rol, userId);
-        return buildToken(claims, username, twoFactorCodeExpiration);
+        return buildToken(claims, userId.toString(), twoFactorCodeExpiration);
     }
 
-    public TokenResponse generateTokens(String username, String rol, Long userId) {
-        String accessToken = generateToken(username, rol, userId);
-        String refreshToken = generateRefreshToken(username, rol, userId);
+    public TokenResponse generateTokens(String rol, Long userId) {
+        String accessToken = generateToken(rol, userId);
+        String refreshToken = generateRefreshToken(rol, userId);
         return new TokenResponse(accessToken, refreshToken);
     }
 
     public TokenResponse refreshTokens(String refreshToken) {
-        String username = extractUsername(refreshToken);
         String rol = extractRol(refreshToken);
         Long userId = extractUserId(refreshToken);
 
@@ -90,7 +85,7 @@ public class JwtService {
             throw new UnauthorizedException(Constantes.JWT_REFRESH_TOKEN_INVALIDO);
         }
 
-        return generateTokens(username, rol, userId);
+        return generateTokens(rol, userId);
     }
 
     private Map<String, Object> buildStandardClaims(String rol, Long userId) {
@@ -111,7 +106,7 @@ public class JwtService {
 
     private String buildToken(
             Map<String, Object> extraClaims,
-            String username,
+            String subject,
             long expiration
     ) {
 
@@ -119,16 +114,28 @@ public class JwtService {
         return Jwts
                 .builder()
                 .claims(extraClaims)
-                .subject(username)
+                .subject(subject)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey())
                 .compact();
     }
 
-    public boolean isTokenValid(String token, String username) {
-        final String usernameToken = extractUsername(token);
-        return (usernameToken.equals(username) && !isTokenExpired(token));
+    public boolean isTokenValid(String token) {
+        if (isTokenExpired(token)) {
+            return false;
+        }
+
+        // Verificar que el subject coincida con el userId en los claims
+        String subject = extractClaim(token, Claims::getSubject);
+        Long userId = extractUserId(token);
+
+        if (subject == null || userId == null) {
+            return false;
+        }
+
+        // El subject debe ser igual al userId convertido a String
+        return subject.equals(userId.toString());
     }
 
     private boolean isTokenExpired(String token) {

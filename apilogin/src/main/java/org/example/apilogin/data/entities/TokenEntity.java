@@ -20,9 +20,6 @@ public class TokenEntity {
     @Column(nullable = false)
     private Long userId;
 
-    @Column(nullable = false)
-    private String username;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TokenType tokenType;
@@ -61,14 +58,6 @@ public class TokenEntity {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public TokenType getTokenType() {

@@ -3,7 +3,6 @@ package org.example.apilogin.ui.service;
 import com.google.zxing.WriterException;
 import org.example.apilogin.common.Constantes;
 import org.example.apilogin.domain.model.Rol;
-import org.example.apilogin.domain.model.TokenType;
 import org.example.apilogin.domain.model.TwoFactorMethod;
 import org.example.apilogin.domain.model.Usuario;
 import org.example.apilogin.domain.service.TokenService;
@@ -134,14 +133,14 @@ public class AuthService {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
         }
 
-        String username = jwtService.extractUsername(preToken);
+        Long userId = jwtService.extractUserId(preToken);
 
-        if (!jwtService.isTokenValid(preToken, username)) {
+        if (!jwtService.isTokenValid(preToken)) {
             LoginResponse response = new LoginResponse(Constantes.MSG_CODIGO_2FA_EXPIRADO);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
 
-        Usuario usuario = usuarioService.findByUsername(username);
+        Usuario usuario = usuarioService.findById(userId);
 
         if (Boolean.FALSE.equals(usuario.twoFactorEnabled())) {
             LoginResponse response = new LoginResponse(Constantes.MSG_NO_PROCESO_2FA);
@@ -162,13 +161,10 @@ public class AuthService {
         }
 
         if (isValid) {
-            TokenResponse tokens = jwtService.generateTokens(usuario.username(), usuario.rol().name(), usuario.id());
+            TokenResponse tokens = jwtService.generateTokens(usuario.rol().name(), usuario.id());
 
             // Guardar tokens en BD
-            tokenService.saveToken(tokens.accessToken(), usuario.id(), usuario.username(),
-                    TokenType.ACCESS);
-            tokenService.saveToken(tokens.refreshToken(), usuario.id(), usuario.username(),
-                    TokenType.REFRESH);
+            tokenService.saveTokens(tokens.accessToken(), tokens.refreshToken(), usuario.id());
 
             UsuarioDTO usuarioDTO = new UsuarioDTO(
                     usuario.id(),

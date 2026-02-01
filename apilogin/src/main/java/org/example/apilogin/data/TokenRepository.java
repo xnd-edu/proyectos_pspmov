@@ -1,5 +1,6 @@
 package org.example.apilogin.data;
 
+import org.example.apilogin.common.Constantes;
 import org.example.apilogin.data.entities.TokenEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -17,7 +18,7 @@ public interface TokenRepository extends JpaRepository<TokenEntity, Long> {
     List<TokenEntity> findByUserId(Long userId);
 
     @Modifying
-    @Query("UPDATE TokenEntity t SET t.revoked = true WHERE t.token = :token")
+    @Query(Constantes.QUERY_REVOKE_TOKEN)
     void revokeToken(String token);
 }
 

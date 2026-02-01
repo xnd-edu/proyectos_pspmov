@@ -1,7 +1,6 @@
 package org.example.apilogin.ui.controller;
 
 import org.example.apilogin.common.Constantes;
-import org.example.apilogin.domain.model.TokenType;
 import org.example.apilogin.domain.model.Usuario;
 import org.example.apilogin.domain.service.TokenService;
 import org.example.apilogin.domain.service.UsuarioService;
@@ -39,9 +38,8 @@ public class AuthController {
         if (Boolean.TRUE.equals(usuario.twoFactorEnabled())) {
             // Generar pre-token para 2FA
             String preToken = jwtService.generatePreToken(
-                usuario.username(),
-                usuario.rol().name(),
-                usuario.id()
+                    usuario.rol().name(),
+                    usuario.id()
             );
 
             LoginResponse response = new LoginResponse(Constantes.MSG_2FA_REQUIRED);
@@ -53,16 +51,12 @@ public class AuthController {
 
         // Login exitoso sin 2FA - generar tokens reales
         var tokens = jwtService.generateTokens(
-            usuario.username(),
             usuario.rol().name(),
             usuario.id()
         );
 
         // Guardar tokens en BD
-        tokenService.saveToken(tokens.accessToken(), usuario.id(), usuario.username(),
-                TokenType.ACCESS);
-        tokenService.saveToken(tokens.refreshToken(), usuario.id(), usuario.username(),
-                TokenType.REFRESH);
+        tokenService.saveTokens(tokens.accessToken(), tokens.refreshToken(), usuario.id());
 
         UsuarioDTO usuarioDTO = new UsuarioDTO(
                 usuario.id(),

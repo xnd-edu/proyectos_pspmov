@@ -44,6 +44,7 @@ public final class Constantes {
     public static final String MSG_CODIGO_ACTIVACION_EXPIRADO = "El código de activación ha expirado.";
     public static final String MSG_ACCESO_DENEGADO = "Acceso denegado";
     public static final String MSG_RENO_NO_ENCONTRADO = "Reno con ID %d no encontrado";
+    public static final String MSG_TOKEN_NO_ENCONTRADO = "Token no encontrado";
 
     public static final String EMAIL_SUBJECT_ACTIVACION = "Activa tu cuenta - Código de activación";
     public static final String EMAIL_SUBJECT_2FA = "Código de verificación 2FA";
@@ -64,7 +65,6 @@ public final class Constantes {
     public static final String API_RENO_UPDATE = "/update/{id}";
     public static final String API_RENO_DELETE = "/delete/{id}";
     public static final String API_JWT = "/token";
-    public static final String API_JWT_VALIDATE = "/validate";
     public static final String API_JWT_REFRESH = "/refresh";
 
     public static final String API_PATH_PATTERN = "/api/**";
@@ -98,5 +98,7 @@ public final class Constantes {
     public static final String JWT_TOKEN_TYPE_BEARER = "Bearer";
     public static final String JWT_REFRESH_TOKEN_INVALIDO = "Refresh token inválido o expirado";
     public static final String JWT_USER_ID_INVALID_TYPE = "userId claim is not a number: %s";
+
+    public static final String QUERY_REVOKE_TOKEN = "UPDATE TokenEntity t SET t.revoked = true WHERE t.token = :token";
 }
 

@@ -59,11 +59,10 @@ public class AuthInterceptor implements HandlerInterceptor {
                     throw new UnauthorizedException(Constantes.MSG_DEBE_INICIAR_SESION);
                 }
 
-                String username = jwtService.extractUsername(token);
                 String rol = jwtService.extractRol(token);
                 Long userId = jwtService.extractUserId(token);
 
-                if (!jwtService.isTokenValid(token, username)) {
+                if (!jwtService.isTokenValid(token)) {
                     throw new UnauthorizedException(Constantes.MSG_DEBE_INICIAR_SESION);
                 }
 
@@ -71,7 +70,6 @@ public class AuthInterceptor implements HandlerInterceptor {
                     throw new ForbiddenException(Constantes.MSG_ACCESO_DENEGADO);
                 }
 
-                request.setAttribute(Constantes.ATTR_USUARIO, username);
                 request.setAttribute(Constantes.ATTR_ROL, rol);
                 request.setAttribute(Constantes.ATTR_USER_ID, userId);
             } catch (MalformedJwtException |
