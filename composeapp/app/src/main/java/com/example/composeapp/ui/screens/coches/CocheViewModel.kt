@@ -1,4 +1,4 @@
-package com.example.composeapp.ui.coches
+package com.example.composeapp.ui.screens.coches
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

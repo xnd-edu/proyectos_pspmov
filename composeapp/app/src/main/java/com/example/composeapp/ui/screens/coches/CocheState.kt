@@ -1,4 +1,4 @@
-package com.example.composeapp.ui.coches
+package com.example.composeapp.ui.screens.coches
 
 import com.example.composeapp.domain.modelo.Coche
 import com.example.composeapp.ui.common.UiEvent
