@@ -55,8 +55,6 @@ public final class Constantes {
     public static final String API_ACTIVAR_CUENTA = "/activar";
     public static final String API_RENO_BY_ID = "/{id}";
     public static final String API_RENO_FILTRAR = "/filtrar";
-    public static final String API_RENO_UPDATE = "/update/{id}";
-    public static final String API_RENO_DELETE = "/delete/{id}";
     public static final String API_JWT = "/token";
     public static final String API_JWT_REFRESH = "/refresh";
 

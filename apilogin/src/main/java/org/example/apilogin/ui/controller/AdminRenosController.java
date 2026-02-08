@@ -46,13 +46,13 @@ public class AdminRenosController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newReno);
     }
 
-    @PutMapping(Constantes.API_RENO_UPDATE)
+    @PutMapping(Constantes.API_RENO_BY_ID)
     public ResponseEntity<Reno> actualizarReno(@PathVariable int id, @RequestBody Reno reno) {
         Reno updatedReno = renoService.update(id, reno);
         return ResponseEntity.ok(updatedReno);
     }
 
-    @DeleteMapping(Constantes.API_RENO_DELETE)
+    @DeleteMapping(Constantes.API_RENO_BY_ID)
     public ResponseEntity<Void> eliminarReno(@PathVariable int id) {
         renoService.delete(id);
         return ResponseEntity.noContent().build();

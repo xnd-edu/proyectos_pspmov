@@ -51,39 +51,43 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // Si no hay autenticación previa en el contexto
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            try {
+                // Verificar si el token está revocado
+                if (tokenService.isTokenRevoked(jwt)) {
+                    filterChain.doFilter(request, response);
+                    return;
+                }
 
-            // Verificar si el token está revocado
-            if (tokenService.isTokenRevoked(jwt)) {
-                filterChain.doFilter(request, response);
-                return;
-            }
+                // Validar el token (verifica firma, expiración y coherencia interna)
+                if (jwtService.isTokenValid(jwt)) {
 
-            // Validar el token (verifica firma, expiración y coherencia interna)
-            if (jwtService.isTokenValid(jwt)) {
+                    // Extraer información del token
+                    String userId = jwtService.extractUserId(jwt).toString();
+                    String rol = jwtService.extractRol(jwt);
 
-                // Extraer información del token
-                String userId = jwtService.extractUserId(jwt).toString();
-                String rol = jwtService.extractRol(jwt);
+                    // Crear UserDetails desde el token (sin llamada a BD)
+                    UserDetails userDetails = User.builder()
+                            .username(userId)
+                            .password("")  // No necesitamos el password
+                            .roles(rol)
+                            .build();
 
-                // Crear UserDetails desde el token (sin llamada a BD)
-                UserDetails userDetails = User.builder()
-                        .username(userId)
-                        .password("")  // No necesitamos el password
-                        .roles(rol)
-                        .build();
+                    // Crear el objeto de autenticación
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                    );
 
-                // Crear el objeto de autenticación
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
+                    // Añadir detalles de la request
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                // Añadir detalles de la request
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                // Establecer la autenticación en el contexto de seguridad
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                    // Establecer la autenticación en el contexto de seguridad
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
+            } catch (Exception e) {
+                // Si hay cualquier error al procesar el token, simplemente no autenticar
+                // El usuario recibirá 401 de Spring Security si intenta acceder a un recurso protegido
             }
         }
 

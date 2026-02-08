@@ -54,7 +54,7 @@ public class UserRenosController {
         return ResponseEntity.ok(renosFiltrados);
     }
 
-    @DeleteMapping(Constantes.API_RENO_DELETE)
+    @DeleteMapping(Constantes.API_RENO_BY_ID)
     public ResponseEntity<Void> eliminarReno(@PathVariable int id, Authentication authentication) {
         Long userId = Long.parseLong(authentication.getName());
         Reno reno = renoService.findById(id);
