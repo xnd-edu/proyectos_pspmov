@@ -94,7 +94,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.Medium"
+        app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.Large"
         android:text="@string/hecho"/>
 
     <com.google.android.material.progressindicator.CircularProgressIndicator

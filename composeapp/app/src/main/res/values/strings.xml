@@ -1,35 +1,69 @@
 <resources>
     <string name="app_name">ComposeApp</string>
-    <string name="anyadirCoche">Añadir Coche</string>
-    <string name="matricula">Matrícula</string>
-    <string name="electrico">Eléctrico</string>
-    <string name="marca">Marca</string>
-    <string name="modelo">Modelo</string>
-    <string name="fechaMatricula">Fecha matr.</string>
     <string name="color">Color</string>
-    <string name="tipoCoche">Tipo Coche:</string>
-    <string name="sedan">Sedán</string>
-    <string name="suv">SUV</string>
-    <string name="otro">Otro</string>
-    <string name="comentarios">Comentarios</string>
-    <string name="contador">0/0</string>
 
-    <!-- Content Descriptions -->
-    <string name="cd_coche_anterior">Coche anterior</string>
-    <string name="cd_siguiente_coche">Siguiente coche</string>
-    <string name="cd_limpiar">Limpiar</string>
-    <string name="cd_actualizar">Actualizar</string>
-    <string name="cd_eliminar">Eliminar</string>
-    <string name="cd_guardar">Guardar</string>
+    <!-- Mensajes de error de red -->
+    <string name="error_timeout">Tiempo de espera agotado. Verifica tu conexión a internet.</string>
+    <string name="error_no_connection">No se pudo conectar al servidor. Verifica tu conexión a internet.</string>
+    <string name="error_network">Error de red. Por favor, inténtalo de nuevo.</string>
+    <string name="error_unauthorized">Credenciales inválidas. Por favor, inicia sesión nuevamente.</string>
+    <string name="error_forbidden">No tienes permisos para acceder a este recurso.</string>
+    <string name="error_server">Error del servidor (%1$d). Inténtalo más tarde.</string>
+    <string name="error_unknown">Error inesperado: %1$s</string>
 
-    <!-- Mensajes ViewModel -->
-    <string name="msg_no_coches_anteriores">No hay coches anteriores</string>
-    <string name="msg_no_mas_coches">No hay más coches</string>
-    <string name="msg_coche_guardado">Coche guardado con éxito</string>
-    <string name="msg_error_guardar_coche">Error al guardar el coche</string>
-    <string name="msg_matricula_vacia">Matrícula no puede estar vacía</string>
-    <string name="msg_coche_actualizado">Coche actualizado con éxito</string>
-    <string name="msg_error_actualizar_coche">Error al actualizar el coche</string>
-    <string name="msg_coche_eliminado">Coche eliminado con éxito</string>
-    <string name="msg_error_eliminar_coche">Error al eliminar el coche</string>
+    <!-- Login -->
+    <string name="login_title">Iniciar Sesión</string>
+    <string name="login_username">Usuario</string>
+    <string name="login_password">Contraseña</string>
+    <string name="login_button">Entrar</string>
+    <string name="login_campos_vacios">Por favor completa todos los campos</string>
+
+    <!-- Reindeers -->
+    <string name="añadir_reno">Añadir Reno</string>
+    <string name="editar_reno">Editar Reno</string>
+    <string name="renos">Renos</string>
+    <string name="nombre">Nombre</string>
+    <string name="user_id">ID Usuario</string>
+    <string name="cuernos">Tiene cuernos</string>
+    <string name="añadir">Añadir</string>
+    <string name="guardar">Guardar</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="reintentar">Reintentar</string>
+    <string name="sin_nombre">Sin nombre</string>
+    <string name="color_desconocido">Desconocido</string>
+    <string name="color_label">Color: %1$s</string>
+    <string name="cuernos_label">Cuernos: %1$s</string>
+    <string name="si">Sí</string>
+    <string name="no">No</string>
+
+    <!-- Mensajes de validación -->
+    <string name="error_nombre_vacio">El nombre no puede estar vacío</string>
+    <string name="error_userid_vacio">El ID del usuario no puede estar vacío</string>
+
+    <!-- Mensajes de éxito -->
+    <string name="reno_añadido_exito">Reno añadido con éxito</string>
+    <string name="reno_actualizado_exito">Reno actualizado con éxito</string>
+    <string name="reno_eliminado_exito">Reno eliminado con éxito</string>
+
+    <!-- Mensajes de error -->
+    <string name="error_cargar_reno">Error al cargar el reno</string>
+    <string name="error_añadir_reno">Error al añadir el reno</string>
+    <string name="error_actualizar_reno">Error al actualizar el reno</string>
+    <string name="error_eliminar_reno">Error al eliminar el reno</string>
+
+    <!-- Profile -->
+    <string name="perfil">Perfil</string>
+    <string name="usuario">Usuario</string>
+    <string name="email">Email</string>
+    <string name="rol">Rol</string>
+    <string name="cerrar_sesion">Cerrar sesión</string>
+    <string name="informacion_personal">Información Personal</string>
+
+    <!-- Games -->
+    <string name="juegos">Juegos</string>
+    <string name="buscar_juego">Buscar juego…</string>
+    <string name="escribe_nombre_juego">Escribe el nombre de un juego para buscar</string>
+    <string name="no_juegos_encontrados">No se encontraron juegos</string>
+    <string name="cd_portada_juego">Portada del juego</string>
 </resources>
+

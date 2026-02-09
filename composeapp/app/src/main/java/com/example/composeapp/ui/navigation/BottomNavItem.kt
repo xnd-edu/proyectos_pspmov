@@ -5,6 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import com.example.composeapp.R
 import com.example.composeapp.ui.common.Constants
+import com.example.composeapp.ui.navigation.routes.Games
+import com.example.composeapp.ui.navigation.routes.Profile
+import com.example.composeapp.ui.navigation.routes.Reindeers
 
 /**
  * Sealed class que representa los items del BottomNavigationBar
@@ -25,6 +28,17 @@ sealed class BottomNavItem(
         }
     )
 
+    data object GamesTab : BottomNavItem(
+        route = Games,
+        title = Constants.GAMES_SCREEN,
+        icon = {
+            Icon(
+                painter = painterResource(R.drawable.sports_esports_24px),
+                contentDescription = null
+            )
+        }
+    )
+
     data object ProfileTab : BottomNavItem(
         route = Profile,
         title = Constants.PROFILE_SCREEN,
@@ -37,7 +51,7 @@ sealed class BottomNavItem(
     )
 
     companion object {
-        val items = listOf(ReindeersTab, ProfileTab)
+        val items = listOf(ReindeersTab, GamesTab, ProfileTab)
     }
 }
 

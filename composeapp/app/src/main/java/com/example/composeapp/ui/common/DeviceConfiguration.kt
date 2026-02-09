@@ -19,23 +19,26 @@ enum class DeviceConfiguration {
             val windowSizeClass = windowAdaptiveInfo.windowSizeClass
 
             return when {
-                !windowSizeClass.isWidthAtLeastBreakpoint(600) &&
-                windowSizeClass.isHeightAtLeastBreakpoint(480) -> MOBILE_PORTRAIT
 
-                windowSizeClass.isWidthAtLeastBreakpoint(600) &&
-                !windowSizeClass.isHeightAtLeastBreakpoint(480) -> MOBILE_LANDSCAPE
 
-                windowSizeClass.isWidthAtLeastBreakpoint(600) &&
-                !windowSizeClass.isWidthAtLeastBreakpoint(840) &&
-                windowSizeClass.isHeightAtLeastBreakpoint(900) -> TABLET_PORTRAIT
+                !windowSizeClass.isWidthAtLeastBreakpoint(WindowBreakpoints.WIDTH_MEDIUM) &&
+                windowSizeClass.isHeightAtLeastBreakpoint(WindowBreakpoints.HEIGHT_MEDIUM) -> MOBILE_PORTRAIT
 
-                windowSizeClass.isWidthAtLeastBreakpoint(840) &&
-                !windowSizeClass.isWidthAtLeastBreakpoint(1200) &&
-                windowSizeClass.isHeightAtLeastBreakpoint(480) &&
-                !windowSizeClass.isHeightAtLeastBreakpoint(900) -> TABLET_LANDSCAPE
+                windowSizeClass.isWidthAtLeastBreakpoint(WindowBreakpoints.WIDTH_MEDIUM) &&
+                !windowSizeClass.isHeightAtLeastBreakpoint(WindowBreakpoints.HEIGHT_MEDIUM) -> MOBILE_LANDSCAPE
+
+                windowSizeClass.isWidthAtLeastBreakpoint(WindowBreakpoints.WIDTH_MEDIUM) &&
+                !windowSizeClass.isWidthAtLeastBreakpoint(WindowBreakpoints.WIDTH_EXPANDED) &&
+                windowSizeClass.isHeightAtLeastBreakpoint(WindowBreakpoints.HEIGHT_EXPANDED) -> TABLET_PORTRAIT
+
+                windowSizeClass.isWidthAtLeastBreakpoint(WindowBreakpoints.WIDTH_EXPANDED) &&
+                !windowSizeClass.isWidthAtLeastBreakpoint(WindowBreakpoints.WIDTH_LARGE) &&
+                windowSizeClass.isHeightAtLeastBreakpoint(WindowBreakpoints.HEIGHT_MEDIUM) &&
+                !windowSizeClass.isHeightAtLeastBreakpoint(WindowBreakpoints.HEIGHT_EXPANDED) -> TABLET_LANDSCAPE
 
                 else -> DESKTOP
             }
         }
     }
 }
+
