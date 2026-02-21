@@ -111,6 +111,25 @@ public class AuthService {
         return newUser;
     }
 
+    public Usuario registerWithoutActivation(String username, String password, String email, String nombre) {
+        String hashedPassword = usuarioService.encodePassword(password);
+        String codigoActivacion = UUID.randomUUID().toString();
+
+        Usuario newUser = new Usuario(
+                null,
+                username,
+                hashedPassword,
+                email,
+                nombre,
+                true,
+                codigoActivacion,
+                LocalDateTime.now().plusHours(24),
+                Rol.USER
+        );
+
+        return usuarioService.register(newUser);
+    }
+
     public ResponseEntity<Enable2FAResponse> enable2FA(String method, Usuario usuario) {
         if (Boolean.TRUE.equals(usuario.twoFactorEnabled())) {
             Enable2FAResponse response = new Enable2FAResponse(Constantes.MSG_2FA_YA_ACTIVADO);

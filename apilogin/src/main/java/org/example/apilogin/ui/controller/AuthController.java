@@ -69,5 +69,34 @@ public class AuthController {
         LoginResponse response = new LoginResponse(usuarioDTO, Constantes.MSG_REGISTRO_EXITOSO);
         return ResponseEntity.ok(response);
     }
+
+    // Endpoint para registrar sin activación por mail (solo para pruebas o casos especiales)
+    // NOTA PARA EL PROFESOR: Las pruebas se harían muy pesadas si se requiere activar por mail por cada registro,
+    // por lo que este endpoint permite registrar usuarios ya activados para facilitar las pruebas.
+    @PostMapping(Constantes.API_REGISTER_NO_ACTIVATION)
+    public ResponseEntity<LoginResponse> registerWithoutActivation(@RequestBody RegisterDTO request) {
+        if (usuarioService.existsByUsername(request.username())) {
+            LoginResponse response = new LoginResponse(Constantes.MSG_USERNAME_YA_EXISTE);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        Usuario newUser = authService.registerWithoutActivation(
+                request.username(),
+                request.password(),
+                request.email(),
+                request.nombre()
+        );
+
+        UsuarioDTO usuarioDTO = new UsuarioDTO(
+                newUser.id(),
+                newUser.username(),
+                newUser.email(),
+                newUser.nombre(),
+                newUser.rol()
+        );
+
+        LoginResponse response = new LoginResponse(usuarioDTO, Constantes.MSG_REGISTRO_EXITOSO);
+        return ResponseEntity.ok(response);
+    }
 }
 

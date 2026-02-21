@@ -52,11 +52,15 @@ public final class Constantes {
     public static final String API_VERIFY_2FA = "/2fa/verify";
     public static final String API_CONFIRM_2FA = "/2fa/confirm";
     public static final String API_REGISTER = "/register";
+    public static final String API_REGISTER_NO_ACTIVATION = "/register/noactivation";
+
     public static final String API_ACTIVAR_CUENTA = "/activar";
     public static final String API_RENO_BY_ID = "/{id}";
     public static final String API_RENO_FILTRAR = "/filtrar";
     public static final String API_JWT = "/token";
     public static final String API_JWT_REFRESH = "/refresh";
+    public static final String API_SECRETS = "/api/secrets";
+    public static final String API_SECRETS_SHARE = "/api/secrets/share";
 
     public static final String PREAUTHORIZE_ROLE_ADMIN = "hasRole('ADMIN')";
 
@@ -92,5 +96,10 @@ public final class Constantes {
     public static final String JWT_NO_ROL_ENCONTRADO = "No se encontró rol en las authorities";
 
     public static final String QUERY_REVOKE_TOKEN = "UPDATE TokenEntity t SET t.revoked = true WHERE t.token = :token";
+
+    public static final int IV_SIZE = 12; // Tamaño recomendado para GCM
+    public static final int SALT_SIZE = 16; // Tamaño común para salting
+
+    public static final String SERVER_SIGNATURE_MESSAGE = "v1|user:%d|key:%s|date:%s";
 }
 
