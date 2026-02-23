@@ -32,10 +32,10 @@ object Dimens {
     val loginFormSpacing = 16.dp
 
     // Reindeer item dimensions
-    val reindeerCardRadius = 12.dp
-    val reindeerItemSpacing = 4.dp
-    val reindeerCardPadding = 12.dp
-    val reindeerItemInfoSpacing = 4.dp
-    val reindeerItemFontSizeName = 18.sp
-    val reindeerItemFontSizeInfo = 14.sp
+    val cardRadius = 12.dp
+    val itemSpacing = 4.dp
+    val cardPadding = 12.dp
+    val itemInfoSpacing = 4.dp
+    val itemFontSizeName = 18.sp
+    val itemFontSizeInfo = 14.sp
 }

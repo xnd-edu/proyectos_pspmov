@@ -1,4 +1,4 @@
-package com.example.composeapp.ui.screens.login
+package com.example.composeapp.ui.screens.auth.login
 
 sealed interface LoginIntent {
     data class OnUsernameChange(val username: String) : LoginIntent

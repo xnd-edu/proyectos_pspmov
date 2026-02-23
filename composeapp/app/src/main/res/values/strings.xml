@@ -8,6 +8,7 @@
     <string name="error_network">Error de red. Por favor, inténtalo de nuevo.</string>
     <string name="error_unauthorized">Credenciales inválidas. Por favor, inicia sesión nuevamente.</string>
     <string name="error_forbidden">No tienes permisos para acceder a este recurso.</string>
+    <string name="error_bad_request">Solicitud incorrecta: %1$s</string>
     <string name="error_server">Error del servidor (%1$d). Inténtalo más tarde.</string>
     <string name="error_unknown">Error inesperado: %1$s</string>
 
@@ -16,7 +17,18 @@
     <string name="login_username">Usuario</string>
     <string name="login_password">Contraseña</string>
     <string name="login_button">Entrar</string>
+    <string name="login_registrarse_button">Registrarse</string>
     <string name="login_campos_vacios">Por favor completa todos los campos</string>
+
+    <!-- Register -->
+    <string name="register_title">Crear cuenta</string>
+    <string name="register_nombre">Nombre completo</string>
+    <string name="register_username">Usuario</string>
+    <string name="register_email">Email</string>
+    <string name="register_password">Contraseña</string>
+    <string name="register_button">Registrarse</string>
+    <string name="register_ya_tengo_cuenta">Ya tengo cuenta</string>
+    <string name="register_campos_vacios">Por favor completa todos los campos</string>
 
     <!-- Reindeers -->
     <string name="añadir_reno">Añadir Reno</string>
@@ -36,20 +48,53 @@
     <string name="si">Sí</string>
     <string name="no">No</string>
 
+    <!-- Secrets -->
+    <string name="secretos">Secretos</string>
+    <string name="secreto">Secreto</string>
+    <string name="secreto_title">Secreto %1$d</string>
+    <string name="nuevo_secreto">Nuevo Secreto</string>
+    <string name="guardar_secreto">Guardar Secreto</string>
+    <string name="compartir">Compartir</string>
+    <string name="compartir_secreto">Compartir Secreto</string>
+    <string name="dejar_compartir">Dejar de compartir</string>
+    <string name="introduce_usuario_compartir">Introduce el nombre de usuario para compartir el secreto</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="acceso_seguro">Acceso Seguro</string>
+    <string name="introduce_contrasena">Introduce la contraseña para desencriptar este secreto:</string>
+    <string name="ver_secreto">Ver Secreto</string>
+
+
     <!-- Mensajes de validación -->
     <string name="error_nombre_vacio">El nombre no puede estar vacío</string>
     <string name="error_userid_vacio">El ID del usuario no puede estar vacío</string>
+    <string name="error_campos_vacios">Por favor completa todos los campos</string>
 
     <!-- Mensajes de éxito -->
     <string name="reno_añadido_exito">Reno añadido con éxito</string>
     <string name="reno_actualizado_exito">Reno actualizado con éxito</string>
     <string name="reno_eliminado_exito">Reno eliminado con éxito</string>
 
+    <string name="secreto_guardado_exito">Secreto guardado con éxito (%1$d)</string>
+    <string name="secreto_eliminado_exito">Secreto eliminado con éxito</string>
+    <string name="secreto_revocado_exito">Se ha dejado de compartir el secreto</string>
+    <string name="secreto_compartido_exito">Secreto compartido con %1$s</string>
+
+
     <!-- Mensajes de error -->
     <string name="error_cargar_reno">Error al cargar el reno</string>
     <string name="error_añadir_reno">Error al añadir el reno</string>
     <string name="error_actualizar_reno">Error al actualizar el reno</string>
     <string name="error_eliminar_reno">Error al eliminar el reno</string>
+
+    <string name="error_guardar_secreto">Error al guardar el secreto</string>
+    <string name="error_cargar_secreto">Error al cargar el secreto</string>
+    <string name="error_cargar_secretos">Error al cargar los secretos</string>
+    <string name="error_datos_faltantes">Error: Datos faltantes</string>
+    <string name="error_eliminar_secreto">Error al eliminar el secreto</string>
+    <string name="error_revocar_secreto">Error al dejar de compartir el secreto</string>
+    <string name="error_compartir_secreto">Error al compartir el secreto</string>
+
+    <string name="error_clave_publica">Error en la clave pública</string>
 
     <!-- Profile -->
     <string name="perfil">Perfil</string>

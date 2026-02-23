@@ -73,9 +73,7 @@ fun GamesMainScreenVM(
                             duration = SnackbarDuration.Short
                         )
                     }
-                    is UiEvent.NavigateBack -> {
-                        // No usado en GamesMainScreen
-                    }
+                    else -> {}
                 }
             }
         }

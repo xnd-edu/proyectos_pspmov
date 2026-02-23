@@ -8,6 +8,7 @@ import com.example.composeapp.ui.common.Constants
 import com.example.composeapp.ui.navigation.routes.Games
 import com.example.composeapp.ui.navigation.routes.Profile
 import com.example.composeapp.ui.navigation.routes.Reindeers
+import com.example.composeapp.ui.navigation.routes.Secrets
 
 /**
  * Sealed class que representa los items del BottomNavigationBar
@@ -23,6 +24,17 @@ sealed class BottomNavItem(
         icon = {
             Icon(
                 painter = painterResource(R.drawable.forest_24px),
+                contentDescription = null
+            )
+        }
+    )
+
+    data object SecretsTab : BottomNavItem(
+        route = Secrets,
+        title = Constants.SECRETS_SCREEN,
+        icon = {
+            Icon(
+                painter = painterResource(R.drawable.encrypted_24px),
                 contentDescription = null
             )
         }
@@ -51,7 +63,7 @@ sealed class BottomNavItem(
     )
 
     companion object {
-        val items = listOf(ReindeersTab, GamesTab, ProfileTab)
+        val items = listOf(ReindeersTab, SecretsTab, GamesTab, ProfileTab)
     }
 }
 

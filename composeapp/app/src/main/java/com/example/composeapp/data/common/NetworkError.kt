@@ -6,6 +6,7 @@ sealed class NetworkError : Exception() {
     class Connection : NetworkError()
     class Unauthorized : NetworkError()
     class Forbidden : NetworkError()
+    data class BadRequest(override val message: String?) : NetworkError()
     data class ServerError(val code: Int) : NetworkError()
     data class Unknown(override val message: String?) : NetworkError()
 }

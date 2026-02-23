@@ -6,6 +6,5 @@ data class ReindeerMainState(
     val reindeers: List<Reindeer> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null,
-    val searchText: String = "",
     val isAdmin: Boolean = false
 )

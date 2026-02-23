@@ -11,7 +11,9 @@ import androidx.navigation.navigation
 import com.example.composeapp.ui.navigation.routes.AuthGraph
 import com.example.composeapp.ui.navigation.routes.Login
 import com.example.composeapp.ui.navigation.routes.MainGraph
-import com.example.composeapp.ui.screens.login.LoginScreenVM
+import com.example.composeapp.ui.navigation.routes.Register
+import com.example.composeapp.ui.screens.auth.login.LoginScreenVM
+import com.example.composeapp.ui.screens.auth.register.RegisterScreenVM
 
 fun NavGraphBuilder.authNavGraph(
     navController: NavHostController
@@ -23,6 +25,23 @@ fun NavGraphBuilder.authNavGraph(
             AuthScaffold(
                 navController = navController
             )
+        }
+
+        composable<Register> {
+            Scaffold { paddingValues ->
+                RegisterScreenVM(
+                    modifier = Modifier.padding(paddingValues),
+                    navigateToReindeers = {
+                        navController.navigate(MainGraph) {
+                            popUpTo(AuthGraph) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    },
+                    navigateBack = {
+                        navController.popBackStack()
+                    }
+                )
+            }
         }
     }
 }
@@ -39,6 +58,9 @@ private fun AuthScaffold(
                     popUpTo(AuthGraph) { inclusive = true }
                     launchSingleTop = true
                 }
+            },
+            navigateToRegister = {
+                navController.navigate(Register)
             }
         )
     }

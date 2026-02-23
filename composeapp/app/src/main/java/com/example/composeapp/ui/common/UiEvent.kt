@@ -6,4 +6,8 @@ sealed class UiEvent(){
         val action: String? = null
     ): UiEvent()
     data object NavigateBack : UiEvent()
+    data class NavigateToDetail(
+        val id: Long,
+        val password: String
+    ) : UiEvent()
 }

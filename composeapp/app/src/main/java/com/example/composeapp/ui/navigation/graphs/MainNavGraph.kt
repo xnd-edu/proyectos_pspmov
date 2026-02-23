@@ -1,5 +1,6 @@
 package com.example.composeapp.ui.navigation.graphs
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -34,21 +35,27 @@ import com.example.composeapp.R
 import com.example.composeapp.ui.common.Constants
 import com.example.composeapp.ui.navigation.BottomNavItem
 import com.example.composeapp.ui.navigation.routes.AddReindeer
+import com.example.composeapp.ui.navigation.routes.AddSecret
 import com.example.composeapp.ui.navigation.routes.AuthGraph
 import com.example.composeapp.ui.navigation.routes.EditReindeer
 import com.example.composeapp.ui.navigation.routes.Games
 import com.example.composeapp.ui.navigation.routes.MainGraph
 import com.example.composeapp.ui.navigation.routes.Profile
 import com.example.composeapp.ui.navigation.routes.Reindeers
+import com.example.composeapp.ui.navigation.routes.Secrets
+import com.example.composeapp.ui.navigation.routes.ViewSecret
 import com.example.composeapp.ui.screens.games.GamesMainScreenVM
 import com.example.composeapp.ui.screens.profile.ProfileScreenVM
 import com.example.composeapp.ui.screens.reindeers.add.ReindeerAddScreenVM
 import com.example.composeapp.ui.screens.reindeers.edit.ReindeerEditScreenVM
 import com.example.composeapp.ui.screens.reindeers.main.ReindeerMainScreenVM
 import com.example.composeapp.ui.screens.reindeers.main.ReindeerMainViewModel
+import com.example.composeapp.ui.screens.secrets.add.SecretAddScreenVM
+import com.example.composeapp.ui.screens.secrets.main.SecretMainScreenVM
+import com.example.composeapp.ui.screens.secrets.view.SecretEditScreenVM
 import com.example.composeapp.ui.theme.Dimens
 
-
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 fun NavGraphBuilder.mainNavGraph(
     navController: NavHostController
 ) {
@@ -56,25 +63,92 @@ fun NavGraphBuilder.mainNavGraph(
         startDestination = Reindeers
     ) {
 
+        // --- PANTALLA DE RENOS (Con lógica Admin) ---
         composable<Reindeers> {
+            val viewModel: ReindeerMainViewModel = hiltViewModel()
+            val state by viewModel.state.collectAsStateWithLifecycle()
+
             MainScaffoldWithBottomBar(
                 navController = navController,
-                currentRoute = Reindeers::class
-            )
+                floatingActionButton = {
+                    if (state.isAdmin) {
+                        MediumExtendedFloatingActionButton(
+                            onClick = { navController.navigate(AddReindeer) }
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.add_24px),
+                                contentDescription = stringResource(R.string.añadir),
+                                modifier = Modifier.size(FloatingActionButtonDefaults.MediumIconSize)
+                            )
+                            Spacer(Modifier.width(Dimens.spacingSmall))
+                            Text(text = stringResource(R.string.añadir))
+                        }
+                    }
+                }
+            ) { padding ->
+                ReindeerMainScreenVM(
+                    modifier = Modifier.padding(padding),
+                    viewModel = viewModel,
+                    navigateToDetail = { id ->
+                        if (id == Constants.ADD_SCREEN) navController.navigate(AddReindeer)
+                        else navController.navigate(EditReindeer(id = id.toInt()))
+                    }
+                )
+            }
         }
 
+        // --- PANTALLA DE SECRETOS (Con su propio FAB) ---
+        composable<Secrets> {
+            MainScaffoldWithBottomBar(
+                navController = navController,
+                floatingActionButton = {
+                    MediumExtendedFloatingActionButton(
+                        onClick = { navController.navigate(AddSecret) }
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.add_24px),
+                            contentDescription = stringResource(R.string.añadir),
+                            modifier = Modifier.size(FloatingActionButtonDefaults.MediumIconSize)
+                        )
+                        Text(text = stringResource(R.string.nuevo_secreto))
+                    }
+                }
+            ) { padding ->
+                SecretMainScreenVM(
+                    modifier = Modifier.padding(padding),
+                    navigateToDetail = { id, password ->
+                        navController.navigate(
+                            ViewSecret(id = id, password = password)
+                        )
+                    }
+                )
+            }
+        }
+
+        // --- PANTALLA DE GAMES (Sin FAB) ---
         composable<Games> {
             MainScaffoldWithBottomBar(
                 navController = navController,
-                currentRoute = Games::class
-            )
+            ) { padding ->
+                GamesMainScreenVM(modifier = Modifier.padding(padding))
+            }
         }
 
+        // --- PANTALLA DE PERFIL ---
         composable<Profile> {
             MainScaffoldWithBottomBar(
-                navController = navController,
-                currentRoute = Profile::class
-            )
+                navController = navController
+            ) { padding ->
+                ProfileScreenVM(
+                    modifier = Modifier.padding(padding),
+                    navigateToLogin = {
+                        navController.navigate(AuthGraph) {
+                            popUpTo(0) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    }
+                )
+            }
         }
 
         composable<AddReindeer> {
@@ -96,6 +170,26 @@ fun NavGraphBuilder.mainNavGraph(
                 )
             }
         }
+
+        composable<AddSecret> { _ ->
+            DetailScaffold { snackbarHostState, modifier ->
+                SecretAddScreenVM(
+                    modifier = modifier,
+                    snackbarHostState = snackbarHostState,
+                    navigateBack = { navController.popBackStack() }
+                )
+            }
+        }
+
+        composable<ViewSecret> { backStackEntry ->
+            DetailScaffold { snackbarHostState, modifier ->
+                SecretEditScreenVM(
+                    modifier = modifier,
+                    snackbarHostState = snackbarHostState,
+                    navigateBack = { navController.popBackStack() }
+                )
+            }
+        }
     }
 }
 
@@ -103,77 +197,24 @@ fun NavGraphBuilder.mainNavGraph(
 @Composable
 private fun MainScaffoldWithBottomBar(
     navController: NavHostController,
-    currentRoute: kotlin.reflect.KClass<*>
+    floatingActionButton: @Composable () -> Unit = {},
+    content: @Composable (PaddingValues) -> Unit
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val snackbarHostState = remember { SnackbarHostState() }
 
-    // Obtener el ViewModel solo si estamos en Reindeers para acceder a isAdmin
-    val reindeerViewModel: ReindeerMainViewModel? = if (currentRoute == Reindeers::class) {
-        hiltViewModel()
-    } else null
-
-    val isAdmin = reindeerViewModel?.state?.collectAsStateWithLifecycle()?.value?.isAdmin ?: false
-
     Scaffold(
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
-        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         bottomBar = {
             BottomNavigationBar(
                 navController = navController,
                 currentDestination = currentDestination
             )
         },
-        floatingActionButton = {
-            // Mostrar FAB solo en Reindeers y si el usuario es admin
-            if (currentRoute == Reindeers::class && isAdmin) {
-                MediumExtendedFloatingActionButton(
-                    onClick = { navController.navigate(AddReindeer) }
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.add_24px),
-                        contentDescription = stringResource(R.string.añadir),
-                        modifier = Modifier.size(FloatingActionButtonDefaults.MediumIconSize)
-                    )
-                    Spacer(Modifier.width(Dimens.spacingSmall))
-                    Text(text = stringResource(R.string.añadir))
-                }
-            }
-        }
+        floatingActionButton = floatingActionButton
     ) { paddingValues ->
-        when (currentRoute) {
-            Reindeers::class -> {
-                ReindeerMainScreenVM(
-                    modifier = Modifier.padding(paddingValues),
-                    viewModel = reindeerViewModel ?: hiltViewModel(),
-                    navigateToDetail = { id ->
-                        if (id == Constants.ADD_SCREEN) {
-                            navController.navigate(AddReindeer)
-                        } else {
-                            navController.navigate(EditReindeer(id = id.toInt()))
-                        }
-                    }
-                )
-            }
-            Games::class -> {
-                GamesMainScreenVM(
-                    modifier = Modifier.padding(paddingValues)
-                )
-            }
-            Profile::class -> {
-                ProfileScreenVM(
-                    modifier = Modifier.padding(paddingValues),
-                    navigateToLogin = {
-                        navController.navigate(AuthGraph) {
-                            popUpTo(0) { inclusive = true }
-                            launchSingleTop = true
-                        }
-                    }
-                )
-            }
-        }
+        content(paddingValues)
     }
 }
 

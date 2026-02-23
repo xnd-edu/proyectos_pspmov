@@ -6,8 +6,14 @@ import com.example.composeapp.common.DaggerNames
 import com.example.composeapp.data.remote.api.AuthApi
 import com.example.composeapp.data.remote.api.IGDBApi
 import com.example.composeapp.data.remote.api.ReindeerApi
+import com.example.composeapp.data.remote.api.SecretApi
+import com.example.composeapp.data.remote.api.SharedSecretApi
+import com.example.composeapp.data.remote.api.UserPublicKeyApi
 import com.example.composeapp.data.remote.interceptors.AuthInterceptor
 import com.example.composeapp.data.remote.interceptors.IgdbAuthInterceptor
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonDeserializer
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,11 +23,26 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.inject.Named
 
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+    @Provides
+    @Singleton
+    fun provideGson(): Gson {
+        return GsonBuilder()
+            .registerTypeAdapter(LocalDateTime::class.java, JsonDeserializer { json, _, _ ->
+                LocalDateTime.parse(
+                    json.asJsonPrimitive.asString,
+                    DateTimeFormatter.ISO_LOCAL_DATE_TIME
+                )
+            })
+            .create()
+    }
+
 
     @Provides
     @Singleton
@@ -38,11 +59,14 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun provideRetrofit(
+        okHttpClient: OkHttpClient,
+        gson: Gson
+    ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(ApiConstants.REINDEER_BASE_URL)
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 
@@ -56,6 +80,24 @@ object NetworkModule {
     @Singleton
     fun provideAuthApi(retrofit: Retrofit): AuthApi {
         return retrofit.create(AuthApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSecretApi(retrofit: Retrofit): SecretApi {
+        return retrofit.create(SecretApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSharedSecretApi(retrofit: Retrofit): SharedSecretApi {
+        return retrofit.create(SharedSecretApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserPublicKeyApi(retrofit: Retrofit): UserPublicKeyApi {
+        return retrofit.create(UserPublicKeyApi::class.java)
     }
 
     // El IGDB requiere un Retrofit y OkHtttp separado porque tiene una autenticación diferente (client ID y access token)

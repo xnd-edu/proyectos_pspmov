@@ -16,6 +16,7 @@ class NetworkErrorMapper @Inject constructor(
             is NetworkError.Connection -> stringProvider.getString(R.string.error_network)
             is NetworkError.Unauthorized -> stringProvider.getString(R.string.error_unauthorized)
             is NetworkError.Forbidden -> stringProvider.getString(R.string.error_forbidden)
+            is NetworkError.BadRequest -> stringProvider.getString(R.string.error_bad_request, error.message ?: "")
             is NetworkError.ServerError -> stringProvider.getString(R.string.error_server, error.code)
             is NetworkError.Unknown -> stringProvider.getString(R.string.error_unknown, error.message ?: "")
         }

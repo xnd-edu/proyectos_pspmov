@@ -37,7 +37,6 @@ class ReindeerMainViewModel @Inject constructor(
     fun handleIntent(intent: ReindeerMainIntent) {
         when (intent) {
             is ReindeerMainIntent.LoadReindeers -> loadReindeers()
-            is ReindeerMainIntent.OnSearchTextChange -> onSearchTextChange(intent.text)
         }
     }
 
@@ -97,10 +96,6 @@ class ReindeerMainViewModel @Inject constructor(
                     }
             }
         }
-    }
-
-    private fun onSearchTextChange(text: String) {
-        _state.update { it.copy(searchText = text) }
     }
 }
 

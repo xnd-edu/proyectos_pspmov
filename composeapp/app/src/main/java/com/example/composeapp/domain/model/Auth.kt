@@ -12,6 +12,22 @@ data class LoginResponse(
     val tokens: TokenResponse?
 )
 
+data class RegisterRequest(
+    val username: String,
+    val email: String,
+    val password: String,
+    val nombre: String,
+    val publicKeyBase64: String
+)
+
+data class RegisterResponse(
+    val success: Boolean,
+    val message: String,
+    val usuario: UserDTO?,
+    val tokens: TokenResponse?,
+    val serverSignature: String?
+)
+
 data class TokenResponse(
     val accessToken: String,
     val refreshToken: String,

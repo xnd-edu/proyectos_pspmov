@@ -1,11 +1,17 @@
 package com.example.composeapp.ui.common
 
+import java.time.LocalDateTime
+
 object Constants {
     const val REINDEERS_SCREEN = "Renos"
+    const val SECRETS_SCREEN = "Secretos"
     const val PROFILE_SCREEN = "Perfil"
     const val GAMES_SCREEN = "Juegos"
 
     const val ADD_SCREEN = "add"
+
+    const val MIN_LINES_SECRET_FIELD = 5
+    const val MAX_LINES_SECRET_FIELD = 10
 
     // Preview data constants
     const val PREVIEW_GAME_NAME_1 = "The Legend of Zelda: Breath of the Wild"
@@ -31,6 +37,13 @@ object Constants {
     const val PREVIEW_REINDEER_COLOR_1 = "Rojo"
     const val PREVIEW_REINDEER_COLOR_2 = "Marrón"
     const val PREVIEW_REINDEER_COLOR_3 = "Café"
+
+    val PREVIEW_SECRET_CREATED_AT_1: LocalDateTime = LocalDateTime.of(2024, 1, 1, 12, 0)
+    val PREVIEW_SECRET_CREATED_AT_2: LocalDateTime = LocalDateTime.of(2024, 2, 1, 12, 0)
+    val PREVIEW_SECRET_CREATED_AT_3: LocalDateTime = LocalDateTime.of(2024, 3, 1, 12, 0)
+
+    const val PREVIEW_SECRET_TEXT = "Este es un secreto muy importante y muy secreto."
+    const val PREVIEW_SECRET_PASSWORD = "contraseña123"
 }
 
 /**

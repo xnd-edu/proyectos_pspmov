@@ -68,6 +68,8 @@ fun ReindeerEditScreenVM(
                     is UiEvent.NavigateBack -> {
                         navigateBack()
                     }
+
+                    else -> {}
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.example.composeapp.ui.screens.login
+package com.example.composeapp.ui.screens.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

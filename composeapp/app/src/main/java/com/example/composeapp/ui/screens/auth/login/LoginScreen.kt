@@ -1,4 +1,4 @@
-package com.example.composeapp.ui.screens.login
+package com.example.composeapp.ui.screens.auth.login
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -19,7 +19,8 @@ import com.example.composeapp.ui.theme.Dimens
 fun LoginScreenVM(
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel(),
-    navigateToReindeers: () -> Unit
+    navigateToReindeers: () -> Unit,
+    navigateToRegister: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -31,7 +32,8 @@ fun LoginScreenVM(
     LoginScreen(
         modifier = modifier,
         state = state,
-        onIntent = viewModel::handleIntent
+        onIntent = viewModel::handleIntent,
+        navigateToRegister = navigateToRegister
     )
 }
 
@@ -40,6 +42,7 @@ fun LoginScreenVM(
 fun LoginScreen(
     state: LoginState,
     onIntent: (LoginIntent) -> Unit,
+    navigateToRegister: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -97,6 +100,14 @@ fun LoginScreen(
                         Text(stringResource(R.string.login_button))
                     }
                 }
+
+                OutlinedButton(
+                    onClick = { navigateToRegister() },
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = !state.isLoading
+                ) {
+                    Text(stringResource(R.string.login_registrarse_button))
+                }
             }
         }
 }
@@ -112,8 +123,8 @@ fun LoginScreenPreview() {
                 isLoading = false,
                 error = null
             ),
+            navigateToRegister = {},
             onIntent = {}
         )
     }
 }
-

@@ -52,10 +52,20 @@ object ApiEndpoints {
     const val REINDEER_BY_ID_ADMIN = "api/admin/renos/{id}"
     const val PATH_ID = "id"
 
+    const val SECRETS = "api/secrets"
+    const val SECRET_BY_ID = "api/secrets/{id}"
+
+    const val SHARED_SECRETS = "api/secrets/share"
+    const val SHARED_SECRET_BY_ID = "api/secrets/share/{id}"
+
+    const val PUBLIC_KEY_BY_USERNAME = "api/public-keys/{username}"
+    const val PATH_USERNAME = "username"
+
     const val GAMES = "games"
 
     const val AUTH_LOGIN = "login"
     const val AUTH_LOGOUT = "logout"
+    const val AUTH_REGISTER = "register/noactivation"
 }
 
 object DataStoreConstants {
@@ -81,3 +91,25 @@ object HttpStatusCodes {
     const val SERVER_ERROR = 500
 }
 
+object ErrorMessages {
+    const val NO_KEY_PAIR = "No se encontró un par de claves para el usuario."
+    const val PASSWORD_NOT_VALID = "La contraseña no es válida."
+}
+
+object CryptoConstants {
+    const val ANDROID_KEYSTORE = "AndroidKeyStore"
+    const val KEY_ALIAS = "MyUserIdentityKey" // Alias único para la clave del usuario
+    const val RSA_ALGORITHM = "RSA"
+    const val TRANSFORMATION_OAEP = "RSA/ECB/OAEPWithSHA-256AndMGF1Padding"
+    const val SIGNATURE_ALGORITHM = "SHA256withRSA"
+    const val RSA_KEY_SIZE = 2048
+    const val SIGNATURE_FORMAT = "UserId:%d|PublicKey:%s|CreatedAt:%s"
+    const val AES_ALGORITHM = "AES"
+    const val TRANSFORMATION = "AES/GCM/NoPadding"
+    const val AES_KEY_SIZE = 256
+    const val GCM_TAG_LENGTH = 128
+    const val PBKDF2_ITERATIONS = 65536
+    const val IV_SIZE = 12
+    const val SALT_SIZE = 16
+    const val PBKDF2_ALGORITHM = "PBKDF2WithHmacSHA256"
+}

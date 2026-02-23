@@ -8,3 +8,5 @@ object AuthGraph
 @Serializable
 object Login
 
+@Serializable
+object Register

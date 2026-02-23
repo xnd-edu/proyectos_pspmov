@@ -113,7 +113,7 @@ fun ReindeerMainScreen(
             else -> {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(Dimens.reindeerItemSpacing)
+                    verticalArrangement = Arrangement.spacedBy(Dimens.itemSpacing)
                 ) {
                     items(
                         count = state.reindeers.size,
@@ -139,13 +139,13 @@ fun ReindeerItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = Dimens.paddingLarge),
-        shape = RoundedCornerShape(Dimens.reindeerCardRadius),
+        shape = RoundedCornerShape(Dimens.cardRadius),
         onClick = { onNavigateToDetail(reindeer.id.toString()) }
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(Dimens.reindeerCardPadding),
+                .padding(Dimens.cardPadding),
             verticalAlignment = Alignment.CenterVertically
         ) {
 
@@ -155,19 +155,19 @@ fun ReindeerItem(
             ) {
                 Text(
                     text = reindeer.nombre ?: stringResource(R.string.sin_nombre),
-                    fontSize = Dimens.reindeerItemFontSizeName,
+                    fontSize = Dimens.itemFontSizeName,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
 
-                Spacer(modifier = Modifier.height(Dimens.reindeerItemInfoSpacing))
+                Spacer(modifier = Modifier.height(Dimens.itemInfoSpacing))
 
                 Text(
                     text = stringResource(
                         R.string.color_label,
                         reindeer.color ?: stringResource(R.string.color_desconocido)
                     ),
-                    fontSize = Dimens.reindeerItemFontSizeInfo,
+                    fontSize = Dimens.itemFontSizeInfo,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
@@ -179,7 +179,7 @@ fun ReindeerItem(
                         else
                             stringResource(R.string.no)
                     ),
-                    fontSize = Dimens.reindeerItemFontSizeInfo,
+                    fontSize = Dimens.itemFontSizeInfo,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -200,7 +200,6 @@ fun ReindeerMainScreenPreview() {
                     Reindeer(id = 2, nombre = Constants.PREVIEW_REINDEER_NAME_2, color = Constants.PREVIEW_REINDEER_COLOR_2, cuernos = true),
                     Reindeer(id = 3, nombre = Constants.PREVIEW_REINDEER_NAME_3, color = Constants.PREVIEW_REINDEER_COLOR_3, cuernos = false)
                 ),
-                searchText = "",
                 isAdmin = true
             ),
             onIntent = { }

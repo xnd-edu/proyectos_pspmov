@@ -25,7 +25,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.composeapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -34,6 +34,7 @@ android {
 
         buildConfigField("String", "TWITCH_CLIENT_ID", "\"${localProperties.getProperty("TWITCH_CLIENT_ID") ?: ""}\"")
         buildConfigField("String", "IGDB_ACCESS_TOKEN", "\"${localProperties.getProperty("IGDB_ACCESS_TOKEN") ?: ""}\"")
+        buildConfigField("String", "SERVER_PUBLIC_KEY", "\"${localProperties.getProperty("SERVER_PUBLIC_KEY") ?: ""}\"")
     }
 
     buildFeatures {
@@ -50,11 +51,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     buildFeatures {
         compose = true

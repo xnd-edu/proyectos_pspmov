@@ -67,6 +67,7 @@ fun ReindeerAddScreenVM(
                     is UiEvent.NavigateBack -> {
                         navigateBack()
                     }
+                    else -> {}
                 }
             }
         }

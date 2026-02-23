@@ -1,4 +1,4 @@
-package com.example.composeapp.ui.screens.login
+package com.example.composeapp.ui.screens.auth.login
 
 data class LoginState(
     val username: String = "",
