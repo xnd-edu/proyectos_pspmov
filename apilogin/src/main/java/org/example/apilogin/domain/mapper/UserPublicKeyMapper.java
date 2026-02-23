@@ -11,11 +11,8 @@ public class UserPublicKeyMapper {
                 entity.getId(),
                 entity.getUserId(),
                 entity.getPublicKey(),
-                entity.getKeySize(),
                 entity.getServerSignature(),
-                entity.getSignedAt(),
-                entity.getCreatedAt(),
-                entity.getUpdatedAt()
+                entity.getCreatedAt()
         );
     }
 
@@ -24,11 +21,8 @@ public class UserPublicKeyMapper {
         entity.setId(domain.id());
         entity.setUserId(domain.userId());
         entity.setPublicKey(domain.publicKey());
-        entity.setKeySize(domain.keySize());
         entity.setServerSignature(domain.serverSignature());
-        entity.setSignedAt(domain.signedAt());
         entity.setCreatedAt(domain.createdAt());
-        entity.setUpdatedAt(domain.updatedAt());
         return entity;
     }
 }

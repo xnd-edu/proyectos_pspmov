@@ -10,9 +10,7 @@ import org.example.apilogin.ui.security.crypto.AsymmetricEncryptionService;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
-import java.security.KeyFactory;
 import java.security.PrivateKey;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
@@ -32,14 +30,18 @@ public class UserPublicKeyService {
     public UserPublicKey findById(Long id) {
         return repository.findById(id)
                 .map(mapper::toDomain)
-                .orElseThrow(() -> new ResourceNotFoundException("UserPublicKey not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(Constantes.MSG_CLAVE_PUBLICA_NO_ENCONTRADA));
     }
 
     public UserPublicKey save(UserPublicKey userPublicKey) {
         try {
             UserPublicKeyEntity entity = mapper.toEntity(userPublicKey);
-            LocalDateTime now = LocalDateTime.now();
-            entity.setSignedAt(now);
+
+            // Truncar a microsegundos porque H2 trunca los nanosegundos al persistir.
+            // Si firmamos con nanosegundos pero BD guarda microsegundos, el mensaje
+            // a verificar nunca coincidirá con el firmado.
+            LocalDateTime now = LocalDateTime.now().truncatedTo(java.time.temporal.ChronoUnit.MICROS);
+            entity.setCreatedAt(now);
 
             String messageToSign = String.format(Constantes.SERVER_SIGNATURE_MESSAGE,
                     entity.getUserId(),
@@ -54,19 +56,19 @@ public class UserPublicKeyService {
             return mapper.toDomain(repository.save(entity));
 
         } catch (Exception e) {
-            throw new SecurityException("Error al certificar la clave pública", e);
+            throw new SecurityException(Constantes.MSG_CERTIFICAR_CLAVE_PUBLICA_ERROR, e);
         }
     }
 
     public UserPublicKey update(Long id, UserPublicKey userPublicKey) {
         repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("UserPublicKey not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(Constantes.MSG_CLAVE_PUBLICA_NO_ENCONTRADA));
         return mapper.toDomain(repository.save(mapper.toEntity(userPublicKey)));
     }
 
     public void delete(Long id) {
         if (!repository.existsById(id)) {
-            throw new ResourceNotFoundException("UserPublicKey not found");
+            throw new ResourceNotFoundException(Constantes.MSG_CLAVE_PUBLICA_NO_ENCONTRADA);
         }
         repository.deleteById(id);
     }
@@ -74,7 +76,7 @@ public class UserPublicKeyService {
     public UserPublicKey findByUserId(Long userId) {
         return repository.findByUserId(userId)
                 .map(mapper::toDomain)
-                .orElseThrow(() -> new ResourceNotFoundException("UserPublicKey not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(Constantes.MSG_CLAVE_PUBLICA_NO_ENCONTRADA));
     }
 
     public List<UserPublicKey> findAll() {
@@ -85,13 +87,13 @@ public class UserPublicKeyService {
     }
 
     private PrivateKey getServerPrivateKey() {
-        try(InputStream is = getClass().getClassLoader().getResourceAsStream("server_private.key")) {
+        try(InputStream is = getClass().getClassLoader().getResourceAsStream(Constantes.PRIVATE_KEY_FILE)) {
             if (is == null) {
-                throw new SecurityException("No se encontró el archivo server_private.key en resources");
+                throw new SecurityException(Constantes.PRIVATE_KEY_FILE_NOT_FOUND);
             }
             return asymmetricEncryptionService.binaryToPrivateKey(is.readAllBytes());
         } catch (Exception e) {
-            throw new SecurityException("Error al leer la clave privada del servidor", e);
+            throw new SecurityException(Constantes.ERROR_LEER_CLAVE_PRIVADA, e);
         }
     }
 }

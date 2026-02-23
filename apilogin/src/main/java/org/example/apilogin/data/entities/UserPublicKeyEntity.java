@@ -1,6 +1,7 @@
 package org.example.apilogin.data.entities;
 
 import jakarta.persistence.*;
+import org.example.apilogin.common.Constantes;
 
 import java.time.LocalDateTime;
 
@@ -12,45 +13,34 @@ import java.time.LocalDateTime;
  * - Clave privada: Solo el usuario la tiene (en su dispositivo/keystore)
  */
 @Entity
-@Table(name = "user_public_keys")
+@Table(name = Constantes.USER_PUBLIC_KEYS_TABLE)
 public class UserPublicKeyEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false, unique = true)
+    @Column(name = Constantes.USER_PUBLIC_KEY_USER_ID_COLUMN, nullable = false, unique = true)
     private Long userId;
 
     @Lob
-    @Column(name = "public_key", nullable = false)
+    @Column(name = Constantes.USER_PUBLIC_KEY_COLUMN, nullable = false)
     private byte[] publicKey; // Clave pública codificada (X.509 format)
 
-    @Column(name = "key_size")
-    private Integer keySize; // 2048, 4096 para RSA; 256, 384 para EC
-
     @Lob
-    @Column(name = "server_signature")
+    @Column(name = Constantes.USER_PUBLIC_KEY_SERVER_SIGNATURE_COLUMN)
     private byte[] serverSignature; // Firma del servidor sobre la clave pública
 
-    @Column(name = "signed_at")
-    private LocalDateTime signedAt; // Cuándo se firmó (para verificación)
-
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(name = Constantes.USER_PUBLIC_KEY_CREATED_AT_COLUMN, nullable = false, updatable = false)
     private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+        // Solo asigna si no fue fijado previamente (el service lo fija antes de firmar
+        // para que el mensaje firmado y el createdAt persistido sean idénticos)
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
     }
 
     // Getters y Setters
@@ -79,28 +69,12 @@ public class UserPublicKeyEntity {
         this.publicKey = publicKey;
     }
 
-    public Integer getKeySize() {
-        return keySize;
-    }
-
-    public void setKeySize(Integer keySize) {
-        this.keySize = keySize;
-    }
-
     public byte[] getServerSignature() {
         return serverSignature;
     }
 
     public void setServerSignature(byte[] serverSignature) {
         this.serverSignature = serverSignature;
-    }
-
-    public LocalDateTime getSignedAt() {
-        return signedAt;
-    }
-
-    public void setSignedAt(LocalDateTime signedAt) {
-        this.signedAt = signedAt;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -110,13 +84,4 @@ public class UserPublicKeyEntity {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }
-

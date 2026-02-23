@@ -22,18 +22,12 @@ import java.util.Base64;
 @Service
 public class SymmetricEncryptionService {
 
-    private static final String ALGORITHM = "AES";
-    private static final int AES_KEY_SIZE = 256;
-    private static final int GCM_TAG_LENGTH = 128;
-
-    private static final int PBKDF2_ITERATIONS = 65536; // Iteraciones para PBKDF2
-
     /**
      * Genera una clave AES de 256 bits
      */
     public SecretKey generateKey() throws Exception {
-        KeyGenerator keyGenerator = KeyGenerator.getInstance(ALGORITHM);
-        keyGenerator.init(AES_KEY_SIZE);
+        KeyGenerator keyGenerator = KeyGenerator.getInstance(Constantes.AES_ALGORITHM);
+        keyGenerator.init(Constantes.AES_KEY_SIZE);
         return keyGenerator.generateKey();
     }
 
@@ -45,15 +39,15 @@ public class SymmetricEncryptionService {
      * @return SecretKey derivada del password y salt
      */
     public SecretKey generateKeyFromPassword(String password, byte[] salt) throws Exception {
-        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+        SecretKeyFactory factory = SecretKeyFactory.getInstance(Constantes.PBKDF2_ALGORITHM);
         KeySpec spec = new PBEKeySpec(
             password.toCharArray(),
             salt,
-            PBKDF2_ITERATIONS,
-                AES_KEY_SIZE
+                Constantes.PBKDF2_ITERATIONS,
+                Constantes.AES_KEY_SIZE
         );
         SecretKey tmp = factory.generateSecret(spec);
-        return new SecretKeySpec(tmp.getEncoded(), ALGORITHM);
+        return new SecretKeySpec(tmp.getEncoded(), Constantes.AES_ALGORITHM);
     }
 
     /**
@@ -76,8 +70,8 @@ public class SymmetricEncryptionService {
      * Detecta modificaciones en el texto cifrado
      */
     public String encryptGCM(String plainText, SecretKey key, byte[] iv) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-        GCMParameterSpec gcmSpec = new GCMParameterSpec(GCM_TAG_LENGTH, iv);
+        Cipher cipher = Cipher.getInstance(Constantes.AES_TRANSFORMATION);
+        GCMParameterSpec gcmSpec = new GCMParameterSpec(Constantes.GCM_TAG_LENGTH, iv);
         cipher.init(Cipher.ENCRYPT_MODE, key, gcmSpec);
         byte[] encrypted = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
 
@@ -97,8 +91,8 @@ public class SymmetricEncryptionService {
         System.arraycopy(combined, 0, iv, 0, Constantes.IV_SIZE);
         System.arraycopy(combined, Constantes.IV_SIZE, encrypted, 0, encrypted.length);
 
-        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-        GCMParameterSpec gcmSpec = new GCMParameterSpec(GCM_TAG_LENGTH, iv);
+        Cipher cipher = Cipher.getInstance(Constantes.AES_TRANSFORMATION);
+        GCMParameterSpec gcmSpec = new GCMParameterSpec(Constantes.GCM_TAG_LENGTH, iv);
         cipher.init(Cipher.DECRYPT_MODE, key, gcmSpec);
         byte[] decrypted = cipher.doFinal(encrypted);
         return new String(decrypted, StandardCharsets.UTF_8);

@@ -18,33 +18,34 @@ import java.time.LocalDateTime;
  * 3. Usuario B descifra con su privateKey
  */
 @Entity
-@Table(name = "shared_secrets")
+@Table(name = Constantes.SHARED_SECRETS_TABLE)
 public class SharedSecretEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "secret_id", nullable = false)
+    @Column(name = Constantes.SHARED_SECRET_ID_COLUMN, nullable = false)
     private Long secretId; // Referencia al secreto original
 
-    @Column(name = "owner_id", nullable = false)
+    @Column(name = Constantes.SHARED_OWNER_ID_COLUMN, nullable = false)
     private Long ownerId; // Usuario que comparte
 
-    @Column(name = "shared_with_id", nullable = false)
+    @Column(name = Constantes.SHARED_WITH_ID_COLUMN, nullable = false)
     private Long sharedWithId; // Usuario con quien se comparte
 
-    @Column(name = "encrypted_data", nullable = false)
+    @Column(name = Constantes.SHARED_ENCRYPTED_DATA_COLUMN, nullable = false)
     @Lob
     private byte[] encryptedData; // El String secreto cifrado con AES
 
-    @Column(name = "encrypted_key", nullable = false)
-    private byte[] encryptedKey; // La clave AES cifrada con la Pública
+    @Lob
+    @Column(name = Constantes.SHARED_ENCRYPTED_KEY_COLUMN, nullable = false)
+    private byte[] encryptedKey; // La clave AES cifrada con la Pública RSA-OAEP (256 bytes para RSA-2048)
 
-    @Column(name = "iv", nullable = false, length = Constantes.IV_SIZE)
+    @Column(name = Constantes.SHARED_IV_COLUMN, nullable = false, length = Constantes.IV_SIZE)
     private byte[] iv; // El IV de la AES
 
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(name = Constantes.SHARED_CREATED_AT_COLUMN, nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @PrePersist

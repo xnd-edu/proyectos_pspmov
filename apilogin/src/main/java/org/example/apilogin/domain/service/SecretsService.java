@@ -1,5 +1,6 @@
 package org.example.apilogin.domain.service;
 
+import org.example.apilogin.common.Constantes;
 import org.example.apilogin.data.SecretRepository;
 import org.example.apilogin.domain.errores.ResourceNotFoundException;
 import org.example.apilogin.domain.mapper.SecretMapper;
@@ -21,7 +22,7 @@ public class SecretsService {
     public Secret findById(Long id) {
         return repository.findById(id)
                 .map(mapper::toDomain)
-                .orElseThrow(() -> new ResourceNotFoundException("Secret not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(Constantes.MSG_SECRETO_NO_ENCONTRADO));
     }
 
     public Secret save(Secret secret) {
@@ -30,14 +31,14 @@ public class SecretsService {
 
     public Secret update(Long id, Secret secret) {
         repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Secret not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(Constantes.MSG_SECRETO_NO_ENCONTRADO));
 
         return mapper.toDomain(repository.save(mapper.toEntity(secret)));
     }
 
     public void delete(Long id) {
         if (!repository.existsById(id)) {
-            throw new ResourceNotFoundException("Secret not found");
+            throw new ResourceNotFoundException(Constantes.MSG_SECRETO_NO_ENCONTRADO);
         }
         repository.deleteById(id);
     }

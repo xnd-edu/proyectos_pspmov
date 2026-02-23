@@ -25,7 +25,7 @@ public class AdminRenosController {
         return ResponseEntity.ok(renoService.findAll());
     }
 
-    @GetMapping(Constantes.API_RENO_BY_ID)
+    @GetMapping(Constantes.API_BY_ID)
     public ResponseEntity<Reno> obtenerReno(@PathVariable int id) {
         Reno reno = renoService.findById(id);
         return ResponseEntity.ok(reno);
@@ -46,13 +46,13 @@ public class AdminRenosController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newReno);
     }
 
-    @PutMapping(Constantes.API_RENO_BY_ID)
+    @PutMapping(Constantes.API_BY_ID)
     public ResponseEntity<Reno> actualizarReno(@PathVariable int id, @RequestBody Reno reno) {
         Reno updatedReno = renoService.update(id, reno);
         return ResponseEntity.ok(updatedReno);
     }
 
-    @DeleteMapping(Constantes.API_RENO_BY_ID)
+    @DeleteMapping(Constantes.API_BY_ID)
     public ResponseEntity<Void> eliminarReno(@PathVariable int id) {
         renoService.delete(id);
         return ResponseEntity.noContent().build();

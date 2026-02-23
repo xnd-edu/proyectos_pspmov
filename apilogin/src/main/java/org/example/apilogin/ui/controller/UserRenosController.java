@@ -25,7 +25,7 @@ public class UserRenosController {
         return ResponseEntity.ok(renoService.findByUserId(userId.intValue()));
     }
 
-    @GetMapping(Constantes.API_RENO_BY_ID)
+    @GetMapping(Constantes.API_BY_ID)
     public ResponseEntity<Reno> obtenerReno(@PathVariable int id, Authentication authentication) {
         Long userId = Long.parseLong(authentication.getName());
         Reno reno = renoService.findById(id);
@@ -54,7 +54,7 @@ public class UserRenosController {
         return ResponseEntity.ok(renosFiltrados);
     }
 
-    @DeleteMapping(Constantes.API_RENO_BY_ID)
+    @DeleteMapping(Constantes.API_BY_ID)
     public ResponseEntity<Void> eliminarReno(@PathVariable int id, Authentication authentication) {
         Long userId = Long.parseLong(authentication.getName());
         Reno reno = renoService.findById(id);

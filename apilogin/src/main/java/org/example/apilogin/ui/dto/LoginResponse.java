@@ -11,11 +11,6 @@ public record LoginResponse(
         this(true, message, usuario, tokens);
     }
 
-    // Constructor sin tokens (para sesiones - compatibilidad)
-    public LoginResponse(UsuarioDTO usuario, String message) {
-        this(true, message, usuario, null);
-    }
-
     // Constructor solo mensaje de error
     public LoginResponse(String message) {
         this(false, message, null, null);

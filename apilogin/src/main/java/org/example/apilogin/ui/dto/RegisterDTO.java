@@ -4,5 +4,6 @@ public record RegisterDTO(
     String username,
     String password,
     String email,
-    String nombre
+    String nombre,
+    String publicKeyBase64
 ) {}

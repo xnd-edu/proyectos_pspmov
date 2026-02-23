@@ -6,27 +6,27 @@ import org.example.apilogin.common.Constantes;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "vault_secrets")
+@Table(name = Constantes.VAULT_SECRETS_TABLE)
 public class SecretEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = Constantes.SECRET_USER_ID_COLUMN, nullable = false)
     private Long userId;
 
     @Lob
-    @Column(name = "encrypted_data", nullable = false)
+    @Column(name = Constantes.SECRET_ENCRYPTED_DATA_COLUMN, nullable = false)
     private byte[] encryptedData;
 
-    @Column(name = "iv", nullable = false, length = Constantes.IV_SIZE)
+    @Column(name = Constantes.SECRET_IV_COLUMN, nullable = false, length = Constantes.IV_SIZE)
     private byte[] iv;
 
-    @Column(name = "salt", nullable = false, length = Constantes.SALT_SIZE)
+    @Column(name = Constantes.SECRET_SALT_COLUMN, nullable = false, length = Constantes.SALT_SIZE)
     private byte[] salt;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(name = Constantes.SECRET_CREATED_AT_COLUMN, nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @PrePersist
@@ -84,4 +84,3 @@ public class SecretEntity {
         this.createdAt = createdAt;
     }
 }
-

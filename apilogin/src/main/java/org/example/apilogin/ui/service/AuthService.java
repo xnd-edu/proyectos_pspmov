@@ -2,12 +2,16 @@ package org.example.apilogin.ui.service;
 
 import com.google.zxing.WriterException;
 import org.example.apilogin.common.Constantes;
+import org.example.apilogin.domain.errores.CryptoException;
 import org.example.apilogin.domain.model.Rol;
 import org.example.apilogin.domain.model.TwoFactorMethod;
+import org.example.apilogin.domain.model.UserPublicKey;
 import org.example.apilogin.domain.model.Usuario;
 import org.example.apilogin.domain.service.TokenService;
+import org.example.apilogin.domain.service.UserPublicKeyService;
 import org.example.apilogin.domain.service.UsuarioService;
 import org.example.apilogin.ui.dto.*;
+import org.example.apilogin.ui.security.crypto.AsymmetricEncryptionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.security.PublicKey;
 import java.time.LocalDateTime;
 import java.util.Random;
 import java.util.UUID;
@@ -31,15 +36,17 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
     private final Random random = new Random();
+    private final AsymmetricEncryptionService asymmetricEncryptionService;
+    private final UserPublicKeyService userPublicKeyService;
 
 
     public AuthService(UsuarioService usuarioService,
-                      EmailService emailService,
-                      TotpService totpService,
-                      JwtService jwtService,
-                      TokenService tokenService,
-                      AuthenticationManager authenticationManager,
-                      UserDetailsService userDetailsService) {
+                       EmailService emailService,
+                       TotpService totpService,
+                       JwtService jwtService,
+                       TokenService tokenService,
+                       AuthenticationManager authenticationManager,
+                       UserDetailsService userDetailsService, AsymmetricEncryptionService asymmetricEncryptionService, UserPublicKeyService userPublicKeyService) {
         this.usuarioService = usuarioService;
         this.emailService = emailService;
         this.totpService = totpService;
@@ -47,6 +54,8 @@ public class AuthService {
         this.tokenService = tokenService;
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
+        this.asymmetricEncryptionService = asymmetricEncryptionService;
+        this.userPublicKeyService = userPublicKeyService;
     }
 
     public ResponseEntity<LoginResponse> login(String username, String password) {
@@ -128,6 +137,26 @@ public class AuthService {
         );
 
         return usuarioService.register(newUser);
+    }
+
+    public UserPublicKey registerPublicKey(Long userId, String publicKeyBase64) {
+        PublicKey publicKey;
+
+        try {
+            publicKey = asymmetricEncryptionService.base64ToPublicKey(publicKeyBase64);
+        } catch (Exception _) {
+            throw new CryptoException(Constantes.MSG_ERR_PUBLIC_KEY);
+        }
+
+        UserPublicKey userPublicKey = new UserPublicKey(
+                null,
+                userId,
+                publicKey.getEncoded(),
+                null,
+                null
+        );
+
+        return userPublicKeyService.save(userPublicKey);
     }
 
     public ResponseEntity<Enable2FAResponse> enable2FA(String method, Usuario usuario) {

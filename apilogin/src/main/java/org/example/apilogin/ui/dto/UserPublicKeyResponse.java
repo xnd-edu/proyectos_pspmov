@@ -2,12 +2,11 @@ package org.example.apilogin.ui.dto;
 
 import java.time.LocalDateTime;
 
-public record SecretResponse(
+public record UserPublicKeyResponse(
         Long id,
         Long userId,
-        String encryptedDataBase64,
-        String ivBase64,
-        String saltBase64,
+        String publicKeyBase64,
+        String serverSignatureBase64,
         LocalDateTime createdAt
 ) {
 }

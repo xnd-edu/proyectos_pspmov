@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface SharedSecretRepository extends JpaRepository<SharedSecretEntity, Long> {
-    Optional<SharedSecretEntity> findByOwnerId(Long ownerId);
+    Optional<SharedSecretEntity> findBySecretId(Long secretId);
     Optional<SharedSecretEntity> findBySharedWithId(Long sharedWithId);
     Optional<SharedSecretEntity> findByOwnerIdAndSharedWithId(Long ownerId, Long recipientId);
 }

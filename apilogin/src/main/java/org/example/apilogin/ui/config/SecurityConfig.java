@@ -34,6 +34,7 @@ public class SecurityConfig {
                 .requestMatchers(
                     Constantes.API_LOGIN,
                     Constantes.API_REGISTER,
+                    Constantes.API_REGISTER_NO_ACTIVATION,
                     Constantes.API_ACTIVAR_CUENTA,
                     Constantes.API_VERIFY_2FA,
                     Constantes.API_JWT + Constantes.API_JWT_REFRESH

@@ -1,5 +1,6 @@
 package org.example.apilogin.domain.service;
 
+import org.example.apilogin.common.Constantes;
 import org.example.apilogin.data.SharedSecretRepository;
 import org.example.apilogin.domain.errores.ResourceNotFoundException;
 import org.example.apilogin.domain.mapper.SharedSecretMapper;
@@ -21,7 +22,7 @@ public class SharedSecretService {
     public SharedSecret findById(Long id) {
         return repository.findById(id)
                 .map(mapper::toDomain)
-                .orElseThrow(() -> new ResourceNotFoundException("SharedSecret not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(Constantes.MSG_ERROR_COMPARTIDO_NO_ENCONTRADO));
     }
 
     public SharedSecret save(SharedSecret sharedSecret) {
@@ -30,19 +31,19 @@ public class SharedSecretService {
 
     public SharedSecret update(Long id, SharedSecret sharedSecret) {
         repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("SharedSecret not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(Constantes.MSG_ERROR_COMPARTIDO_NO_ENCONTRADO));
         return mapper.toDomain(repository.save(mapper.toEntity(sharedSecret)));
     }
 
     public void delete(Long id) {
         if (!repository.existsById(id)) {
-            throw new ResourceNotFoundException("SharedSecret not found");
+            throw new ResourceNotFoundException(Constantes.MSG_ERROR_COMPARTIDO_NO_ENCONTRADO);
         }
         repository.deleteById(id);
     }
 
-    public List<SharedSecret> findByOwnerId(Long ownerId) {
-        return repository.findByOwnerId(ownerId)
+    public List<SharedSecret> findBySecretId(Long secretId) {
+        return repository.findBySecretId(secretId)
                 .stream()
                 .map(mapper::toDomain)
                 .toList();
@@ -53,11 +54,5 @@ public class SharedSecretService {
                 .stream()
                 .map(mapper::toDomain)
                 .toList();
-    }
-
-    public SharedSecret findByOwnerIdAndRecipientId(Long ownerId, Long recipientId) {
-        return repository.findByOwnerIdAndSharedWithId(ownerId, recipientId)
-                .map(mapper::toDomain)
-                .orElseThrow(() -> new ResourceNotFoundException("SharedSecret not found"));
     }
 }
